@@ -1,0 +1,1 @@
+insert into proba(id) values (1)
