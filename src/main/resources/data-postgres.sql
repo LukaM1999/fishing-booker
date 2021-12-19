@@ -1,1 +1,1 @@
-insert into proba(id) values (1)
+insert into admin(id, name, surname) values (1, 'Filip', 'Pinjuh');

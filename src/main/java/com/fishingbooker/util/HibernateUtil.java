@@ -8,32 +8,32 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 public class HibernateUtil {
 	private static StandardServiceRegistry standardServiceRegistry;
-	private static SessionFactory sessionFactory;
+	  private static SessionFactory sessionFactory;
 
-	static{
-		if (sessionFactory == null) {
-			try {
-				// Create StandardServiceRegistry
-				standardServiceRegistry = new StandardServiceRegistryBuilder()
-						.configure()
-						.build();
-				// Create MetadataSources
-				MetadataSources metadataSources = new MetadataSources(standardServiceRegistry);
-				// Create Metadata
-				Metadata metadata = metadataSources.getMetadataBuilder().build();
-				// Create SessionFactory
-				sessionFactory = metadata.getSessionFactoryBuilder().build();
-			} catch (Exception e) {
-				e.printStackTrace();
-				if (standardServiceRegistry != null) {
-					StandardServiceRegistryBuilder.destroy(standardServiceRegistry);
-				}
-			}
-		}
-	}
-	//Utility method to return SessionFactory
-	public static SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-
+	  static{
+		    if (sessionFactory == null) {
+		      try {
+		        // Create StandardServiceRegistry
+		        standardServiceRegistry = new StandardServiceRegistryBuilder()
+		            .configure()
+		            .build();
+		        // Create MetadataSources
+		        MetadataSources metadataSources = new MetadataSources(standardServiceRegistry);
+		        // Create Metadata
+		        Metadata metadata = metadataSources.getMetadataBuilder().build();
+		        // Create SessionFactory
+		        sessionFactory = metadata.getSessionFactoryBuilder().build();
+		      } catch (Exception e) {
+		        e.printStackTrace();
+		        if (standardServiceRegistry != null) {
+		          StandardServiceRegistryBuilder.destroy(standardServiceRegistry);
+		        }
+		      }
+		    }
+	  }
+	  //Utility method to return SessionFactory
+	  public static SessionFactory getSessionFactory() {
+		  return sessionFactory;
+	  }
+	
 }

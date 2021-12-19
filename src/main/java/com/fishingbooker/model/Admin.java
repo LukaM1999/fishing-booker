@@ -2,38 +2,24 @@ package com.fishingbooker.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
-public class Admin extends PUser {
+public class Admin{
+	@Id
 	@Column
-	private String adminType;
+	public long Id;
 	@Column
-	private long works; // U kojoj apoteci je admin, ako je admin apoteke po tipu(po id), ako je 0 onda je SISTEMSKI admin!
+	public String Name;
+	@Column
+	public String Surname;
 
-	public String getAdminType() {
-		return adminType;
-	}
+	public Admin() {}
 
-	public void setAdminType(String adminType) {
-		this.adminType = adminType;
-	}
-
-	public long getWorks() {
-		return works;
-	}
-
-	public void setWorks(long works) {
-		this.works = works;
-	}
-
-	
-	public Admin() {
-		super();
-	}
-
-	public Admin(long id, String name, String surname, String email, String password, String address, String city,
-                 String country, int number, String role, String adminType, String worksID, String authenticated, String verificationCode) {
-		super(id, name, surname, email, password, address, city, country, number, role, worksID, authenticated, verificationCode);
+	public Admin(long id, String name, String surname){
+		Id = id;
+		Name = name;
+		Surname = surname;
 	}
 
 }
