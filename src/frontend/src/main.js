@@ -2,6 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from "vue-router";
 import Registration from "@/components/Registration";
+import ApproveUser from "@/components/ApproveUser";
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -39,8 +40,12 @@ const routes = [
         path: '/cottageProfile',
         name: 'cottageProfile',
         component: CottageProfile
+    },
+    {
+        path: '/approve',
+        name: 'approveUser',
+        component: ApproveUser
     }
-
 ]
 
 export const router = new VueRouter({

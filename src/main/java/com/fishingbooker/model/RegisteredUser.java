@@ -34,6 +34,10 @@ public class RegisteredUser implements UserDetails {
     private String country;
     @Column
     private String phone;
+    @Column
+    private String letterOfIntent;
+    @Column
+    private boolean IsActivated;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -136,11 +140,26 @@ public class RegisteredUser implements UserDetails {
         this.enabled = enabled;
     }
 
-
     public void setPassword(String password) {
         Timestamp now = new Timestamp(new Date().getTime());
         this.setLastPasswordResetDate(now);
         this.password = password;
+    }
+
+    public boolean isActivated() {
+        return IsActivated;
+    }
+
+    public void setActivated(boolean activated) {
+        IsActivated = activated;
+    }
+
+    public String getLetterOfIntent() {
+        return letterOfIntent;
+    }
+
+    public void setLetterOfIntent(String letterOfIntent) {
+        this.letterOfIntent = letterOfIntent;
     }
 
     public RegisteredUser() {
@@ -148,7 +167,7 @@ public class RegisteredUser implements UserDetails {
     }
 
     public RegisteredUser(String username, String password, String name, String surname, String email, String address,
-                          String city, String country, String phone, String role){
+                          String city, String country, String phone, String role, String letterOfIntent){
         this.username = username;
         this.password = password;
         this.name = name;
@@ -160,6 +179,8 @@ public class RegisteredUser implements UserDetails {
         this.phone = phone;
         this.role = new Role(role);
         this.enabled = false;
+        this.isActivated = false;
+        this.letterOfIntent = letterOfIntent;
     }
 
     public Timestamp getLastPasswordResetDate() {
