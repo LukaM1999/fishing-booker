@@ -1,125 +1,205 @@
 package com.fishingbooker.model;
-import com.fishingbooker.model.enumeration.UserRole;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 
 @Entity
-public class RegisteredUser {
+public class RegisteredUser implements UserDetails {
+
+    private static final long serialVersionUID = 1L;
+
+//    @Id
+//    @Column(name = "id")
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     @Id
     @Column
-    private String Username;
+    private String username;
     @Column
-    private String Password;
+    private String password;
     @Column
-    private String Name;
+    private String name;
     @Column
-    private String Surname;
+    private String surname;
     @Column
-    private String Email;
+    private String email;
     @Column
-    private String Address;
+    private String address;
     @Column
-    private String City;
+    private String city;
     @Column
-    private String Country;
+    private String country;
     @Column
-    private String Phone;
-    @Column
-    private UserRole Role;
+    private String phone;
 
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @Column(name = "last_password_reset_date")
+    private Timestamp lastPasswordResetDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Role role;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+//    @OneToOne(mappedBy = "registered_users", cascade = CascadeType.ALL)
+//    @PrimaryKeyJoinColumn
+//    private Role role;
+
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
+
+    @Override
     public String getUsername() {
-        return Username;
+        return username;
     }
 
     public void setUsername(String username) {
-        Username = username;
+        this.username = username;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList<Role>(List.of(this.role));
+    }
+
+    @Override
     public String getPassword() {
-        return Password;
-    }
-
-    public void setPassword(String password) {
-        Password = password;
+        return password;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String getSurname() {
-        return Surname;
+        return surname;
     }
 
     public void setSurname(String surname) {
-        Surname = surname;
+        this.surname = surname;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getAddress() {
-        return Address;
+        return address;
     }
 
     public void setAddress(String address) {
-        Address = address;
+        this.address = address;
     }
 
     public String getCity() {
-        return City;
+        return city;
     }
 
     public void setCity(String city) {
-        City = city;
+        this.city = city;
     }
 
     public String getCountry() {
-        return Country;
+        return country;
     }
 
     public void setCountry(String country) {
-        Country = country;
+        this.country = country;
     }
 
     public String getPhone() {
-        return Phone;
+        return phone;
     }
 
     public void setPhone(String phone) {
-        Phone = phone;
+        this.phone = phone;
     }
 
-    public UserRole getRole() {
-        return Role;
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
-    public void setRole(UserRole role) {
-        Role = role;
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public RegisteredUser() {}
 
-    public RegisteredUser(String username, String password, String name, String surname, String email, String address, String city, String country, String phone, UserRole role){
-        Username = username;
-        Password = password;
-        Name = name;
-        Surname = surname;
-        Email = email;
-        Address = address;
-        City = city;
-        Country = country;
-        Phone = phone;
-        Role = role;
+    public void setPassword(String password) {
+        Timestamp now = new Timestamp(new Date().getTime());
+        this.setLastPasswordResetDate(now);
+        this.password = password;
+    }
+
+    public RegisteredUser() {
+        super();
+    }
+
+    public RegisteredUser(String username, String password, String name, String surname, String email, String address,
+                          String city, String country, String phone, String role){
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.phone = phone;
+        this.role = new Role(role);
+        this.enabled = false;
+    }
+
+    public Timestamp getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
 }

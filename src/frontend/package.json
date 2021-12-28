@@ -13,7 +13,8 @@
     "vue": "^2.6.11",
     "vue-axios": "^3.4.0",
     "vue-material": "^1.0.0-beta-15",
-    "vue-router": "^3.5.3"
+    "vue-router": "^3.5.3",
+    "vue-toasted": "^1.1.28"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

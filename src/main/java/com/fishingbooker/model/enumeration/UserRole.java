@@ -1,8 +1,16 @@
 package com.fishingbooker.model.enumeration;
 
-public enum UserRole {
+import org.springframework.security.core.GrantedAuthority;
+
+public enum UserRole implements GrantedAuthority {
     CUSTOMER,
     COTTAGE_OWNER,
     BOAT_OWNER,
-    INSTRUCTOR
+    INSTRUCTOR,
+    ADMIN;
+
+    @Override
+    public String getAuthority() {
+        return null;
+    }
 }

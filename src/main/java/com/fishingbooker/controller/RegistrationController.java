@@ -1,4 +1,4 @@
-package com.fishingbooker.services;
+package com.fishingbooker.controller;
 
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.repository.RegisteredUserRepository;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/registration")
-public class RegistrationService {
+public class RegistrationController {
 
     @Autowired
     private RegisteredUserRepository registeredUserRepository;

@@ -5,11 +5,17 @@ import Registration from "@/components/Registration";
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import Toasted from 'vue-toasted';
 
 
 Vue.config.productionTip = false
 Vue.config.devtools
 Vue.use(VueRouter)
+Vue.use(Toasted, {
+    position: 'top-right',
+    duration: 5000,
+    keepOnHover: true,
+})
 
 Vue.use(VueAxios, axios)
 

@@ -1,4 +1,4 @@
-package com.fishingbooker.services;
+package com.fishingbooker.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin")
 
-public class AdminService {
+public class AdminController {
 	
 }
