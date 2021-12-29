@@ -1,7 +1,9 @@
 package com.fishingbooker.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
+@Entity
 public class Boat extends Rentable{
 
     @Column
@@ -37,6 +39,9 @@ public class Boat extends Rentable{
         this.vhfRadio = vhfRadio;
         this.fishfinder = fishfinder;
         this.fishingEquipment = fishingEquipment;
+    }
+
+    public Boat() {
     }
 
     public String getBoatType() {

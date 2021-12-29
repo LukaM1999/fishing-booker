@@ -1,11 +1,16 @@
 package com.fishingbooker.model;
 
+import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.util.Collection;
 
-public class Rentable {
-
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class Rentable {
     @Id
+    @Column
+    @SequenceGenerator(name = "rentableIdGen", sequenceName = "rentableIdSeq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rentableIdGen")
     private long id;
     @Column
     private String name;
@@ -17,12 +22,8 @@ public class Rentable {
     private String address;
     @Column
     private String promoDescription;
-    @OneToMany(mappedBy = "Rentable", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<String> photos;
     @Column
     private int capacity;
-    @OneToMany(mappedBy = "Rentable", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<FreeTerm> freeTerms;
     @Column
     private String rules;
     @Column
@@ -41,6 +42,9 @@ public class Rentable {
         this.rules = rules;
         this.pricing = pricing;
         this.freeCancellation = freeCancellation;
+    }
+
+    public Rentable() {
     }
 
     public long getId() {
@@ -91,28 +95,12 @@ public class Rentable {
         this.promoDescription = promoDescription;
     }
 
-    public Collection<String> getPhotos() {
-        return photos;
-    }
-
-    public void setPhotos(Collection<String> photos) {
-        this.photos = photos;
-    }
-
     public int getCapacity() {
         return capacity;
     }
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
-    }
-
-    public Collection<FreeTerm> getFreeTerms() {
-        return freeTerms;
-    }
-
-    public void setFreeTerms(Collection<FreeTerm> freeTerms) {
-        this.freeTerms = freeTerms;
     }
 
     public String getRules() {

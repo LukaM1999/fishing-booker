@@ -1,11 +1,9 @@
 package com.fishingbooker.model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 
-/*
-● kratku biografiju instruktora,
-● koja pecaroška oprema dolazi uz rezervaciju (ako klijent ne ponese svoju),
- */
+@Entity
 public class Adventure extends Rentable{
     @Column
     private String instructorBio;
@@ -16,6 +14,9 @@ public class Adventure extends Rentable{
         super(id, name, country, city, address, promoDescription, capacity, rules, pricing, freeCancellation);
         this.instructorBio = instructorBio;
         this.fishingEquipment = fishingEquipment;
+    }
+
+    public Adventure() {
     }
 
     public String getInstructorBio() {

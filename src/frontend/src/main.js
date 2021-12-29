@@ -8,6 +8,7 @@ import VueAxios from 'vue-axios'
 import Toasted from 'vue-toasted';
 import Login from "@/components/Login";
 import {jwtInterceptor} from "@/_helpers/jwt.interceptor";
+import CottageProfile from "@/components/CottageProfile";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -33,7 +34,13 @@ const routes = [
         path: '/login',
         name: 'login',
         component: Login
+    },
+    {
+        path: '/cottageProfile',
+        name: 'cottageProfile',
+        component: CottageProfile
     }
+
 ]
 
 export const router = new VueRouter({

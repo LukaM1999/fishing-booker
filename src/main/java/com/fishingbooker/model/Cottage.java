@@ -1,7 +1,9 @@
 package com.fishingbooker.model;
 
-import javax.persistence.Column;
+import javax.persistence.*;
+import java.util.Collection;
 
+@Entity
 public class Cottage extends Rentable{
     @Column
     private int rooms;
@@ -12,6 +14,9 @@ public class Cottage extends Rentable{
         super(id, name, country, city, address, promoDescription, capacity, rules, pricing, freeCancellation);
         this.rooms = rooms;
         this.bedsPerRoom = bedsPerRoom;
+    }
+
+    public Cottage() {
     }
 
     public int getRooms() {
