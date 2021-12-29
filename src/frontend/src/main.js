@@ -6,10 +6,14 @@ import Registration from "@/components/Registration";
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Toasted from 'vue-toasted';
-
+import Login from "@/components/Login";
+import {jwtInterceptor} from "@/_helpers/jwt.interceptor";
 
 Vue.config.productionTip = false
 Vue.config.devtools
+
+jwtInterceptor();
+
 Vue.use(VueRouter)
 Vue.use(Toasted, {
     position: 'top-right',
@@ -19,13 +23,20 @@ Vue.use(Toasted, {
 
 Vue.use(VueAxios, axios)
 
-const routes = [{
-    path: '/registration',
-    name: 'registration',
-    component: Registration
-}]
+const routes = [
+    {
+        path: '/registration',
+        name: 'registration',
+        component: Registration
+    },
+    {
+        path: '/login',
+        name: 'login',
+        component: Login
+    }
+]
 
-const router = new VueRouter({
+export const router = new VueRouter({
     routes,
     mode: 'history'
 })

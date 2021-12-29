@@ -23,7 +23,7 @@ public class TokenUtils {
     private String APP_NAME;
 
     // Tajna koju samo backend aplikacija treba da zna kako bi mogla da generise i proveri JWT https://jwt.io/
-    @Value("Filip's ISA")
+    @Value("Filips ISA")
     public String SECRET;
 
     // Period vazenja tokena - 30 minuta
@@ -44,7 +44,7 @@ public class TokenUtils {
     private static final String AUDIENCE_WEB = "web";
 
     // Algoritam za potpisivanje JWT
-    private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS512;
+    private SignatureAlgorithm SIGNATURE_ALGORITHM = SignatureAlgorithm.HS256;
 
 
     // ============= Funkcije za generisanje JWT tokena =============

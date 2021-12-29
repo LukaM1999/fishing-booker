@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "jsonwebtoken": "^8.5.1",
     "vue": "^2.6.11",
     "vue-axios": "^3.4.0",
     "vue-material": "^1.0.0-beta-15",
@@ -37,7 +38,9 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+      "no-unused-vars": "off"
+    }
   },
   "browserslist": [
     "> 1%",

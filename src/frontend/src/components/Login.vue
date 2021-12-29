@@ -44,11 +44,12 @@ export default {
   methods: {
     async userLogin() {
       const loginDto = {username: this.usernameLogin, password: this.passwordLogin}
-      const response = await axios.post('rest/user/find', loginDto)
-      if (response.data && response.data.status !== 'BLOCKED') {
-        const user = await axios.get('rest/user/getUser/' + loginDto.username)
-        this.$root.$data.user = user.data
-        await this.$router.push('/' + this.usernameLogin)
+      const response = await axios.post('/auth/login', loginDto)
+      if (response.data) {
+        localStorage.setItem('jwt', response.data.accessToken)
+        //localStorage.setItem('expiresIn', response.data.expiresIn);
+        this.$root.$data.user = response.data.user
+        await this.$router.push('/')
       } else
         this.$toasted.error('Wrong username or password!')
     },
