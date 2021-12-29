@@ -99,9 +99,9 @@
         <div class="col">
           <div class="form-floating">
             <select class="form-select" id="floatingRole" v-model="role" required>
-              <option selected value="1">Cottage owner</option>
-              <option value="2">Boat owner</option>
-              <option value="3">Fishing instructor</option>
+              <option selected value="COTTAGE_OWNER">Cottage owner</option>
+              <option value="BOAT_OWNER">Boat owner</option>
+              <option value="INSTRUCTOR">Fishing instructor</option>
             </select>
             <label for="floatingRole">Role*</label>
           </div>
@@ -152,7 +152,7 @@ export default {
         phone: this.phone,
         role: this.role
       }
-      const response = await this.axios.post('http://localhost:8090/registration/registerUser', user)
+      const response = await this.axios.post('/auth/signup', user)
       console.log(response.data)
     }
   }

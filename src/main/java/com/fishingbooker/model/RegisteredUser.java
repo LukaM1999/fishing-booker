@@ -15,10 +15,6 @@ public class RegisteredUser implements UserDetails {
 
     private static final long serialVersionUID = 1L;
 
-//    @Id
-//    @Column(name = "id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
     @Id
     @Column
     private String username;
@@ -55,17 +51,6 @@ public class RegisteredUser implements UserDetails {
     public void setRole(Role role) {
         this.role = role;
     }
-//    @OneToOne(mappedBy = "registered_users", cascade = CascadeType.ALL)
-//    @PrimaryKeyJoinColumn
-//    private Role role;
-
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
 
     @Override
     public String getUsername() {
