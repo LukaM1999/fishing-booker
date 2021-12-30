@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "emailjs": "^3.7.0",
     "jsonwebtoken": "^8.5.1",
     "vue": "^2.6.11",
     "vue-axios": "^3.4.0",

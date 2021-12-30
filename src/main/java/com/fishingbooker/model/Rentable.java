@@ -9,8 +9,8 @@ import java.util.Collection;
 public abstract class Rentable {
     @Id
     @Column
-    @SequenceGenerator(name = "rentableIdGen", sequenceName = "rentableIdSeq", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rentableIdGen")
+    @SequenceGenerator(name = "rentable_id_gen", sequenceName = "rentable_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rentable_id_gen")
     private Long id;
     @Column
     private String name;

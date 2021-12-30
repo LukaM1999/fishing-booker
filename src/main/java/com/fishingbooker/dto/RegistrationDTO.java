@@ -14,9 +14,10 @@ public class RegistrationDTO {
     private String phone;
     private String role;
     private String letterOfIntent;
+    private String verificationToken;
 
     public RegistrationDTO(){}
-    public RegistrationDTO(String username, String password, String name, String surname, String email, String address, String city, String country, String phone, String role, String letterOfIntent) {
+    public RegistrationDTO(String username, String password, String name, String surname, String email, String address, String city, String country, String phone, String role, String letterOfIntent, String verificationToken) {
         this.username = username;
         this.password = password;
         this.name = name;
@@ -28,6 +29,7 @@ public class RegistrationDTO {
         this.phone = phone;
         this.role = role;
         this.letterOfIntent = letterOfIntent;
+        this.verificationToken = verificationToken;
     }
 
     public String getUsername() {
@@ -116,5 +118,13 @@ public class RegistrationDTO {
 
     public void setLetterOfIntent(String letterOfIntent) {
         this.letterOfIntent = letterOfIntent;
+    }
+
+    public String getVerificationToken() {
+        return verificationToken;
+    }
+
+    public void setVerificationToken(String verificationToken) {
+        this.verificationToken = verificationToken;
     }
 }

@@ -20,7 +20,8 @@ public class Role implements GrantedAuthority, Serializable {
 
     @Id
     @Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "role_id_gen", sequenceName = "role_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_id_gen")
     Long id;
 
     //@JsonIgnore

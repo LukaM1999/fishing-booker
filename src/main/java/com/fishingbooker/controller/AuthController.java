@@ -6,9 +6,11 @@ import com.fishingbooker.dto.JwtDTO;
 import com.fishingbooker.dto.LoginDTO;
 import com.fishingbooker.dto.RegistrationDTO;
 import com.fishingbooker.model.CottageOwner;
+import com.fishingbooker.model.Customer;
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import com.fishingbooker.util.TokenUtils;
+import org.hibernate.id.GUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.UUID;
 
 
 //Kontroler zaduzen za autentifikaciju korisnika
@@ -65,16 +69,32 @@ public class AuthController {
 
     // Endpoint za registraciju novog korisnika
     @PostMapping("/signup")
-    public ResponseEntity<RegisteredUser> addUser(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Object> addUser(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder) {
 
         UserDetails existUser = this.userService.loadUserByUsername(registrationDTO.getUsername());
 
         if (existUser != null) {
             throw new NullPointerException("Username already exists: " + registrationDTO.getUsername());
         }
-        CottageOwner owner = (CottageOwner) this.userService.save(new CottageOwner(registrationDTO));
+
+        Object user;
+        switch (registrationDTO.getRole()) {
+            case "CUSTOMER": {
+                registrationDTO.setVerificationToken(UUID.randomUUID().toString());
+                user = this.userService.save(new Customer(registrationDTO));
+                break;
+            }
+            case "COTTAGE_OWNER":{
+                user = this.userService.save(new CottageOwner(registrationDTO));
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("Unrecognized user role!");
+
+        }
+        //CottageOwner owner = (CottageOwner) this.userService.save(new CottageOwner(registrationDTO));
         //RegisteredUser user = this.userService.save(registeredUser);
 
-        return new ResponseEntity<>(owner, HttpStatus.CREATED);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 }

@@ -10,7 +10,7 @@ public class Cottage extends Rentable{
     @Column
     private int bedsPerRoom;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private CottageOwner owner;
 
     public Cottage(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, int rooms, int bedsPerRoom) {
