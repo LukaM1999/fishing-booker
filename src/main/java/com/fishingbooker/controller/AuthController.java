@@ -4,6 +4,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fishingbooker.dto.JwtDTO;
 import com.fishingbooker.dto.LoginDTO;
+import com.fishingbooker.dto.RegistrationDTO;
+import com.fishingbooker.model.CottageOwner;
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import com.fishingbooker.util.TokenUtils;
@@ -63,16 +65,16 @@ public class AuthController {
 
     // Endpoint za registraciju novog korisnika
     @PostMapping("/signup")
-    public ResponseEntity<RegisteredUser> addUser(@RequestBody RegisteredUser registeredUser, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<RegisteredUser> addUser(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder) {
 
-        UserDetails existUser = this.userService.loadUserByUsername(registeredUser.getUsername());
+        UserDetails existUser = this.userService.loadUserByUsername(registrationDTO.getUsername());
 
         if (existUser != null) {
-            throw new NullPointerException("Username already exists: " + registeredUser.getUsername());
+            throw new NullPointerException("Username already exists: " + registrationDTO.getUsername());
         }
+        CottageOwner owner = (CottageOwner) this.userService.save(new CottageOwner(registrationDTO));
+        //RegisteredUser user = this.userService.save(registeredUser);
 
-        RegisteredUser user = this.userService.save(registeredUser);
-
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        return new ResponseEntity<>(owner, HttpStatus.CREATED);
     }
 }

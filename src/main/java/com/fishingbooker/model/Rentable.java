@@ -11,7 +11,7 @@ public abstract class Rentable {
     @Column
     @SequenceGenerator(name = "rentableIdGen", sequenceName = "rentableIdSeq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rentableIdGen")
-    private long id;
+    private Long id;
     @Column
     private String name;
     @Column
@@ -31,7 +31,7 @@ public abstract class Rentable {
     @Column
     private boolean freeCancellation;
 
-    public Rentable(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation) {
+    public Rentable(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation) {
         this.id = id;
         this.name = name;
         this.country = country;
@@ -47,11 +47,11 @@ public abstract class Rentable {
     public Rentable() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

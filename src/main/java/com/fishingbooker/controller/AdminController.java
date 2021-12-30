@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 
 public class AdminController {
 	

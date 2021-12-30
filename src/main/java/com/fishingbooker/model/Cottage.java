@@ -10,7 +10,10 @@ public class Cottage extends Rentable{
     @Column
     private int bedsPerRoom;
 
-    public Cottage(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, int rooms, int bedsPerRoom) {
+    @ManyToOne(fetch = FetchType.LAZY)
+    private CottageOwner owner;
+
+    public Cottage(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, int rooms, int bedsPerRoom) {
         super(id, name, country, city, address, promoDescription, capacity, rules, pricing, freeCancellation);
         this.rooms = rooms;
         this.bedsPerRoom = bedsPerRoom;
@@ -33,5 +36,13 @@ public class Cottage extends Rentable{
 
     public void setBedsPerRoom(int bedsPerRoom) {
         this.bedsPerRoom = bedsPerRoom;
+    }
+
+    public CottageOwner getOwner() {
+        return owner;
+    }
+
+    public void setOwner(CottageOwner owner) {
+        this.owner = owner;
     }
 }

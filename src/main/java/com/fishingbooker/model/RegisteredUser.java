@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class RegisteredUser implements UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -34,10 +35,6 @@ public class RegisteredUser implements UserDetails {
     private String country;
     @Column
     private String phone;
-    @Column
-    private String letterOfIntent;
-    @Column
-    private boolean IsActivated;
 
     @Column(name = "enabled")
     private boolean enabled;
@@ -146,28 +143,12 @@ public class RegisteredUser implements UserDetails {
         this.password = password;
     }
 
-    public boolean isActivated() {
-        return IsActivated;
-    }
-
-    public void setActivated(boolean activated) {
-        IsActivated = activated;
-    }
-
-    public String getLetterOfIntent() {
-        return letterOfIntent;
-    }
-
-    public void setLetterOfIntent(String letterOfIntent) {
-        this.letterOfIntent = letterOfIntent;
-    }
-
     public RegisteredUser() {
         super();
     }
 
     public RegisteredUser(String username, String password, String name, String surname, String email, String address,
-                          String city, String country, String phone, String role, String letterOfIntent){
+                          String city, String country, String phone, String role){
         this.username = username;
         this.password = password;
         this.name = name;
@@ -178,9 +159,7 @@ public class RegisteredUser implements UserDetails {
         this.country = country;
         this.phone = phone;
         this.role = new Role(role);
-        this.enabled = false;
-        this.isActivated = false;
-        this.letterOfIntent = letterOfIntent;
+        this.enabled = true;
     }
 
     public Timestamp getLastPasswordResetDate() {

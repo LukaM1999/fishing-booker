@@ -23,7 +23,7 @@ public class Role implements GrantedAuthority, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @JsonIgnore
+    //@JsonIgnore
     @Override
     public String getAuthority() {
         return roleName;

@@ -25,7 +25,10 @@
               <td>{{ u.letterOfIntent }}</td>
               <td>
                 <div class="d-flex justify-content-center" style="display:inline;">
-                  <button v-if="u.isActivated !== true"  class="btn btn-warning" style="margin-right: 5%;"
+                  <button v-if="u.enabled !== true"  class="btn btn-warning" style="margin-right: 5%;"
+                          @click="approve(u)">Approve
+                  </button>
+                  <button v-if="u.enabled !== true"  class="btn btn-warning" style="margin-right: 5%;"
                           @click="approve(u)">Approve
                   </button>
                 </div>
@@ -59,16 +62,16 @@ export default {
       phone: '',
       role: 1,
       letterOfIntent: '',
-      isActivated: false
+      enabled: false
     }
   },
   async mounted() {
     this.axios
-        .get('/api/user/getUsers')
+        .get('/api/user/all')
         .then(response => {
           this.users = response.data
         });
-    this.users = this.users.filter(u => u.role !== 0 && u.isActivated === false)
+    this.users = this.users.filter(u => u.role !== "CUSTOMER" && u.enabled === false)
   },
   methods: {
     async approve() {

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 public class Admin{
 	@Id
 	@Column
-	public long Id;
+	public Long Id;
 	@Column
 	public String Name;
 	@Column
@@ -16,7 +16,7 @@ public class Admin{
 
 	public Admin() {}
 
-	public Admin(long id, String name, String surname){
+	public Admin(Long id, String name, String surname){
 		Id = id;
 		Name = name;
 		Surname = surname;

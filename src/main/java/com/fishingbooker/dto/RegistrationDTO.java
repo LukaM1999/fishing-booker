@@ -1,7 +1,5 @@
 package com.fishingbooker.dto;
 
-import com.fishingbooker.model.Role;
-
 import javax.persistence.Column;
 
 public class RegistrationDTO {
@@ -14,8 +12,23 @@ public class RegistrationDTO {
     private String city;
     private String country;
     private String phone;
-    private Role role;
+    private String role;
     private String letterOfIntent;
+
+    public RegistrationDTO(){}
+    public RegistrationDTO(String username, String password, String name, String surname, String email, String address, String city, String country, String phone, String role, String letterOfIntent) {
+        this.username = username;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.address = address;
+        this.city = city;
+        this.country = country;
+        this.phone = phone;
+        this.role = role;
+        this.letterOfIntent = letterOfIntent;
+    }
 
     public String getUsername() {
         return username;
@@ -89,11 +102,11 @@ public class RegistrationDTO {
         this.phone = phone;
     }
 
-    public Role getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
