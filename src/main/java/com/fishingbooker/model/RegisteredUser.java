@@ -159,7 +159,7 @@ public class RegisteredUser implements UserDetails {
         this.country = country;
         this.phone = phone;
         this.role = new Role(role);
-        this.enabled = true;
+        this.enabled = false;
     }
 
     public Timestamp getLastPasswordResetDate() {

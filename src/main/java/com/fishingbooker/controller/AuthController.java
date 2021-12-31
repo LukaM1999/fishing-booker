@@ -8,10 +8,11 @@ import com.fishingbooker.dto.RegistrationDTO;
 import com.fishingbooker.model.CottageOwner;
 import com.fishingbooker.model.Customer;
 import com.fishingbooker.model.RegisteredUser;
+import com.fishingbooker.service.impl.CustomerServiceImpl;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import com.fishingbooker.util.TokenUtils;
-import org.hibernate.id.GUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.UUID;
 
 
@@ -42,6 +42,9 @@ public class AuthController {
 
     @Autowired
     private RegisteredUserServiceImpl userService;
+
+    @Autowired
+    private CustomerServiceImpl customerService;
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -96,5 +99,16 @@ public class AuthController {
         //RegisteredUser user = this.userService.save(registeredUser);
 
         return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/verify")
+    public ResponseEntity<Object> addUser(@RequestParam String token) throws IllegalAccessException, URISyntaxException {
+        Customer customer = customerService.findByToken(token);
+        if (customer == null) throw new NullPointerException("Username with this token doesn't exist!");
+        if (customer.isEnabled()) throw new IllegalAccessException("Account is already verified!");
+        customerService.verifyCustomer(customer.getUsername());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(new URI("http://localhost:7000/login"));
+        return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 }

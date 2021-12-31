@@ -101,7 +101,8 @@
             <div class="col">
               <div class="form-floating">
                 <select class="form-select" id="floatingRole" v-model="role" required>
-                  <option selected value="COTTAGE_OWNER">Cottage owner</option>
+                  <option selected value="CUSTOMER">Customer</option>
+                  <option value="COTTAGE_OWNER">Cottage owner</option>
                   <option value="BOAT_OWNER">Boat owner</option>
                   <option value="INSTRUCTOR">Fishing instructor</option>
                 </select>
@@ -109,7 +110,7 @@
               </div>
             </div>
           </div>
-          <div class="row mb-3">
+          <div v-if="this.role !== 'CUSTOMER'" class="row mb-3">
             <div class="col">
               <div class="form-floating">
                 <textarea class="form-control" id="letter"
@@ -136,6 +137,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "Registration",
   data() {
@@ -150,7 +153,7 @@ export default {
       city: '',
       country: '',
       phone: '',
-      role: 1,
+      role: 'CUSTOMER',
       letterOfIntent: ''
     }
   },
@@ -171,7 +174,21 @@ export default {
         letterOfIntent: this.letterOfIntent
       }
       const response = await this.axios.post('/auth/signup', user)
-      console.log(response.data)
+      if (response){
+        if (response.data.role.authority === 'CUSTOMER'){
+          const email = {
+            service_id: 'service_fb',
+            template_id: 'template_verification',
+            user_id: 'user_62WYz6KIasgbXlUB5EEGw',
+            template_params: {
+              'to_name': response.data.name,
+              'to_email': response.data.email,
+              'verification_link': `<a href="http://localhost:8090/auth/verify?token=${response.data.verificationToken}">here</a>`
+            }
+          };
+          const emailResponse = await axios.post('https://api.emailjs.com/api/v1.0/email/send', email);
+        }
+      }
     }
   }
 }
