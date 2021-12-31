@@ -15,8 +15,6 @@
 	<description>Web application for booking cottages, boats and fishing instructors</description>
 	<properties>
 		<java.version>11</java.version>
-	</properties>
-	<properties>
 		<sonar.organization>lukam1999</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
