@@ -13,7 +13,7 @@ jobs:
           command: mvn test
       - run:
           name: Analyze on SonarCloud
-          command: mvn sonar:sonar -Dsonar.projectKey=$PROJECT_KEY -Dsonar.organization=<naziv_organizacije> -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+          command: mvn verify sonar:sonar -Dsonar.projectKey=LukaM1999_fishing-booker
 
 orbs:
   heroku: circleci/heroku@1.2.6
