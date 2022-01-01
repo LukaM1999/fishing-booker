@@ -47,9 +47,18 @@ export default {
       const response = await axios.post('/auth/login', loginDto)
       if (response.data) {
         localStorage.setItem('jwt', response.data.accessToken)
-        //localStorage.setItem('expiresIn', response.data.expiresIn);
         this.$root.$data.user = response.data.user
-        await this.$router.push('/')
+        if (response.data.user.role.authority === 'CUSTOMER')
+          await this.$router.push('/customer')
+        else if (response.data.user.role.authority === 'COTTAGE_OWNER')
+          await this.$router.push('/cottage-owner')
+        else if (response.data.user.role.authority === 'BOAT_OWNER')
+          await this.$router.push('/boat-owner')
+        else if (response.data.user.role.authority === 'INSTRUCTOR')
+          await this.$router.push('/instructor')
+        else
+          await this.$router.push('/admin')
+
       } else
         this.$toasted.error('Wrong username or password!')
     },
