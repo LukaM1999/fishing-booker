@@ -14,6 +14,7 @@ import {jwtInterceptor} from "@/_helpers/jwt.interceptor";
 import CottageProfile from "@/components/CottageProfile";
 import CustomerHomepage from "@/components/CustomerHomepage";
 import LandingPage from "@/components/LandingPage";
+import Navbar from "@/components/Navbar";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -74,6 +75,11 @@ const routes = [
                 path: '/profile',
             }
         ]
+    },
+    {
+        path: '/navbar',
+        name: 'navbar',
+        component: Navbar
     }
 ]
 
