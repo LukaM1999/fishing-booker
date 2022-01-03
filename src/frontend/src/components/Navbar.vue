@@ -3,7 +3,7 @@
   <nav class="navbar is-primary">
     <div class="navbar-brand">
       <a class="navbar-item">
-        <img src="https://bulma.io/images/bulma-logo.png" alt="logo" width="112" height="28">
+        <img src="logo1.png" alt="logo" width="50" height="200">
       </a>
       <div class="navbar-burger" data-target="navbarExampleTransparentExample">
         <span></span>

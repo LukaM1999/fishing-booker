@@ -18,8 +18,8 @@ public class Adventure extends Rentable{
     @ManyToOne(fetch = FetchType.LAZY)
     private Instructor instructor;
 
-    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, String instructorBio, String fishingEquipment) {
-        super(id, name, country, city, address, promoDescription, capacity, rules, pricing, freeCancellation);
+    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String instructorBio, String fishingEquipment) {
+        super(id, name, country, city, address, promoDescription, capacity, rules, pricing, cancellationFee);
         this.instructorBio = instructorBio;
         this.fishingEquipment = fishingEquipment;
     }

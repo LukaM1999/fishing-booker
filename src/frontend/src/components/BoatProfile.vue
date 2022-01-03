@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "BoatComponent"
+  name: "BoatProfile"
 }
 </script>
 

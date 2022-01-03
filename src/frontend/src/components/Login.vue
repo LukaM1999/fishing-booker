@@ -42,6 +42,7 @@
 
 <script>
 import axios from "axios";
+import {Store} from "@/main";
 
 export default {
   name: "Login",
@@ -57,12 +58,12 @@ export default {
       const response = await axios.post('/auth/login', loginDto)
       if (response.data) {
         localStorage.setItem('jwt', response.data.accessToken)
-        this.$root.$data.user = response.data.user
+        Store.user = response.data.user
         this.$parent.close();
         if (response.data.user.role.authority === 'CUSTOMER')
           await this.$router.push('/customer')
         else if (response.data.user.role.authority === 'COTTAGE_OWNER')
-          await this.$router.push('/cottage-owner')
+          await this.$router.push('/cottageRegistration')
         else if (response.data.user.role.authority === 'BOAT_OWNER')
           await this.$router.push('/boat-owner')
         else if (response.data.user.role.authority === 'INSTRUCTOR')

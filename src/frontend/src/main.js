@@ -16,6 +16,7 @@ import CustomerHomepage from "@/components/CustomerHomepage";
 import LandingPage from "@/components/LandingPage";
 import Navbar from "@/components/Navbar";
 import Cottages from "@/components/Cottages";
+import CottageRegistration from "@/components/CottageRegistration";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -82,6 +83,11 @@ const routes = [
         path: '/navbar',
         name: 'navbar',
         component: Navbar
+    },
+    {
+        path: '/CottageRegistration',
+        name: 'CottageRegistration',
+        component: CottageRegistration
     }
 ]
 
@@ -89,6 +95,8 @@ export const router = new VueRouter({
     routes,
     mode: 'history'
 })
+
+export var Store = { user: null };
 
 new Vue({
     render: h => h(App),

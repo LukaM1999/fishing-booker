@@ -29,9 +29,9 @@ public abstract class Rentable {
     @Column
     private String pricing;
     @Column
-    private boolean freeCancellation;
+    private float cancellationFee;
 
-    public Rentable(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation) {
+    public Rentable(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee) {
         this.id = id;
         this.name = name;
         this.country = country;
@@ -41,7 +41,7 @@ public abstract class Rentable {
         this.capacity = capacity;
         this.rules = rules;
         this.pricing = pricing;
-        this.freeCancellation = freeCancellation;
+        this.cancellationFee = cancellationFee;
     }
 
     public Rentable() {
@@ -119,11 +119,11 @@ public abstract class Rentable {
         this.pricing = pricing;
     }
 
-    public boolean isFreeCancellation() {
-        return freeCancellation;
+    public float getCancellationFee() {
+        return cancellationFee;
     }
 
-    public void setFreeCancellation(boolean freeCancellation) {
-        this.freeCancellation = freeCancellation;
+    public void setCancellationFee(float cancellationFee) {
+        this.cancellationFee = cancellationFee;
     }
 }

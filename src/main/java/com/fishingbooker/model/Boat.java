@@ -27,8 +27,8 @@ public class Boat extends Rentable{
     @Column
     private String fishingEquipment;
 
-    public Boat(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishfinder, String fishingEquipment) {
-        super(id, name, country, city, address, promoDescription, capacity, rules, pricing, freeCancellation);
+    public Boat(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishfinder, String fishingEquipment) {
+        super(id, name, country, city, address, promoDescription, capacity, rules, pricing, cancellationFee);
         this.boatType = boatType;
         this.length = length;
         this.motors = motors;

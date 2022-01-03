@@ -1,12 +1,16 @@
 package com.fishingbooker.service;
 
 import com.fishingbooker.model.Cottage;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 public interface CottageService {
-    public Optional<Cottage> findById(Long id);
+    Optional<Cottage> findById(Long id);
 
-    public List<Cottage> findAll();
+    List<Cottage> findAll();
+
+    Cottage registerCottage(Cottage cottage, MultipartFile[] files) throws IOException;
 }
