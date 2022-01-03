@@ -26,7 +26,6 @@ public class CottageController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public List<Cottage> getAll(){
         return this.cottageService.findAll();
     }

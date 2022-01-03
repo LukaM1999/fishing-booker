@@ -1,33 +1,43 @@
 <template>
-  <div>
-    <h1 style="color: black; text-align: center;">Log in</h1>
-    <form @submit.prevent="userLogin">
-      <div class="row mb-3">
-        <div class="col">
-          <div class="form-floating">
-            <input type="text" class="form-control" id="loginUsername" v-model="usernameLogin" required autofocus>
-            <label for="loginUsername">Username*</label>
+  <form @submit.prevent="userLogin">
+    <div class="modal-card" style="width: auto">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Login</p>
+        <button
+            type="button"
+            class="delete"
+            @click="$emit('close')"/>
+      </header>
+      <section class="modal-card-body">
+        <div class="row mb-3">
+          <div class="col">
+            <div class="form-floating">
+              <input type="text" class="form-control" id="loginUsername" v-model="usernameLogin" required autofocus>
+              <label for="loginUsername">Username*</label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <div class="form-floating">
-            <input type="password" class="form-control" id="loginPassword" v-model="passwordLogin" required>
-            <label for="loginPassword">Password*</label>
+        <div class="row mb-3">
+          <div class="col">
+            <div class="form-floating">
+              <input type="password" class="form-control" id="loginPassword" v-model="passwordLogin" required>
+              <label for="loginPassword">Password*</label>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="row align-content-center">
-        <div class="col d-flex justify-content-center">
-          <button type="submit" class="btn btn-dark btn-lg" data-bs-dismiss="modal"
-                  :disabled="!usernameLogin || !passwordLogin" id="login">
-            Log in
-          </button>
+      </section>
+      <footer class="modal-card-foot">
+        <div class="row align-content-center">
+          <div class="col d-flex justify-content-center">
+            <button type="submit" class="btn btn-dark btn-lg" data-bs-dismiss="modal"
+                    :disabled="!usernameLogin || !passwordLogin" id="login">
+              Login
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
+      </footer>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -48,6 +58,7 @@ export default {
       if (response.data) {
         localStorage.setItem('jwt', response.data.accessToken)
         this.$root.$data.user = response.data.user
+        this.$parent.close();
         if (response.data.user.role.authority === 'CUSTOMER')
           await this.$router.push('/customer')
         else if (response.data.user.role.authority === 'COTTAGE_OWNER')
@@ -58,7 +69,6 @@ export default {
           await this.$router.push('/instructor')
         else
           await this.$router.push('/admin')
-
       } else
         this.$toasted.error('Wrong username or password!')
     },

@@ -9,7 +9,7 @@ public class Boat extends Rentable{
     @Column
     private String boatType;
     @Column
-    private float lenght;
+    private float length;
     @Column
     private int motors;
     @Column
@@ -27,10 +27,10 @@ public class Boat extends Rentable{
     @Column
     private String fishingEquipment;
 
-    public Boat(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, String boatType, float lenght, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishfinder, String fishingEquipment) {
+    public Boat(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishfinder, String fishingEquipment) {
         super(id, name, country, city, address, promoDescription, capacity, rules, pricing, freeCancellation);
         this.boatType = boatType;
-        this.lenght = lenght;
+        this.length = length;
         this.motors = motors;
         this.power = power;
         this.maxSpeed = maxSpeed;
@@ -52,12 +52,12 @@ public class Boat extends Rentable{
         this.boatType = boatType;
     }
 
-    public float getLenght() {
-        return lenght;
+    public float getLength() {
+        return length;
     }
 
-    public void setLenght(float lenght) {
-        this.lenght = lenght;
+    public void setLength(float length) {
+        this.length = length;
     }
 
     public int getMotors() {

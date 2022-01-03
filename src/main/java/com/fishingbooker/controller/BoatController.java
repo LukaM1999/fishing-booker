@@ -26,7 +26,7 @@ public class BoatController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize("hasAuthority('BOAT_OWNER')")
+    //@PreAuthorize("hasAuthority('BOAT_OWNER')")
     public List<Boat> getAll(){
         return this.boatService.findAll();
     }

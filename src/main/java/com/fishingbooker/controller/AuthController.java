@@ -66,6 +66,7 @@ public class AuthController {
         String jwt = tokenUtils.generateToken(user.getUsername());
         int expiresIn = tokenUtils.getExpiredIn();
 
+        user.setPassword(null);
         // Vrati token kao odgovor na uspesnu autentifikaciju
         return ResponseEntity.ok(new JwtDTO(user, jwt, expiresIn));
     }

@@ -15,6 +15,7 @@ import CottageProfile from "@/components/CottageProfile";
 import CustomerHomepage from "@/components/CustomerHomepage";
 import LandingPage from "@/components/LandingPage";
 import Navbar from "@/components/Navbar";
+import Cottages from "@/components/Cottages";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -38,7 +39,8 @@ const routes = [
         children: [
             {
                 path: '/cottages',
-                name: 'cottages'
+                name: 'cottages',
+                component: Cottages
             },
             {
                 path: ''

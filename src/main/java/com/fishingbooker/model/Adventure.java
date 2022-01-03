@@ -1,7 +1,11 @@
 package com.fishingbooker.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Adventure extends Rentable{
@@ -10,6 +14,10 @@ public class Adventure extends Rentable{
     @Column
     private String fishingEquipment;
 
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Instructor instructor;
+
     public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, boolean freeCancellation, String instructorBio, String fishingEquipment) {
         super(id, name, country, city, address, promoDescription, capacity, rules, pricing, freeCancellation);
         this.instructorBio = instructorBio;
@@ -17,6 +25,7 @@ public class Adventure extends Rentable{
     }
 
     public Adventure() {
+        super();
     }
 
     public String getInstructorBio() {
@@ -33,6 +42,14 @@ public class Adventure extends Rentable{
 
     public void setFishingEquipment(String fishingEquipment) {
         this.fishingEquipment = fishingEquipment;
+    }
+
+    public Instructor getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(Instructor instructor) {
+        this.instructor = instructor;
     }
 }
 

@@ -1,14 +1,17 @@
 package com.fishingbooker.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import javax.persistence.*;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+
+@Entity
 public class Instructor extends RegisteredUser{
-    @OneToMany(mappedBy = "Instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<Adventure> adventures;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Collection<Adventure> adventures = new LinkedHashSet<>();
     @Column
     private String letterOfIntent;
     @Column
@@ -18,6 +21,10 @@ public class Instructor extends RegisteredUser{
         super(username, password, name, surname, email, address, city, country, phone, role);
         this.letterOfIntent = letterOfIntent;
         this.isActivated = false;
+    }
+
+    public Instructor() {
+        super();
     }
 
     public Collection<Adventure> getAdventures() {
