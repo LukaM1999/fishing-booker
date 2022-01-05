@@ -2,6 +2,7 @@ package com.fishingbooker.service;
 
 import com.fishingbooker.dto.LoginDTO;
 import com.fishingbooker.model.RegisteredUser;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

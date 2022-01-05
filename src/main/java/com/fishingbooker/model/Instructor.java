@@ -5,13 +5,14 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 public class Instructor extends RegisteredUser{
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<Adventure> adventures = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "instructor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Adventure> adventures = new LinkedHashSet<>();
     @Column
     private String letterOfIntent;
     @Column
@@ -27,11 +28,11 @@ public class Instructor extends RegisteredUser{
         super();
     }
 
-    public Collection<Adventure> getAdventures() {
+    public Set<Adventure> getAdventures() {
         return adventures;
     }
 
-    public void setAdventures(Collection<Adventure> adventures) {
+    public void setAdventures(Set<Adventure> adventures) {
         this.adventures = adventures;
     }
 

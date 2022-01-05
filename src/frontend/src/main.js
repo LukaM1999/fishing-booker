@@ -89,11 +89,6 @@ const routes = [
         ]
     },
     {
-        path: '/navbar',
-        name: 'navbar',
-        component: Navbar
-    },
-    {
         path: '/cottageRegistration',
         name: 'cottageRegistration',
         component: CottageRegistration

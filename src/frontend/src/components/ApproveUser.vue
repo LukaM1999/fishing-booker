@@ -49,29 +49,16 @@ export default {
   data() {
     return {
       users: [],
-      filteredUsers: [],
-      username: '',
-      password: '',
-      passwordConfirmed: '',
-      name: '',
-      surname: '',
-      email: '',
-      address: '',
-      city: '',
-      country: '',
-      phone: '',
-      role: 1,
-      letterOfIntent: '',
-      enabled: false
+      filteredUsers: []
     }
   },
   async mounted() {
     this.axios
-        .get('/api/user/all')
+        .get('/user/all')
         .then(response => {
           this.users = response.data
         });
-    this.users = this.users.filter(u => u.role !== "CUSTOMER" && u.enabled === false)
+    //this.users = this.users.filter(u => u.role !== "CUSTOMER" && u.enabled === false)
   },
   methods: {
     async approve() {

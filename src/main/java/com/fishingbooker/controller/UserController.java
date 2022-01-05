@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @GetMapping("/all")
-   // @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<RegisteredUser> loadAll() {
         return this.userService.findAll();
     }
