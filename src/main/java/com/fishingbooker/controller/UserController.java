@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fishingbooker.dto.ApproveUserDTO;
 import com.fishingbooker.model.Customer;
 import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
@@ -12,7 +13,10 @@ import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
 
 // Primer kontrolera cijim metodama mogu pristupiti samo autorizovani korisnici
 @RestController
@@ -32,10 +36,18 @@ public class UserController {
         return this.userService.findById(userId);
     }
 
+    @Transactional
     @GetMapping("/all")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<RegisteredUser> loadAll() {
         return this.userService.findAll();
+    }
+
+    @Transactional
+    @GetMapping("/waitingApproval")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<ApproveUserDTO> waitingApproval() {
+        return this.userService.waitingApproval();
     }
 
     @PutMapping("/editProfile")
@@ -43,8 +55,22 @@ public class UserController {
         return this.userService.editProfile(user);
     }
 
+    @PutMapping("/approve")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public boolean approveUser(@RequestBody String username) {
+        return this.userService.approveUser(username);
+    }
+
     @PostMapping("/sendDeletionRequest")
+    @PreAuthorize("hasAnyAuthority('CUSTOMER', 'COTTAGE_OWNER', 'BOAT_OWNER', 'INSTRUCTOR')")
     public ProfileDeletionRequest sendDeletionRequest(@RequestBody ProfileDeletionRequest deletionRequest) {
         return this.userService.saveRequest(deletionRequest);
     }
+
+    @DeleteMapping("/delete/{username}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public boolean deleteUser(@PathVariable String username){
+        return this.userService.deleteUser(username);
+    }
+
 }

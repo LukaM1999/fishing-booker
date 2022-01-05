@@ -29,7 +29,7 @@ public class Boat extends Rentable{
     private String images;
 
     @JoinColumn(name = "boat_owner_username", insertable = false, updatable = false)
-    @ManyToOne(targetEntity = BoatOwner.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = BoatOwner.class, fetch = FetchType.LAZY)
     private BoatOwner boatOwner;
 
     @Column(name = "boat_owner_username")

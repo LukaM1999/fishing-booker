@@ -1,6 +1,7 @@
 package com.fishingbooker.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fishingbooker.dto.RegistrationDTO;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -11,17 +12,19 @@ import java.util.Set;
 public class Instructor extends RegisteredUser{
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "instructor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Adventure> adventures = new LinkedHashSet<>();
     @Column
     private String letterOfIntent;
-    @Column
-    private boolean isActivated;
 
     public Instructor(String username, String password, String name, String surname, String email, String address, String city, String country, String phone, String role, String letterOfIntent) {
         super(username, password, name, surname, email, address, city, country, phone, role);
         this.letterOfIntent = letterOfIntent;
-        this.isActivated = false;
+    }
+
+    public Instructor(RegistrationDTO dto){
+        super(dto.getUsername(), dto.getPassword(), dto.getName(), dto.getSurname(), dto.getEmail(), dto.getAddress(), dto.getCity(), dto.getCountry(), dto.getPhone(), dto.getRole());
+        this.letterOfIntent = dto.getLetterOfIntent();
     }
 
     public Instructor() {
@@ -44,11 +47,4 @@ public class Instructor extends RegisteredUser{
         this.letterOfIntent = letterOfIntent;
     }
 
-    public boolean isActivated() {
-        return isActivated;
-    }
-
-    public void setActivated(boolean activated) {
-        isActivated = activated;
-    }
 }

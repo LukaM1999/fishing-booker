@@ -5,9 +5,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fishingbooker.dto.JwtDTO;
 import com.fishingbooker.dto.LoginDTO;
 import com.fishingbooker.dto.RegistrationDTO;
-import com.fishingbooker.model.CottageOwner;
-import com.fishingbooker.model.Customer;
-import com.fishingbooker.model.RegisteredUser;
+import com.fishingbooker.model.*;
 import com.fishingbooker.service.impl.CustomerServiceImpl;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import com.fishingbooker.util.TokenUtils;
@@ -90,6 +88,14 @@ public class AuthController {
             }
             case "COTTAGE_OWNER": {
                 user = this.userService.save(new CottageOwner(registrationDTO));
+                break;
+            }
+            case "INSTRUCTOR": {
+                user = this.userService.save(new Instructor(registrationDTO));
+                break;
+            }
+            case "BOAT_OWNER": {
+                user = this.userService.save(new BoatOwner(registrationDTO));
                 break;
             }
             default:

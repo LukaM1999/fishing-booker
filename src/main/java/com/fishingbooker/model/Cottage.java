@@ -12,7 +12,7 @@ public class Cottage extends Rentable{
     private String images;
 
     @JoinColumn(name = "owner_username", insertable = false, updatable = false)
-    @ManyToOne(targetEntity = CottageOwner.class, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = CottageOwner.class, fetch = FetchType.LAZY)
     private CottageOwner owner;
 
     @Column(name = "owner_username")

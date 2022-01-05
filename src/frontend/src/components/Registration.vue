@@ -164,7 +164,7 @@ export default {
         letterOfIntent: this.letterOfIntent
       }
       const response = await this.axios.post('/auth/signup', user)
-      if (response) {
+      if (response.data) {
         if (response.data.role.authority === 'CUSTOMER') {
           const email = {
             service_id: 'service_fb',
@@ -182,8 +182,12 @@ export default {
           } else {
             this.$toasted.error('Error sending verification email')
           }
-          this.$parent.close()
+        } else {
+          this.$toasted.success('Registration request successfully sent!')
         }
+        this.$parent.close()
+      } else {
+        this.$toasted.error('Error sending registration request')
       }
     }
   }

@@ -1,13 +1,15 @@
 package com.fishingbooker.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fishingbooker.dto.ApproveUserDTO;
 import com.fishingbooker.dto.LoginDTO;
 import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.model.Role;
-import com.fishingbooker.repository.ProfileDeletionRequestRepository;
-import com.fishingbooker.repository.RegisteredUserRepository;
+import com.fishingbooker.repository.*;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +30,13 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
 
     @Autowired
     private RegisteredUserRepository userRepository;
+
+    @Autowired
+    private InstructorRepository instructorRepository;
+    @Autowired
+    private CottageOwnerRepository cottageOwnerRepository;
+    @Autowired
+    private BoatOwnerRepository boatOwnerRepository;
 
     @Autowired
     private ProfileDeletionRequestRepository deletionRequestRepository;
@@ -68,7 +77,7 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         try {
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                     loginDto.getUsername(), loginDto.getPassword()));
-        }catch (AuthenticationException e) {
+        } catch (AuthenticationException e) {
             return false;
         }
         return true;
@@ -98,5 +107,33 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
     @Override
     public ProfileDeletionRequest saveRequest(ProfileDeletionRequest deletionRequest) {
         return deletionRequestRepository.save(deletionRequest);
+    }
+
+    @Override
+    public List<ApproveUserDTO> waitingApproval() {
+        List<ApproveUserDTO> instructors = instructorRepository.findAllWithoutAdventures();
+        List<ApproveUserDTO> cottageOwners = cottageOwnerRepository.findAllWithoutCottages();
+        List<ApproveUserDTO> boatOwners = boatOwnerRepository.findAllWithoutBoats();
+
+        List<ApproveUserDTO> unapprovedUsers = List.of(ArrayUtils.addAll(ArrayUtils.addAll(instructors.toArray
+                (new ApproveUserDTO[0]), cottageOwners.toArray(new ApproveUserDTO[0])), boatOwners.toArray(new ApproveUserDTO[0])));
+        return unapprovedUsers;
+    }
+
+    @Override
+    public boolean approveUser(String username) {
+        RegisteredUser user = userRepository.findByUsername(username);
+        if(user == null) return false;
+        user.setEnabled(true);
+        userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean deleteUser(String username) {
+        RegisteredUser user = userRepository.findByUsername(username);
+        if(user == null) return false;
+        userRepository.delete(user);
+        return true;
     }
 }
