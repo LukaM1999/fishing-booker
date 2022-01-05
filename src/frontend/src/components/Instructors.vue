@@ -98,7 +98,7 @@
         </md-card>
       </div>
     </div>
-    <div v-if="instructors">
+    <div class="mt-4" v-if="instructors">
       <b-pagination
           :total="total"
           v-model="current"
@@ -138,7 +138,7 @@ export default {
       instructors: [],
       total: this.instructors?.size,
       current: 1,
-      perPage: 3,
+      perPage: 4,
       rangeBefore: 3,
       rangeAfter: 3,
       order: 'is-centered',

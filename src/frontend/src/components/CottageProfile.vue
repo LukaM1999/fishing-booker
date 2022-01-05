@@ -5,7 +5,7 @@
 
     <div>
       Name:
-      <img src="cottages/c15.1.jpg">
+      <img src="cottages/c15.1.jpg" alt="jsdhfij">
     </div>
 
     <div>

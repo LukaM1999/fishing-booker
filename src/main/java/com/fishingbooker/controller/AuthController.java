@@ -88,7 +88,7 @@ public class AuthController {
                 user = this.userService.save(new Customer(registrationDTO));
                 break;
             }
-            case "COTTAGE_OWNER":{
+            case "COTTAGE_OWNER": {
                 user = this.userService.save(new CottageOwner(registrationDTO));
                 break;
             }
@@ -111,5 +111,10 @@ public class AuthController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI("http://localhost:7000/login"));
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+    }
+
+    @PostMapping("/confirmPassword")
+    public boolean confirmPassword(@RequestBody LoginDTO loginDto) {
+        return userService.isPasswordValid(loginDto);
     }
 }

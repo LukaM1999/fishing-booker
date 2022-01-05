@@ -1,4 +1,5 @@
 package com.fishingbooker.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -148,7 +149,7 @@ public class RegisteredUser implements UserDetails {
     }
 
     public RegisteredUser(String username, String password, String name, String surname, String email, String address,
-                          String city, String country, String phone, String role){
+                          String city, String country, String phone, String role) {
         this.username = username;
         this.password = password;
         this.name = name;

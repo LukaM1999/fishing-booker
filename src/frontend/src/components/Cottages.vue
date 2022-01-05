@@ -61,7 +61,7 @@
         <md-card class="md-primary" md-theme="orange-card" md-with-hover>
           <md-ripple>
             <md-card-media md-ratio="4:3">
-              <img src="" alt="Skyscraper">
+              <img :src="splitImages(cottage.images, 'cottages')" style="height: 100%" alt="Cottage image">
             </md-card-media>
             <md-card-area>
               <md-card-header>
@@ -98,7 +98,7 @@
         </md-card>
       </div>
     </div>
-    <div v-if="cottages">
+    <div class="mt-4" v-if="cottages">
       <b-pagination
           :total="total"
           v-model="current"
@@ -128,6 +128,8 @@ import "vue-material/dist/vue-material.min.css"
 import "bootstrap/dist/css/bootstrap-grid.min.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 
+const {splitImages} = require('@/_helpers/imageHelpers');
+
 Vue.use(MdCard)
 Vue.use(MdRipple)
 
@@ -138,7 +140,7 @@ export default {
       cottages: [],
       total: this.cottages?.size,
       current: 1,
-      perPage: 3,
+      perPage: 4,
       rangeBefore: 3,
       rangeAfter: 3,
       order: 'is-centered',
@@ -168,6 +170,9 @@ export default {
     setSortOrder() {
       this.ascending = !this.ascending
     },
+    splitImages(images, folderName){
+      return splitImages(images, folderName)
+    }
   },
   filters: {
     addressFormat(value) {

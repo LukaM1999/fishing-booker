@@ -124,7 +124,7 @@
         </md-card>
       </div>
     </div>
-    <div v-if="boats">
+    <div class="mt-4" v-if="boats">
       <b-pagination
           :total="total"
           v-model="current"
@@ -164,7 +164,7 @@ export default {
       boats: [],
       total: this.boats?.size,
       current: 1,
-      perPage: 3,
+      perPage: 4,
       rangeBefore: 3,
       rangeAfter: 3,
       order: 'is-centered',

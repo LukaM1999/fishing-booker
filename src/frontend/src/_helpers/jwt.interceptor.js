@@ -1,7 +1,6 @@
 import axios from "axios";
 var jwt = require('jsonwebtoken');
 import App from "@/App";
-import {router} from "@/main";
 
 export function jwtInterceptor(){
     axios.interceptors.request.use(async config => {
