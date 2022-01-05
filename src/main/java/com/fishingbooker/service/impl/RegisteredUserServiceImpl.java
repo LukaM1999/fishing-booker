@@ -3,8 +3,10 @@ package com.fishingbooker.service.impl;
 import java.util.List;
 
 import com.fishingbooker.dto.LoginDTO;
+import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.model.Role;
+import com.fishingbooker.repository.ProfileDeletionRequestRepository;
 import com.fishingbooker.repository.RegisteredUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -26,6 +28,9 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
 
     @Autowired
     private RegisteredUserRepository userRepository;
+
+    @Autowired
+    private ProfileDeletionRequestRepository deletionRequestRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -88,5 +93,10 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         return userRepository.findByUsername(s);
+    }
+
+    @Override
+    public ProfileDeletionRequest saveRequest(ProfileDeletionRequest deletionRequest) {
+        return deletionRequestRepository.save(deletionRequest);
     }
 }

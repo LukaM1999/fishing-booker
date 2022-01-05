@@ -60,15 +60,15 @@
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
 
-          <div class="navbar-dropdown is-right is-boxed">
-            <router-link to="/customer/profile" class="navbar-item">
-              Profile information
-            </router-link>
-            <hr class="navbar-divider">
-            <a class="navbar-item">
-              Log out
-            </a>
-          </div>
+            <div class="navbar-dropdown is-right is-boxed">
+              <router-link to="/customer/profile" class="navbar-item">
+                Profile information
+              </router-link>
+              <hr class="navbar-divider">
+              <a @click="logOut" class="navbar-item">
+                Log out
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -80,12 +80,20 @@
 </template>
 
 <script>
+import {Store} from "@/main";
+
 export default {
   name: "CustomerHomepage",
   data() {
     return {}
   },
-  methods: {},
+  methods: {
+    logOut() {
+      Store.user = null
+      localStorage.removeItem('jwt')
+      this.$router.push('/')
+    }
+  },
 }
 </script>
 

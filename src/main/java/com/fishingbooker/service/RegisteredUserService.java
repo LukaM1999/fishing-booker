@@ -1,6 +1,7 @@
 package com.fishingbooker.service;
 
 import com.fishingbooker.dto.LoginDTO;
+import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +14,5 @@ public interface RegisteredUserService {
     RegisteredUser save(RegisteredUser userRequest);
     boolean isPasswordValid(LoginDTO loginDto);
     RegisteredUser editProfile(RegisteredUser newProfile);
+    ProfileDeletionRequest saveRequest(ProfileDeletionRequest deletionRequest);
 }

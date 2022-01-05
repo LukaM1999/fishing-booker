@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fishingbooker.model.Customer;
+import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +41,10 @@ public class UserController {
     @PutMapping("/editProfile")
     public RegisteredUser editProfile(@RequestBody RegisteredUser user) {
         return this.userService.editProfile(user);
+    }
+
+    @PostMapping("/sendDeletionRequest")
+    public ProfileDeletionRequest sendDeletionRequest(@RequestBody ProfileDeletionRequest deletionRequest) {
+        return this.userService.saveRequest(deletionRequest);
     }
 }

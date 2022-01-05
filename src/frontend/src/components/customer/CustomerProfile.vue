@@ -76,9 +76,14 @@
       </div>
     </div>
     <div class="row mb-5 justify-content-center">
-      <div class="col-md d-flex justify-content-center">
+      <div class="col-md d-flex justify-content-end">
         <button type="submit" class="btn btn-lg btn-primary">
           Save
+        </button>
+      </div>
+      <div class="col-md d-flex justify-content-start">
+        <button type="button" @click="openDeletionRequest" class="btn btn-lg btn-danger">
+          Delete profile
         </button>
       </div>
     </div>
@@ -90,6 +95,7 @@ import axios from "axios";
 import {Store} from "@/main";
 import Registration from "@/components/Registration";
 import PasswordConfirmation from "@/components/PasswordConfirmation";
+import ProfileDeletion from "@/components/ProfileDeletion";
 
 export default {
   name: "CustomerProfile",
@@ -114,11 +120,16 @@ export default {
         }
       })
     },
+    openDeletionRequest(){
+      this.$buefy.modal.open({
+        parent: this,
+        component: ProfileDeletion,
+        hasModalCard: true,
+        trapFocus: true,
+        width: '50%'
+      })
+    },
     async editProfile() {
-      // if(!this.$root.isEmptyOrSpaces(this.profile.password) &&
-      //     !this.$root.testRegex(this.$root.$data.passwordPattern, this.profile.password, `Password is not valid`)) return
-      // if(!this.$root.testRegex(this.$root.$data.namePattern, this.profile.name, `${this.profile.name} is not a valid name!`)) return
-      // if(!this.$root.testRegex(this.$root.$data.namePattern, this.profile.surname, `${this.profile.surname} is not a valid last name!`)) return
       const { authorities, ...editedProfile } = this.profile
       editedProfile.role = { roleName: editedProfile.role.authority, id: editedProfile.role.id}
       const response = await axios.put('/user/editProfile', { ...editedProfile })
