@@ -1,14 +1,14 @@
 package com.fishingbooker.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fishingbooker.model.Boat;
 import com.fishingbooker.service.BoatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,4 +31,9 @@ public class BoatController {
         return this.boatService.findAll();
     }
 
+    @PostMapping(value = "/register")
+    @PreAuthorize("hasAuthority('BOAT_OWNER')")
+    public Boat registerBoat(@RequestParam("boat") MultipartFile boat, @RequestParam("files") MultipartFile[] files) throws IOException {
+        return boatService.registerBoat(new ObjectMapper().readValue(boat.getBytes(), Boat.class), files);
+    }
 }

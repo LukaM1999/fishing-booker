@@ -1,7 +1,6 @@
 package com.fishingbooker.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
 public class Boat extends Rentable{
@@ -23,11 +22,20 @@ public class Boat extends Rentable{
     @Column
     private boolean vhfRadio;
     @Column
-    private boolean fishfinder;
+    private boolean fishFinder;
     @Column
     private String fishingEquipment;
+    @Column
+    private String images;
 
-    public Boat(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishfinder, String fishingEquipment) {
+    @JoinColumn(name = "boat_owner_username", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = BoatOwner.class, fetch = FetchType.EAGER)
+    private BoatOwner boatOwner;
+
+    @Column(name = "boat_owner_username")
+    private String boatOwnerUsername;
+
+    public Boat(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishFinder, String fishingEquipment, String images, String boatOwnerUsername) {
         super(id, name, country, city, address, promoDescription, capacity, rules, pricing, cancellationFee);
         this.boatType = boatType;
         this.length = length;
@@ -37,8 +45,10 @@ public class Boat extends Rentable{
         this.gps = gps;
         this.radar = radar;
         this.vhfRadio = vhfRadio;
-        this.fishfinder = fishfinder;
+        this.fishFinder = fishFinder;
         this.fishingEquipment = fishingEquipment;
+        this.images = images;
+        this.boatOwnerUsername = boatOwnerUsername;
     }
 
     public Boat() {
@@ -108,12 +118,12 @@ public class Boat extends Rentable{
         this.vhfRadio = vhfRadio;
     }
 
-    public boolean isFishfinder() {
-        return fishfinder;
+    public boolean isFishFinder() {
+        return fishFinder;
     }
 
-    public void setFishfinder(boolean fishfinder) {
-        this.fishfinder = fishfinder;
+    public void setFishFinder(boolean fishFinder) {
+        this.fishFinder = fishFinder;
     }
 
     public String getFishingEquipment() {
@@ -122,5 +132,29 @@ public class Boat extends Rentable{
 
     public void setFishingEquipment(String fishingEquipment) {
         this.fishingEquipment = fishingEquipment;
+    }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
+
+    public BoatOwner getBowner() {
+        return boatOwner;
+    }
+
+    public void setBowner(BoatOwner bowner) {
+        this.boatOwner = bowner;
+    }
+
+    public String getBoatOwnerUsername() {
+        return boatOwnerUsername;
+    }
+
+    public void setBoatOwnerUsername(String boatOwnerUsername) {
+        this.boatOwnerUsername = boatOwnerUsername;
     }
 }

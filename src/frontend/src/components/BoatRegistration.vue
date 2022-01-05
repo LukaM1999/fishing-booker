@@ -2,7 +2,7 @@
   <form @submit.prevent="register">
     <div class="modal-card" style="width: auto">
       <header class="modal-card-head">
-        <p class="modal-card-title">Register a Cottage</p>
+        <p class="modal-card-title">Register a Boat</p>
         <button
             type="button"
             class="delete"
@@ -19,14 +19,20 @@
           </div>
           <div class="col">
             <div class="form-floating">
+              <input type="text" class="form-control" id="floatingBoatType"
+                     v-model="boatType" required>
+              <label for="floatingBoatType">Boat Type*</label>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <div class="form-floating">
               <input type="text" class="form-control" id="floatingAddress"
                      v-model="address" required>
               <label for="floatingAddress">Address*</label>
             </div>
           </div>
-        </div>
-        <div class="row mb-3">
-
           <div class="col">
             <div class="form-floating">
               <input type="text" class="form-control" id="floatingCity"
@@ -45,23 +51,37 @@
         <div class="row mb-3">
           <div class="col">
             <div class="form-floating">
+              <input type="number" step="0.1" class="form-control" id="floatingLenght"
+                     v-model="lenght" required autofocus style="white-space: pre-line;">
+              <label for="floatingLenght">Lenght [m]*</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              <input type="number" class="form-control" id="floatingMotors"
+                     v-model="motors" required>
+              <label for="floatingMotors">Motors*</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              <input type="number" step="0.1" class="form-control" id="floatingMaxSpeed"
+                     v-model="maxSpeed" required autofocus style="white-space: pre-line;">
+              <label for="floatingMaxSpeed">Max Speed [km/h]*</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+              <input type="number" step="0.1" class="form-control" id="floatingPower"
+                     v-model="power" required autofocus style="white-space: pre-line;">
+              <label for="floatingPower">Power [hp]*</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
               <input type="number" class="form-control" id="floatingCapacity"
                      v-model="capacity" required autofocus style="white-space: pre-line;">
               <label for="floatingCapacity">Capacity*</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating">
-              <input type="number" class="form-control" id="floatingRooms"
-                     v-model="rooms" required>
-              <label for="floatingRooms">Rooms*</label>
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-floating">
-              <input type="number" class="form-control" id="floatingBedsPerRoom"
-                     v-model="bedsPerRoom" required autofocus style="white-space: pre-line;">
-              <label for="floatingBedsPerRoom">Beds per Room*</label>
             </div>
           </div>
           <div class="col">
@@ -72,6 +92,43 @@
             </div>
           </div>
         </div>
+        <div class="row mb-3">
+          <div class="block">
+            <b-checkbox class="mr-5"
+                        v-model="gps"
+                        native-value="GPS">
+              GPS
+            </b-checkbox>
+            <b-checkbox class="mr-5"
+                        v-model="radar"
+                        native-value="Radar">
+              Radar
+            </b-checkbox>
+            <b-checkbox class="mr-5"
+                        v-model="vhfRadio"
+                        native-value="VHFRadio">
+              VHFRadio
+            </b-checkbox>
+            <b-checkbox class="mr-5"
+                        v-model="fishFinder"
+                        native-value="FishFinder">
+              FishFInder
+            </b-checkbox>
+          </div>
+        </div>
+
+
+        <div class="row mb-3">
+          <div class="col">
+            <div class="form-floating">
+                <textarea class="form-control" id="floatingFishingEquipment"
+                          v-model="fishingEquipment" required style="white-space: pre-line;">
+                </textarea>
+              <label for="floatingFishingEquipment">Please declare available fishing equipment.</label>
+            </div>
+          </div>
+        </div>
+
         <div class="row mb-3">
           <div class="col">
             <div class="form-floating">
@@ -127,6 +184,7 @@
               </b-upload>
             </b-field>
           </div>
+
           <div class="col">
             <div class="tags">
               <span v-for="(file, index) in dropFiles"
@@ -159,7 +217,7 @@
 import {Store} from "@/main";
 
 export default {
-  name: "CottageRegistration",
+  name: "BoatRegistration",
   data() {
     return {
       name: '',
@@ -167,8 +225,16 @@ export default {
       city: '',
       country: '',
       capacity: 1,
-      rooms: 1,
-      bedsPerRoom: 1,
+      boatType: '',
+      lenght: 1,
+      motors: 1,
+      power: 1,
+      maxSpeed: 1,
+      gps: false,
+      radar: false,
+      vhfRadio: false,
+      fishFinder: false,
+      fishingEquipment: '',
       cancellationFee: 0,
       rules: '',
       pricing: '',
@@ -179,31 +245,39 @@ export default {
   methods: {
     async register() {
 
-      const cottage = {
+      const boat = {
         name: this.name,
         address: this.address,
         city: this.city,
         country: this.country,
         capacity: this.capacity,
-        rooms: this.rooms,
-        bedsPerRoom: this.bedsPerRoom,
+        boatType: this.boatType,
+        length: this.lenght,
+        motors: this.motors,
+        power: this.power,
+        maxSpeed: this.maxSpeed,
+        gps: this.gps,
+        radar: this.radar,
+        vhfRadio: this.vhfRadio,
+        fishFinder: this.fishFinder,
+        fishingEquipment: this.fishingEquipment,
         cancellationFee: this.cancellationFee,
         rules: this.rules,
         pricing: this.pricing,
         promoDescription: this.promoDescription,
-        ownerUsername: Store.user?.username
+        boatOwnerUsername: Store.user?.username
       }
       const formData = new FormData()
       for (let file of this.dropFiles) {
         formData.append('files', file)
       }
-      formData.append('cottage', new Blob([JSON.stringify(cottage)], {type: 'application/json'}))
+      formData.append('boat', new Blob([JSON.stringify(boat)], {type: 'application/json'}))
 
-      const response = await this.axios.post('/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
+      const response = await this.axios.post('/boat/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
       if (response) {
-        this.$toasted.success('Cottage successfully registered!')
+        this.$toasted.success('Boat successfully registered!')
       } else {
-        this.$toasted.error('Error while registering cottage.')
+        this.$toasted.error('Error while registering boat.')
       }
       this.$parent.close()
     },

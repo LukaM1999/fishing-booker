@@ -1,15 +1,15 @@
 package com.fishingbooker.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
+@Entity
 public class BoatOwner extends RegisteredUser{
 
-    @OneToMany(mappedBy = "BoatOwner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Collection<Boat> boats;
+    @OneToMany(mappedBy = "boatOwner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Boat> boats = new LinkedHashSet<Boat>();
     @Column
     private String letterOfIntent;
     @Column
@@ -23,11 +23,11 @@ public class BoatOwner extends RegisteredUser{
         this.isActivated = false;
     }
 
-    public Collection<Boat> getBoats() {
+    public Set<Boat> getBoats() {
         return boats;
     }
 
-    public void setBoats(Collection<Boat> boats) {
+    public void setBoats(Set<Boat> boats) {
         this.boats = boats;
     }
 

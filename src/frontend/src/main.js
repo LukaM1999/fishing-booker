@@ -19,6 +19,7 @@ import CottageRegistration from "@/components/CottageRegistration";
 import Boats from "@/components/Boats";
 import Instructors from "@/components/Instructors";
 import CustomerProfile from "@/components/customer/CustomerProfile";
+import BoatRegistration from "@/components/BoatRegistration";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -88,9 +89,19 @@ const routes = [
         ]
     },
     {
-        path: '/CottageRegistration',
-        name: 'CottageRegistration',
+        path: '/navbar',
+        name: 'navbar',
+        component: Navbar
+    },
+    {
+        path: '/cottageRegistration',
+        name: 'cottageRegistration',
         component: CottageRegistration
+    },
+    {
+        path: '/boatRegistration',
+        name: 'boatRegistration',
+        component: BoatRegistration
     }
 ]
 

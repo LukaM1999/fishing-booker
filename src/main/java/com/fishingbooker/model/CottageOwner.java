@@ -6,12 +6,13 @@ import org.hibernate.annotations.ManyToAny;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 public class CottageOwner extends RegisteredUser{
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Collection<Cottage> cottages = new LinkedHashSet<Cottage>();
+    private Set<Cottage> cottages = new LinkedHashSet<Cottage>();
     @Column
     private String letterOfIntent;
     @Column
@@ -31,11 +32,11 @@ public class CottageOwner extends RegisteredUser{
         this.isActivated = false;
     }
 
-    public Collection<Cottage> getCottages() {
+    public Set<Cottage> getCottages() {
         return cottages;
     }
 
-    public void setCottages(Collection<Cottage> cottages) {
+    public void setCottages(Set<Cottage> cottages) {
         this.cottages = cottages;
     }
 

@@ -65,7 +65,7 @@ export default {
         else if (response.data.user.role.authority === 'COTTAGE_OWNER')
           await this.$router.push('/cottageRegistration')
         else if (response.data.user.role.authority === 'BOAT_OWNER')
-          await this.$router.push('/boat-owner')
+          await this.$router.push('/boatRegistration')
         else if (response.data.user.role.authority === 'INSTRUCTOR')
           await this.$router.push('/instructor')
         else

@@ -1,7 +1,6 @@
 package com.fishingbooker.model;
 
 import javax.persistence.*;
-import java.util.Collection;
 
 @Entity
 public class Cottage extends Rentable{
