@@ -2,7 +2,7 @@
   <form @submit.prevent="decline">
     <div class="modal-card" style="width: auto">
       <header class="modal-card-head">
-        <p class="modal-card-title is-center">Send deletion request</p>
+        <p class="modal-card-title is-center">Decline registration request</p>
         <button
             type="button"
             class="delete"

@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from "vue-router";
 import Registration from "@/components/Registration";
-import ApproveUser from "@/components/ApproveUser";
+import ApproveUser from "@/components/admin/ApproveUser";
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
@@ -20,6 +20,8 @@ import Boats from "@/components/Boats";
 import Instructors from "@/components/Instructors";
 import CustomerProfile from "@/components/customer/CustomerProfile";
 import BoatRegistration from "@/components/BoatRegistration";
+import AdminHomepage from "@/components/admin/AdminHomepage";
+import AdminProfile from "@/components/admin/AdminProfile";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -57,11 +59,6 @@ const routes = [
         component: CottageProfile
     },
     {
-        path: '/approve',
-        name: 'approveUser',
-        component: ApproveUser
-    },
-    {
         path: '/customer',
         name: 'customerHomepage',
         component: CustomerHomepage,
@@ -85,6 +82,38 @@ const routes = [
                 path: 'profile',
                 name: 'customerProfile',
                 component: CustomerProfile
+            }
+        ]
+    },
+    {
+        path: '/admin',
+        name: 'adminHomepage',
+        component: AdminHomepage,
+        children: [
+            {
+                path: 'approve',
+                name: 'approveUser',
+                component: ApproveUser
+            },
+            {
+                path: 'cottages',
+                name: 'customerCottages',
+                component: Cottages
+            },
+            {
+                path: 'boats',
+                name: 'customerBoats',
+                component: Boats
+            },
+            {
+                path: 'instructors',
+                name: 'customerInstructors',
+                component: Instructors
+            },
+            {
+                path: 'profile',
+                name: 'adminProfile',
+                component: AdminProfile
             }
         ]
     },
