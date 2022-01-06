@@ -93,7 +93,8 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         oldProfile.setCity(newProfile.getCity());
         oldProfile.setAddress(newProfile.getAddress());
         oldProfile.setPhone(newProfile.getPhone());
-        oldProfile.setPassword(passwordEncoder.encode(newProfile.getPassword()));
+        if (newProfile.getPassword() != null && !newProfile.getPassword().isBlank())
+            oldProfile.setPassword(passwordEncoder.encode(newProfile.getPassword()));
         this.userRepository.save(oldProfile);
         oldProfile.setPassword("");
         return oldProfile;

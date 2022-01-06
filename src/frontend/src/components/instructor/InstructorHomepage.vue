@@ -15,61 +15,35 @@
       <div id="navbarExampleTransparentExample" class="navbar-menu">
         <div class="navbar-start">
           <a class="navbar-item">
-            Home
+            Schedule
           </a>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              Browse
-            </a>
-            <div class="navbar-dropdown is-boxed">
-              <router-link to="/admin/cottages" class="navbar-item">
-                Cottages
-              </router-link>
-              <router-link to="/admin/boats" class="navbar-item">
-                Boats
-              </router-link>
-              <router-link to="/admin/instructors" class="navbar-item">
-                Adventures
-              </router-link>
-            </div>
-          </div>
-          <a class="navbar-item has-link">
-            <router-link to="/admin/approve" class="navbar-item">
-              Approve users
+          <a class="navbar-item">
+            <router-link to="">
+              Adventures
             </router-link>
           </a>
-          <div class="navbar-item has-link is-hoverable has-dropdown ">
-            <router-link to="" class="navbar-item">
-              Business report and income
+          <a class="navbar-item">
+            <router-link to="">
+              History
             </router-link>
-          </div>
-          <div class="navbar-item has-link has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Transaction fee
+          </a>
+          <a class="navbar-item">
+            <router-link to="">
+              Register new adventure
             </router-link>
-          </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Register admin
+          </a>
+          <a class="navbar-item">
+            <router-link to="">
+              Create appointment on sale
             </router-link>
-          </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Comments
-            </router-link>
-          </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Complaints
-            </router-link>
-          </div>
+          </a>
         </div>
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
 
             <div class="navbar-dropdown is-right is-boxed">
-              <router-link to="/admin/profile" class="navbar-item">
+              <router-link to="/instructor/profile" class="navbar-item">
                 Profile information
               </router-link>
               <hr class="navbar-divider">
@@ -85,14 +59,13 @@
       <router-view></router-view>
     </div>
   </div>
-
 </template>
 
 <script>
 import {Store} from "@/main";
 
 export default {
-  name: "AdminHomepage",
+  name: "InstructorHomepage",
   data() {
     return {}
   },

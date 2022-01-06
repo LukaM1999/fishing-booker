@@ -12,7 +12,7 @@ import java.util.Set;
 public class Instructor extends RegisteredUser{
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "instructor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "instructor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Adventure> adventures = new LinkedHashSet<>();
     @Column
     private String letterOfIntent;

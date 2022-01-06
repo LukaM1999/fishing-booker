@@ -15,7 +15,7 @@ public class Adventure extends Rentable{
     private String fishingEquipment;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Instructor instructor;
 
     public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String instructorBio, String fishingEquipment) {

@@ -22,6 +22,8 @@ import CustomerProfile from "@/components/customer/CustomerProfile";
 import BoatRegistration from "@/components/BoatRegistration";
 import AdminHomepage from "@/components/admin/AdminHomepage";
 import AdminProfile from "@/components/admin/AdminProfile";
+import InstructorHomepage from "@/components/instructor/InstructorHomepage";
+import InstructorProfile from "@/components/instructor/InstructorProfile";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -114,6 +116,18 @@ const routes = [
                 path: 'profile',
                 name: 'adminProfile',
                 component: AdminProfile
+            }
+        ]
+    },
+    {
+        path: '/instructor',
+        name: 'instructorHomepage',
+        component: InstructorHomepage,
+        children: [
+            {
+                path: 'profile',
+                name: 'instructorProfile',
+                component: InstructorProfile
             }
         ]
     },
