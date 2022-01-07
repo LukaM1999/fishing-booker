@@ -15,15 +15,18 @@ import CottageProfile from "@/components/CottageProfile";
 import CustomerHomepage from "@/components/customer/CustomerHomepage";
 import LandingPage from "@/components/LandingPage";
 import Cottages from "@/components/Cottages";
-import CottageRegistration from "@/components/CottageRegistration";
+import CottageRegistration from "@/components/cottage_owner/CottageRegistration";
 import Boats from "@/components/Boats";
 import Instructors from "@/components/Instructors";
 import CustomerProfile from "@/components/customer/CustomerProfile";
-import BoatRegistration from "@/components/BoatRegistration";
+import BoatRegistration from "@/components/boat_owner/BoatRegistration";
 import AdminHomepage from "@/components/admin/AdminHomepage";
 import AdminProfile from "@/components/admin/AdminProfile";
 import InstructorHomepage from "@/components/instructor/InstructorHomepage";
 import InstructorProfile from "@/components/instructor/InstructorProfile";
+import CottageOwnerHomepage from "@/components/cottage_owner/CottageOwnerHomepage";
+import CottageOwnerProfile from "@/components/cottage_owner/CottageOwnerProfile";
+import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -43,7 +46,24 @@ const routes = [
     {
         path: '/',
         name: 'landingPage',
-        component: LandingPage
+        component: LandingPage,
+        children: [
+            {
+                path: 'cottages',
+                name: 'cottages',
+                component: Cottages
+            },
+            {
+                path: 'boats',
+                name: 'boats',
+                component: Boats
+            },
+            {
+                path: 'instructors',
+                name: 'instructors',
+                component: Instructors
+            },
+        ]
     },
     {
         path: '/registration',
@@ -84,6 +104,11 @@ const routes = [
                 path: 'profile',
                 name: 'customerProfile',
                 component: CustomerProfile
+            },
+            {
+                path: 'cottageUpdate',
+                name: 'cottageUpdate',
+                component: CottageUpdate
             }
         ]
     },
@@ -132,9 +157,26 @@ const routes = [
         ]
     },
     {
-        path: '/cottageRegistration',
-        name: 'cottageRegistration',
-        component: CottageRegistration
+        path: '/cottageOwner',
+        name: 'cottageOwnerHomepage',
+        component: CottageOwnerHomepage,
+        children: [
+            {
+                path: 'cottages',
+                name: 'customerCottages',
+                component: Cottages
+            },
+            {
+                path: 'profile',
+                name: 'cottageOwnerProfile',
+                component: CottageOwnerProfile
+            },
+            {
+                path: 'cottageRegistration',
+                name: 'cottageRegistration',
+                component: CottageRegistration
+            }
+        ]
     },
     {
         path: '/boatRegistration',

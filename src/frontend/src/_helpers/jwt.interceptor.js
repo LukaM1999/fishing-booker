@@ -10,8 +10,7 @@ export function jwtInterceptor(){
             config.headers.common['Authorization'] = `Bearer ${token}`;
         } else {
             localStorage.removeItem('jwt');
-            App.data().user = null;
-            //await router.push('/login');
+            localStorage.removeItem('user');
         }
         return config;
     });

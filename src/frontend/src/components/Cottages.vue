@@ -72,6 +72,13 @@
             </md-card-area>
             <md-card-expand>
               <md-card-actions md-alignment="right">
+                <md-button v-show="authority==='COTTAGE_OWNER'||authority==='ADMIN'" class="md-icon-button"
+                           @click="updateCottage(cottage.id)">
+                  <span class="fa fa-trash"></span>
+                </md-button>
+                <md-button v-show="authority==='COTTAGE_OWNER'" class="md-icon-button">
+                  <span class="fa fa-edit"></span>
+                </md-button>
                 <md-card-expand-trigger>
                   <md-button class="md-icon-button">
                     <span class="fa fa-arrow-circle-down fa-2x"></span>
@@ -80,17 +87,17 @@
               </md-card-actions>
               <md-card-expand-content>
                 <md-card-content>
-<!--                  <p class="md-subhead">For a maximum of {{ boat.capacity }} people</p>-->
-<!--                  <p class="md-subhead">{{ boat.boatType }} type</p>-->
-<!--                  <p class="md-subhead">Length of {{ boat.length.toFixed(2) }} meters</p>-->
-<!--                  <p class="md-subhead">Has {{ boat.motors }} motors, {{ boat.power.toFixed(0) }} horsepower</p>-->
-<!--                  <p class="md-subhead">Maximum speed of {{ boat.maxSpeed.toFixed(2) }} km/h</p>-->
-<!--                  <p class="md-subhead is-inline">-->
-<!--                    Has <span v-if="boat.gps">GPS, </span>-->
-<!--                    <span v-if="boat.radar">radar, </span>-->
-<!--                    <span v-if="boat.vhfRadio">VHF radio, </span>-->
-<!--                    <span v-if="boat.fishfinder">fishfinder</span>-->
-<!--                  </p>-->
+                  <!--                  <p class="md-subhead">For a maximum of {{ boat.capacity }} people</p>-->
+                  <!--                  <p class="md-subhead">{{ boat.boatType }} type</p>-->
+                  <!--                  <p class="md-subhead">Length of {{ boat.length.toFixed(2) }} meters</p>-->
+                  <!--                  <p class="md-subhead">Has {{ boat.motors }} motors, {{ boat.power.toFixed(0) }} horsepower</p>-->
+                  <!--                  <p class="md-subhead">Maximum speed of {{ boat.maxSpeed.toFixed(2) }} km/h</p>-->
+                  <!--                  <p class="md-subhead is-inline">-->
+                  <!--                    Has <span v-if="boat.gps">GPS, </span>-->
+                  <!--                    <span v-if="boat.radar">radar, </span>-->
+                  <!--                    <span v-if="boat.vhfRadio">VHF radio, </span>-->
+                  <!--                    <span v-if="boat.fishfinder">fishfinder</span>-->
+                  <!--                  </p>-->
                 </md-card-content>
               </md-card-expand-content>
             </md-card-expand>
@@ -127,6 +134,7 @@ import MdRipple from "vue-material"
 import "vue-material/dist/vue-material.min.css"
 import "bootstrap/dist/css/bootstrap-grid.min.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
+import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
 
 const {splitImages} = require('@/_helpers/imageHelpers');
 
@@ -154,10 +162,14 @@ export default {
       ascending: true,
       sortBy: '',
       ratingSearch: '',
+      authority: '',
+      user: null,
     }
   },
   async mounted() {
-    await this.getCottages()
+    this.user = JSON.parse(localStorage.getItem('user'))
+    this.authority = this.user?.role.authority;
+    (this.authority === 'COTTAGE_OWNER') ? await this.getOwnerCottages() : await this.getCottages()
     this.total = this.cottages.length
   },
   methods: {
@@ -167,10 +179,25 @@ export default {
         this.cottages = response.data
       }
     },
+    async getOwnerCottages() {
+      const response = await axios.get('/cottage/owner?username=' + this.user?.username)
+      if (response) {
+        this.cottages = response.data
+      }
+    },
+
+    updateCottage() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: CottageUpdate,
+        hasModalCard: true,
+        trapFocus: true
+      })
+    },
     setSortOrder() {
       this.ascending = !this.ascending
     },
-    splitImages(images, folderName){
+    splitImages(images, folderName) {
       return splitImages(images, folderName)
     }
   },

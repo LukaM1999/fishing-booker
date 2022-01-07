@@ -7,5 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface CottageRepository extends JpaRepository<Cottage, Long> {
+    List<Cottage> findAllByOwnerUsername(String username);
 }

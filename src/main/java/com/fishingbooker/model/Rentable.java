@@ -7,7 +7,7 @@ import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.util.Collection;
 
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Rentable {

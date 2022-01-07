@@ -34,26 +34,26 @@
         <nav class="tabs">
           <div class="container">
             <ul>
-              <li v-bind:class="{ 'is-active': isActive == 'cottages' }"><a
-                  v-on:click="setActiveTab('cottages')">Cottages</a></li>
-              <li v-bind:class="{ 'is-active': isActive == 'boats' }"><a v-on:click="setActiveTab('boats')">Boats</a></li>
-              <li v-bind:class="{ 'is-active': isActive == 'instructors' }"><a v-on:click="setActiveTab('instructors')">Instructors </a>
-              </li>
+              <li @click="isActive = 'cottages'" v-bind:class="{ 'is-active': isActive === 'cottages' }"><router-link to="/cottages"> Cottages </router-link></li>
+              <li @click="isActive = 'boats'" v-bind:class="{ 'is-active': isActive === 'boats' }"><router-link to="/boats"> Boats </router-link></li>
+              <li @click="isActive = 'instructors'" v-bind:class="{ 'is-active': isActive === 'instructors' }"><router-link to="/instructors"> Instructors </router-link></li>
             </ul>
           </div>
         </nav>
       </div>
     </section>
     <div class="tab-contents">
-      <div class="content" v-bind:class="{ 'is-active': isActive == 'cottages' }">
-        <cottages></cottages>
-      </div>
-      <div class="content" v-bind:class="{ 'is-active': isActive == 'boats' }">
-        <boats></boats>
-      </div>
-      <div class="content" v-bind:class="{ 'is-active': isActive == 'instructors' }">
-        <instructors></instructors>
-      </div>
+      <div><router-view></router-view></div>
+
+<!--      <div class="content" v-bind:class="{ 'is-active': isActive === 'cottages' }">-->
+<!--        <cottages></cottages>-->
+<!--      </div>-->
+<!--      <div class="content" v-bind:class="{ 'is-active': isActive === 'boats' }">-->
+<!--        <boats></boats>-->
+<!--      </div>-->
+<!--      <div class="content" v-bind:class="{ 'is-active': isActive === 'instructors' }">-->
+<!--        <instructors></instructors>-->
+
     </div>
   </div>
 </template>
@@ -67,11 +67,15 @@ import Registration from "@/components/Registration";
 
 export default {
   name: "LandingPage",
-  components: {Instructors, Boats, Cottages},
   data() {
     return {
       isActive: 'cottages'
     }
+  },
+  mounted() {
+    this.$router.push('/cottages').catch(err => {});
+    localStorage.removeItem('user');
+    localStorage.removeItem('jwt');
   },
   methods: {
     setActiveTab(tab){

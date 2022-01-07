@@ -84,7 +84,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/h2-console/**").permitAll()	// /h2-console/** ako se koristi H2 baza)
                 .antMatchers("/api/foo").permitAll()		// /api/foo
                 .antMatchers("/**").permitAll() //TODO: OBRISATI NA KRAJU SVOG TESTIRANJA, FOR MAXIMUM PROTECTION FROM EVIL SPIRITS
-                .antMatchers("/cottage/all").permitAll()
+                .antMatchers("/cottage/**").permitAll()
                 .antMatchers("/boat/all").permitAll()
                 .antMatchers("/instructor/all").permitAll()
 

@@ -47,4 +47,9 @@ public class CottageServiceImpl implements CottageService{
         return cottageRepository.save(savedCottage);
     }
 
+    @Override
+    public List<Cottage> findAllByOwnerUsername(String username) {
+        return cottageRepository.findAllByOwnerUsername(username);
+    }
+
 }

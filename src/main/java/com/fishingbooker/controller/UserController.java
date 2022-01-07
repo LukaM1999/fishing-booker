@@ -30,11 +30,9 @@ public class UserController {
     // Za pristup ovoj metodi neophodno je da ulogovani korisnik ima ADMIN ulogu
     // Ukoliko nema, server ce vratiti gresku 403 Forbidden
     // Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
-    @GetMapping("/{userId}")
+    @GetMapping("/{username}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public RegisteredUser loadById(@PathVariable Long userId) {
-        return this.userService.findById(userId);
-    }
+    public RegisteredUser findByUsername(@PathVariable String username) { return this.userService.findByUsername(username); }
 
     @Transactional
     @GetMapping("/all")

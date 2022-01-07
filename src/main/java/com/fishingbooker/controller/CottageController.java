@@ -37,4 +37,8 @@ public class CottageController {
     public Cottage registerCottage(@RequestParam("cottage") MultipartFile cottage, @RequestParam("files") MultipartFile[] files) throws IOException {
         return cottageService.registerCottage(new ObjectMapper().readValue(cottage.getBytes(), Cottage.class), files);
     }
+
+    @GetMapping(value = "/owner")
+    @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
+    public List<Cottage> getAllByOwnerUsername(@RequestParam String username){ return this.cottageService.findAllByOwnerUsername(username);}
 }

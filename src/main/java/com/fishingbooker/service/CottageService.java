@@ -13,4 +13,6 @@ public interface CottageService {
     List<Cottage> findAll();
 
     Cottage registerCottage(Cottage cottage, MultipartFile[] files) throws IOException;
+
+    List<Cottage> findAllByOwnerUsername(String username);
 }

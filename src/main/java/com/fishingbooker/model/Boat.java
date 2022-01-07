@@ -142,19 +142,17 @@ public class Boat extends Rentable{
         this.images = images;
     }
 
-    public BoatOwner getBowner() {
+    public BoatOwner getBoatOwner() {
         return boatOwner;
     }
 
-    public void setBowner(BoatOwner bowner) {
-        this.boatOwner = bowner;
+    public void setBoatOwner(BoatOwner boatOwner) {
+        this.boatOwner = boatOwner;
     }
 
     public String getBoatOwnerUsername() {
         return boatOwnerUsername;
     }
 
-    public void setBoatOwnerUsername(String boatOwnerUsername) {
-        this.boatOwnerUsername = boatOwnerUsername;
-    }
+    public void setBoatOwnerUsername(String boatOwnerUsername) { this.boatOwnerUsername = boatOwnerUsername; }
 }
