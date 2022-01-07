@@ -1,5 +1,6 @@
 package com.fishingbooker.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fishingbooker.dto.RegistrationDTO;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -12,8 +13,7 @@ import java.util.Set;
 @Entity
 public class BoatOwner extends RegisteredUser{
 
-    @OneToMany(mappedBy = "boatOwner", cascade = CascadeType.ALL)
-    @Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(mappedBy = "boatOwner", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Boat> boats = new LinkedHashSet<Boat>();
     @Column
     private String letterOfIntent;

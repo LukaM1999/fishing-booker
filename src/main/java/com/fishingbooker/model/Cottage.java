@@ -1,5 +1,10 @@
 package com.fishingbooker.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,7 +17,7 @@ public class Cottage extends Rentable{
     private String images;
 
     @JoinColumn(name = "owner_username", insertable = false, updatable = false)
-    @ManyToOne(targetEntity = CottageOwner.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = CottageOwner.class, fetch = FetchType.EAGER)
     private CottageOwner owner;
 
     @Column(name = "owner_username")

@@ -1,6 +1,9 @@
 package com.fishingbooker.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -11,6 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="username")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class RegisteredUser implements UserDetails {
@@ -21,6 +25,7 @@ public class RegisteredUser implements UserDetails {
     @Column
     private String username;
     @Column
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Column
     private String name;

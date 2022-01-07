@@ -1,5 +1,9 @@
 package com.fishingbooker.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.fishingbooker.dto.RegistrationDTO;
 import org.hibernate.annotations.ManyToAny;
 
@@ -11,7 +15,7 @@ import java.util.Set;
 @Entity
 public class CottageOwner extends RegisteredUser{
 
-    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Cottage> cottages = new LinkedHashSet<Cottage>();
     @Column
     private String letterOfIntent;

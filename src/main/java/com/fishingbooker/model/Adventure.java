@@ -2,10 +2,7 @@ package com.fishingbooker.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 public class Adventure extends Rentable{
@@ -14,9 +11,12 @@ public class Adventure extends Rentable{
     @Column
     private String fishingEquipment;
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "instructor_username", insertable = false, updatable = false)
+    @ManyToOne(targetEntity = Instructor.class, fetch = FetchType.EAGER)
     private Instructor instructor;
+
+    @Column(name = "instructor_username")
+    private String instructorUsername;
 
     public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String instructorBio, String fishingEquipment) {
         super(id, name, country, city, address, promoDescription, capacity, rules, pricing, cancellationFee);
@@ -50,6 +50,14 @@ public class Adventure extends Rentable{
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    public String getInstructorUsername() {
+        return instructorUsername;
+    }
+
+    public void setInstructorUsername(String instructorUsername) {
+        this.instructorUsername = instructorUsername;
     }
 }
 

@@ -11,7 +11,6 @@ import java.util.Set;
 @Entity
 public class Instructor extends RegisteredUser{
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "instructor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Adventure> adventures = new LinkedHashSet<>();
     @Column
