@@ -14,4 +14,8 @@ public interface FreeTermRepository extends JpaRepository<FreeTerm, Long> {
             "where term.type = :type and term.endTime > current_timestamp ")
     List<FreeTerm> getFreeTermsByType(@Param("type") ReservationType type);
 
+    @Query("select term from FreeTerm term " +
+            "where term.entityName = :name and term.ownerUsername = :username")
+    List<FreeTerm> getFreeTermsByNameAndUsername(@Param("name") String name,
+                                                 @Param("username") String username);
 }

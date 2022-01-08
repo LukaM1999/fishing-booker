@@ -1,5 +1,8 @@
 package com.fishingbooker.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -7,7 +10,8 @@ import java.time.LocalDateTime;
 public class FreeTerm {
 
     @Id
-    @GeneratedValue
+    @SequenceGenerator(name = "free_term_id_gen", sequenceName = "free_term_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "free_term_id_gen")
     private Long id;
 
     @Column
@@ -20,9 +24,13 @@ public class FreeTerm {
     @Column
     private String ownerUsername;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column
     private LocalDateTime startTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     @Column
     private LocalDateTime endTime;
 

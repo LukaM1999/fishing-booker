@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface ReservationService {
     List<Rentable> getFreeRentables(CustomerReservationDTO reservationDTO);
+
+    FreeTerm createFreeTerm(FreeTerm freeTerm);
 }

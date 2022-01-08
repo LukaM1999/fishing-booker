@@ -26,4 +26,10 @@ public class ReservationController {
     public List<Rentable> getFreeRentables(@RequestBody CustomerReservationDTO reservationDTO){
         return reservationService.getFreeRentables(reservationDTO);
     }
+
+    @PostMapping("/createFreeTerm")
+    @PreAuthorize("!hasAuthority('ADMIN')")
+    public FreeTerm createFreeTerm(@RequestBody FreeTerm freeTerm){
+        return reservationService.createFreeTerm(freeTerm);
+    }
 }

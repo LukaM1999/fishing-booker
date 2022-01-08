@@ -50,8 +50,8 @@ insert into instructor(username, letter_of_intent) values ('Fishdude','Best inst
 insert into adventure(id, name, country, city, address, promo_description, capacity, rules, pricing, cancellation_fee, instructor_bio, fishing_equipment, instructor_username)
 values (nextval('rentable_id_seq'), 'Silver Mirror Tour', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 4, 'Be polite.', '50 euros per person', 0, 'Ambitious and carefree adventurer', 'Fishing lines, hooks, rigs, bait', 'Fishdude');
 
-insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (1, 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-01-07', '2022-01-09');
-insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (2, 'BOAT', '380 Realm Boston Whaler', 'Popaye', '2022-01-07', '2022-01-09');
+insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextVal('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-01-07', '2022-01-09');
+insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextVal('free_term_id_seq'), 'BOAT', '380 Realm Boston Whaler', 'Popaye', '2022-01-07', '2022-01-09');
 
 insert into reservation(id, type, name, owner_username, customer_username, start_time, end_time, additional_services, is_cancelled, is_deal, price, rating, complaint_exists)
 values (1, 'COTTAGE', 'Silver Mirror', 'Piwneuh', 'imbiamba', '2022-01-08', '2022-01-21', 'Some services', false, false, 10000, 0, false);
