@@ -18,8 +18,8 @@ public class Adventure extends Rentable{
     @Column(name = "instructor_username")
     private String instructorUsername;
 
-    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String instructorBio, String fishingEquipment) {
-        super(id, name, country, city, address, promoDescription, capacity, rules, pricing, cancellationFee);
+    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String instructorBio, String fishingEquipment) {
+        super(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee);
         this.instructorBio = instructorBio;
         this.fishingEquipment = fishingEquipment;
     }

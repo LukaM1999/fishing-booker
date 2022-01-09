@@ -41,4 +41,8 @@ public class CottageController {
     @GetMapping(value = "/owner")
     @PreAuthorize("hasAuthority('COTTAGE_OWNER')")
     public List<Cottage> getAllByOwnerUsername(@RequestParam String username){ return this.cottageService.findAllByOwnerUsername(username);}
+
+    @DeleteMapping( "/delete/{cottageId}")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER', 'ADMIN')")
+    public boolean deleteCottage(@PathVariable Long cottageId){ return this.cottageService.deleteCottage(cottageId); }
 }

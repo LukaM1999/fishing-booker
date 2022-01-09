@@ -15,4 +15,6 @@ public interface CottageService {
     Cottage registerCottage(Cottage cottage, MultipartFile[] files) throws IOException;
 
     List<Cottage> findAllByOwnerUsername(String username);
+
+    boolean deleteCottage(Long cottageId);
 }

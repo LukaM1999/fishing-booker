@@ -73,10 +73,11 @@
             <md-card-expand>
               <md-card-actions md-alignment="right">
                 <md-button v-show="authority==='COTTAGE_OWNER'||authority==='ADMIN'" class="md-icon-button"
-                           @click="updateCottage(cottage.id)">
+                           @click="confirmDialog(cottage)">
                   <span class="fa fa-trash"></span>
                 </md-button>
-                <md-button v-show="authority==='COTTAGE_OWNER'" class="md-icon-button">
+                <md-button v-show="authority==='COTTAGE_OWNER'" class="md-icon-button"
+                           @click="updateCottageModal(cottage)">
                   <span class="fa fa-edit"></span>
                 </md-button>
                 <md-card-expand-trigger>
@@ -145,6 +146,7 @@ export default {
   name: "Cottages",
   data() {
     return {
+      delete: -1,
       cottages: [],
       total: this.cottages?.size,
       current: 1,
@@ -175,23 +177,38 @@ export default {
   methods: {
     async getCottages() {
       const response = await axios.get('/cottage/all')
-      if (response) {
+      if (response.data) {
         this.cottages = response.data
       }
     },
     async getOwnerCottages() {
       const response = await axios.get('/cottage/owner?username=' + this.user?.username)
-      if (response) {
+      if (response.data) {
         this.cottages = response.data
       }
     },
-
-    updateCottage() {
+    async confirmDialog(cottage) {
+      this.delete = cottage.id
+      const {result, dialog} = await this.$buefy.dialog.confirm({
+        message: 'Are you sure you want to delete?',
+        closeOnConfirm: true,
+        onConfirm: await this.deleteCottage
+      });
+    },
+    async deleteCottage() {
+      const response = await axios.delete(`/cottage/delete/${this.delete}`)
+      if (response.data) {
+        this.cottages = this.cottages.filter(c => c.id !== this.delete)
+        this.$toasted.success('Cottage successfully deleted!')
+      }
+    },
+    updateCottageModal(cottage) {
       this.$buefy.modal.open({
         parent: this,
         component: CottageUpdate,
         hasModalCard: true,
-        trapFocus: true
+        trapFocus: true,
+        props: {cottage}
       })
     },
     setSortOrder() {

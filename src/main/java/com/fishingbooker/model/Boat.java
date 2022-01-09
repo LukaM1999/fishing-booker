@@ -35,8 +35,8 @@ public class Boat extends Rentable{
     @Column(name = "boat_owner_username")
     private String boatOwnerUsername;
 
-    public Boat(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishFinder, String fishingEquipment, String images, String boatOwnerUsername) {
-        super(id, name, country, city, address, promoDescription, capacity, rules, pricing, cancellationFee);
+    public Boat(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishFinder, String fishingEquipment, String images, String boatOwnerUsername) {
+        super(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee);
         this.boatType = boatType;
         this.length = length;
         this.motors = motors;

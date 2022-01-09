@@ -170,18 +170,8 @@ const routes = [
                 path: 'profile',
                 name: 'cottageOwnerProfile',
                 component: CottageOwnerProfile
-            },
-            {
-                path: 'cottageRegistration',
-                name: 'cottageRegistration',
-                component: CottageRegistration
             }
         ]
-    },
-    {
-        path: '/boatRegistration',
-        name: 'boatRegistration',
-        component: BoatRegistration
     }
 ]
 

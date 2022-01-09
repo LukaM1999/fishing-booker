@@ -5,13 +5,9 @@ import com.fishingbooker.repository.CottageRepository;
 import com.fishingbooker.service.CottageService;
 import com.fishingbooker.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -50,6 +46,14 @@ public class CottageServiceImpl implements CottageService{
     @Override
     public List<Cottage> findAllByOwnerUsername(String username) {
         return cottageRepository.findAllByOwnerUsername(username);
+    }
+
+    @Override
+    public boolean deleteCottage(Long cottageId) {
+        Optional<Cottage> cottage = cottageRepository.findById(cottageId);
+        if(cottage == null) return false;
+        cottageRepository.deleteById(cottageId);
+        return true;
     }
 
 }

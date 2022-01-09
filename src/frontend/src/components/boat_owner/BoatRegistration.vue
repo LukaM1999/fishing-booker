@@ -143,10 +143,17 @@
         <div class="row mb-3">
           <div class="col">
             <div class="form-floating">
-                <textarea class="form-control" id="floatingPricing"
-                          v-model="pricing" required style="white-space: pre-line;">
+              <input type="number" step="0.1" class="form-control" id="floatingPrice"
+                     v-model="price" required style="white-space: pre-line;">
+              <label for="floatingPrice">Price per person/day [$]</label>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-floating">
+                <textarea class="form-control" id="floatingAdditionalServices"
+                          v-model="additionalServices" required style="white-space: pre-line;">
                 </textarea>
-              <label for="floatingPricing">Please declare pricing and additional services.</label>
+              <label for="floatingAdditionalServices">Please declare additional services.</label>
             </div>
           </div>
         </div>
@@ -237,7 +244,8 @@ export default {
       fishingEquipment: '',
       cancellationFee: 0,
       rules: '',
-      pricing: '',
+      price: 1,
+      additionalServices: '',
       promoDescription: '',
       dropFiles: []
     }
@@ -263,7 +271,8 @@ export default {
         fishingEquipment: this.fishingEquipment,
         cancellationFee: this.cancellationFee,
         rules: this.rules,
-        pricing: this.pricing,
+        price: this.price,
+        additionalServices: this.additionalServices,
         promoDescription: this.promoDescription,
         boatOwnerUsername: Store.user?.username
       }

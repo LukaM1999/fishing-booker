@@ -31,11 +31,13 @@ public abstract class Rentable {
     @Column
     private String rules;
     @Column
-    private String pricing;
+    private float price;
+    @Column
+    private String additionalServices;
     @Column
     private float cancellationFee;
 
-    public Rentable(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee) {
+    public Rentable(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee) {
         this.id = id;
         this.name = name;
         this.country = country;
@@ -44,7 +46,8 @@ public abstract class Rentable {
         this.promoDescription = promoDescription;
         this.capacity = capacity;
         this.rules = rules;
-        this.pricing = pricing;
+        this.price = price;
+        this.additionalServices = additionalServices;
         this.cancellationFee = cancellationFee;
     }
 
@@ -115,13 +118,13 @@ public abstract class Rentable {
         this.rules = rules;
     }
 
-    public String getPricing() {
-        return pricing;
-    }
+    public float getPrice() { return price; }
 
-    public void setPricing(String pricing) {
-        this.pricing = pricing;
-    }
+    public void setPrice(float price) { this.price = price; }
+
+    public String getAdditionalServices() { return additionalServices; }
+
+    public void setAdditionalServices(String additionalServices) { this.additionalServices = additionalServices; }
 
     public float getCancellationFee() {
         return cancellationFee;

@@ -86,10 +86,19 @@
         <div class="row mb-3">
           <div class="col">
             <div class="form-floating">
-                <textarea class="form-control" id="floatingPricing"
-                          v-model="pricing" required style="white-space: pre-line;">
+              <input type="number" step="0.1" class="form-control" id="floatingPrice"
+                     v-model="price" required style="white-space: pre-line;">
+              <label for="floatingPrice">Price per day [$]</label>
+            </div>
+          </div>
+
+
+          <div class="col">
+            <div class="form-floating">
+                <textarea class="form-control" id="floatingAdditionalServices"
+                          v-model="additionalServices" required style="white-space: pre-line;">
                 </textarea>
-              <label for="floatingPricing">Please declare pricing and additional services.</label>
+              <label for="floatingAdditionalServices">Please declare additional services.</label>
             </div>
           </div>
         </div>
@@ -156,8 +165,6 @@
 </template>
 
 <script>
-import {Store} from "@/main";
-
 export default {
   name: "CottageRegistration",
   data() {
@@ -171,7 +178,8 @@ export default {
       bedsPerRoom: 1,
       cancellationFee: 0,
       rules: '',
-      pricing: '',
+      price: 1,
+      additionalServices: '',
       promoDescription: '',
       dropFiles: []
     }
@@ -189,9 +197,10 @@ export default {
         bedsPerRoom: this.bedsPerRoom,
         cancellationFee: this.cancellationFee,
         rules: this.rules,
-        pricing: this.pricing,
+        price: this.price,
+        additionalServices: this.additionalServices,
         promoDescription: this.promoDescription,
-        ownerUsername: Store.user?.username
+        ownerUsername: JSON.parse(localStorage.getItem('user')).username
       }
       const formData = new FormData()
       for (let file of this.dropFiles) {

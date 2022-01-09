@@ -23,8 +23,8 @@ public class Cottage extends Rentable{
     @Column(name = "owner_username")
     private String ownerUsername;
 
-    public Cottage(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, String pricing, float cancellationFee, int rooms, int bedsPerRoom, String ownerUsername, String images) {
-        super(id, name, country, city, address, promoDescription, capacity, rules, pricing, cancellationFee);
+    public Cottage(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, int rooms, int bedsPerRoom, String ownerUsername, String images) {
+        super(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee);
         this.rooms = rooms;
         this.bedsPerRoom = bedsPerRoom;
         this.images = images;
