@@ -10,6 +10,8 @@ public class Adventure extends Rentable{
     private String instructorBio;
     @Column
     private String fishingEquipment;
+    @Column
+    private String images;
 
     @JoinColumn(name = "instructor_username", insertable = false, updatable = false)
     @ManyToOne(targetEntity = Instructor.class, fetch = FetchType.EAGER)
@@ -18,10 +20,12 @@ public class Adventure extends Rentable{
     @Column(name = "instructor_username")
     private String instructorUsername;
 
-    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String instructorBio, String fishingEquipment) {
+    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String instructorBio, String fishingEquipment, String instructorUsername, String images) {
         super(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee);
         this.instructorBio = instructorBio;
         this.fishingEquipment = fishingEquipment;
+        this.images = images;
+        this.instructorUsername = instructorUsername;
     }
 
     public Adventure() {
@@ -58,6 +62,14 @@ public class Adventure extends Rentable{
 
     public void setInstructorUsername(String instructorUsername) {
         this.instructorUsername = instructorUsername;
+    }
+
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
     }
 }
 

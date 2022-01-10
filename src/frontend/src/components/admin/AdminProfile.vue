@@ -91,7 +91,6 @@
 </template>
 
 <script>
-import {Store} from "@/main";
 import PasswordConfirmation from "@/components/PasswordConfirmation";
 import axios from "axios";
 
@@ -99,11 +98,14 @@ export default {
   name: "AdminProfile",
   data() {
     return {
-      oldProfile: Store.user,
-      profile: Object.assign({}, Store.user),
+      oldProfile: null,
+      profile: Object.assign({}, JSON.parse(localStorage.getItem('user'))),
       //progress: 0,
       //progressColor: '#FF5733',
     }
+  },
+  mounted() {
+    this.oldProfile = JSON.parse(localStorage.getItem('user'))
   },
   methods: {
     openPasswordConfirmation() {
@@ -124,7 +126,7 @@ export default {
       const response = await axios.put('/user/editProfile', { ...editedProfile })
       if (response.data) {
         this.oldProfile = response.data
-        Store.user = this.oldProfile
+        localStorage.setItem('user', JSON.stringify(response.data))
       } else {
         console.log('Error')
       }

@@ -78,7 +78,6 @@
 
 <script>
 import axios from "axios";
-import ProfileDeletion from "@/components/ProfileDeletion";
 import DeclineRegistration from "@/components/admin/DeclineRegistration";
 
 export default {

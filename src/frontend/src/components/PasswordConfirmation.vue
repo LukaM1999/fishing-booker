@@ -33,7 +33,6 @@
 
 <script>
 import axios from "axios";
-import {Store} from "@/main";
 
 export default {
   name: "PasswordConfirmation",
@@ -45,7 +44,7 @@ export default {
   methods: {
     async isPasswordValid(){
       const response = await axios.post('/auth/confirmPassword',
-          {username: Store.user.username, password: this.passwordConfirmation})
+          {username: JSON.parse(localStorage.getItem('user')).username, password: this.passwordConfirmation})
       if (response.data) {
         this.$emit('success')
         this.$parent.close()

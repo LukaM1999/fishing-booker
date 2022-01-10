@@ -62,17 +62,22 @@
 </template>
 
 <script>
-import {Store} from "@/main";
 
 export default {
   name: "InstructorHomepage",
   data() {
-    return {}
+    return {
+      user : null
+    }
+  },
+  mounted() {
+    this.user = localStorage.getItem('user')
   },
   methods: {
     logOut() {
-      Store.user = null
-      localStorage.removeItem('jwt')
+      this.user = null
+      localStorage.removeItem('user');
+      localStorage.removeItem('jwt');
       this.$router.push('/')
     }
   },
