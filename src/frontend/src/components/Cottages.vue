@@ -61,7 +61,8 @@
         <md-card class="md-primary" md-theme="orange-card" md-with-hover>
           <md-ripple>
             <md-card-media md-ratio="4:3">
-              <img :src="splitImages(cottage.images, 'cottages')" style="height: 100%" alt="Cottage image">
+              <img :src="getImgUrl(cottage.id)" style="height: 100%" alt="Cottage image"
+                   @click="cottageProfile(cottage)">
             </md-card-media>
             <md-card-area>
               <md-card-header>
@@ -105,6 +106,11 @@
           </md-ripple>
         </md-card>
       </div>
+      <md-card class="rounded">
+        <md-ripple>
+          <span v-show="authority==='COTTAGE_OWNER'" class="fa fa-plus-circle fa-2x" @click="createCottageModal"></span>
+        </md-ripple>
+      </md-card>
     </div>
     <div class="mt-4" v-if="cottages">
       <b-pagination
@@ -136,6 +142,7 @@ import "vue-material/dist/vue-material.min.css"
 import "bootstrap/dist/css/bootstrap-grid.min.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
+import CottageRegistration from "@/components/cottage_owner/CottageRegistration";
 
 const {splitImages} = require('@/_helpers/imageHelpers');
 
@@ -187,10 +194,31 @@ export default {
         this.cottages = response.data
       }
     },
+    getImgUrl(value){
+      return `/cottages/c${value}.1.jpg`
+    },
+    cottageProfile(cottage) {
+      localStorage.setItem('currentCottage', JSON.stringify(cottage))
+      this.$router.push('/cottageProfile')
+    },
+    pushCottage(cottage){
+      this.cottages.push(cottage)
+    },
+    createCottageModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: CottageRegistration,
+        hasModalCard: true,
+        trapFocus: true,
+        events:{
+          'added': this.pushCottage
+        }
+      })
+    },
     async confirmDialog(cottage) {
       this.delete = cottage.id
       const {result, dialog} = await this.$buefy.dialog.confirm({
-        message: 'Are you sure you want to delete?',
+        message: 'Are you sure you want to delete? It cannot be undone.',
         closeOnConfirm: true,
         onConfirm: await this.deleteCottage
       });
@@ -208,8 +236,14 @@ export default {
         component: CottageUpdate,
         hasModalCard: true,
         trapFocus: true,
-        props: {cottage}
+        props: {cottage},
+        events:{
+          'updated': this.updateCottage
+        }
       })
+    },
+    updateCottage(){
+      location.reload()
     },
     setSortOrder() {
       this.ascending = !this.ascending

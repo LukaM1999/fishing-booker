@@ -50,7 +50,8 @@ public class CottageServiceImpl implements CottageService{
 
     @Override
     public boolean deleteCottage(Long cottageId) {
-        Optional<Cottage> cottage = cottageRepository.findById(cottageId);
+        Optional<Cottage> optional = cottageRepository.findById(cottageId);
+        Cottage cottage = optional.orElse(null);
         if(cottage == null) return false;
         cottageRepository.deleteById(cottageId);
         return true;

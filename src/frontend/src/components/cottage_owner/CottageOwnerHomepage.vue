@@ -15,29 +15,9 @@
       <div id="navbarExampleTransparentExample" class="navbar-menu">
         <div class="navbar-start">
           <a class="navbar-item" >
-            <router-link to="/cottageOwner/cottages">
+            <a to="/cottageOwner/cottages">
               My Cottages
-            </router-link>
-          </a>
-          <a class="navbar-item">
-            <router-link to="">
-              Adventures
-            </router-link>
-          </a>
-          <a class="navbar-item">
-            <router-link to="">
-              History
-            </router-link>
-          </a>
-          <a class="navbar-item">
-            <router-link to="">
-              Register new adventure
-            </router-link>
-          </a>
-          <a class="navbar-item">
-            <router-link to="">
-              Create appointment on sale
-            </router-link>
+            </a>
           </a>
         </div>
         <div class="navbar-end">
@@ -87,7 +67,7 @@ export default {
 }
 
 nav {
-  padding: 0px !important;
+  padding: 0 !important;
 }
 
 .navbar-item:hover {

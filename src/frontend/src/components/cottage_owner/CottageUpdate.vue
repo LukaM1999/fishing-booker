@@ -181,10 +181,22 @@ export default {
       price: this.cottage.price,
       additionalServices: this.cottage.additionalServices,
       promoDescription: this.cottage.promoDescription,
+      images: this.cottage.images.split(';'),
       dropFiles: []
     }
   },
+  mounted() {
+    this.loadFiles(this.images)
+  },
   methods: {
+    async loadFiles(images) {
+      for (let num in images) {
+        const response = await this.axios.get(`/cottages/${images[num]}`)
+        if(response.data){
+          this.dropFiles.push(response)
+        }
+      }
+    },
     async update() {
       const cottage = {
         id: this.id,
@@ -203,10 +215,14 @@ export default {
         ownerUsername: JSON.parse(localStorage.getItem('user')).username
       }
       const formData = new FormData()
+
+      console.log(this.dropFiles)
+
       for (let file of this.dropFiles) {
         formData.append('files', file)
       }
-      alert(cottage.ownerUsername)
+      console.log(formData)
+
       formData.append('cottage', new Blob([JSON.stringify(cottage)], {type: 'application/json'}))
 
       const response = await this.axios.post('/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
@@ -216,6 +232,7 @@ export default {
         this.$toasted.error('Error while registering cottage.')
       }
       this.$parent.close()
+      this.$emit('updated')
     },
 
     deleteDropFile(index) {

@@ -209,12 +209,13 @@ export default {
       formData.append('cottage', new Blob([JSON.stringify(cottage)], {type: 'application/json'}))
 
       const response = await this.axios.post('/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
-      if (response) {
+      if (response.data) {
         this.$toasted.success('Cottage successfully registered!')
       } else {
         this.$toasted.error('Error while registering cottage.')
       }
       this.$parent.close()
+      this.$emit('added', response.data)
     },
 
     deleteDropFile(index) {

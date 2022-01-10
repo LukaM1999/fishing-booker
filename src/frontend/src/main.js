@@ -15,11 +15,9 @@ import CottageProfile from "@/components/CottageProfile";
 import CustomerHomepage from "@/components/customer/CustomerHomepage";
 import LandingPage from "@/components/LandingPage";
 import Cottages from "@/components/Cottages";
-import CottageRegistration from "@/components/cottage_owner/CottageRegistration";
 import Boats from "@/components/Boats";
 import Instructors from "@/components/Instructors";
 import CustomerProfile from "@/components/customer/CustomerProfile";
-import BoatRegistration from "@/components/boat_owner/BoatRegistration";
 import AdminHomepage from "@/components/admin/AdminHomepage";
 import AdminProfile from "@/components/admin/AdminProfile";
 import InstructorHomepage from "@/components/instructor/InstructorHomepage";
@@ -176,11 +174,6 @@ const routes = [
                 path: 'profile',
                 name: 'cottageOwnerProfile',
                 component: CottageOwnerProfile
-            },
-            {
-                path: 'register',
-                name: 'cottageRegistration',
-                component: CottageRegistration
             }
         ]
     }

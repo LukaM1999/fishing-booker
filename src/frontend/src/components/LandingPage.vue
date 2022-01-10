@@ -1,21 +1,21 @@
 <template>
   <div>
     <section class="hero is-primary is-medium">
-      <!-- Hero head: will stick at the top -->
-      <div class="hero-head">
-        <nav class="navbar">
-          <div class="container">
-            <div class="navbar-brand">
-              <a class="navbar-item">
-                <img
-                    src=""
-                    alt="Logo"
-                />
-              </a>
-            </div>
-          </div>
-        </nav>
-      </div>
+<!--      &lt;!&ndash; Hero head: will stick at the top &ndash;&gt;-->
+<!--      <div class="hero-head">-->
+<!--        <nav class="navbar">-->
+<!--          <div class="container">-->
+<!--            <div class="navbar-brand">-->
+<!--              <a class="navbar-item">-->
+<!--                <img-->
+<!--                    src="logo1.png"-->
+<!--                    alt="Logo"-->
+<!--                />-->
+<!--              </a>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </nav>-->
+<!--      </div>-->
 
       <!-- Hero content: will be in the middle -->
       <div class="hero-body">
