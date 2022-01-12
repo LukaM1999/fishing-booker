@@ -33,6 +33,9 @@ public class Reservation {
     private String additionalServices;
 
     @Column
+    private int guests;
+
+    @Column
     private boolean isCancelled;
 
     @Column
@@ -50,7 +53,7 @@ public class Reservation {
     public Reservation() { }
 
     public Reservation(Long id, ReservationType type, String name, String ownerUsername, String customerUsername,
-                       LocalDateTime startTime, LocalDateTime endTime, String additionalServices, boolean isDeal, double price) {
+                       LocalDateTime startTime, LocalDateTime endTime, String additionalServices, int guests, boolean isDeal, double price) {
         this.id = id;
         this.type = type;
         this.name = name;
@@ -60,6 +63,7 @@ public class Reservation {
         this.endTime = endTime;
         this.isCancelled = false;
         this.additionalServices = additionalServices;
+        this.guests = guests;
         this.isDeal = isDeal;
         this.price = price;
         this.rating = 0;
@@ -136,6 +140,14 @@ public class Reservation {
 
     public void setAdditionalServices(String additionalServices) {
         this.additionalServices = additionalServices;
+    }
+
+    public int getGuests() {
+        return guests;
+    }
+
+    public void setGuests(int guests) {
+        this.guests = guests;
     }
 
     public boolean isDeal() {

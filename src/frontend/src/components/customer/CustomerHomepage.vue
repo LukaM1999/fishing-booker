@@ -22,13 +22,13 @@
               Browse
             </a>
             <div class="navbar-dropdown is-boxed">
-              <router-link to="/customer/cottages" class="navbar-item">
+              <router-link to="/customer/browse/cottages" class="navbar-item">
                 Cottages
               </router-link>
-              <router-link to="/customer/boats" class="navbar-item">
+              <router-link to="/customer/browse/boats" class="navbar-item">
                 Boats
               </router-link>
-              <router-link to="/customer/instructors" class="navbar-item">
+              <router-link to="/customer/browse/instructors" class="navbar-item">
                 Adventures
               </router-link>
             </div>
@@ -55,6 +55,9 @@
           <a class="navbar-item">
             Send complaint
           </a>
+          <router-link to="/customer/reservation" class="navbar-item">
+            Reservation
+          </router-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">

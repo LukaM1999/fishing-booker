@@ -1,10 +1,7 @@
 package com.fishingbooker.service.impl;
 
 import com.fishingbooker.dto.CustomerReservationDTO;
-import com.fishingbooker.model.FreeTerm;
-import com.fishingbooker.model.Rentable;
-import com.fishingbooker.model.Reservation;
-import com.fishingbooker.model.ReservationType;
+import com.fishingbooker.model.*;
 import com.fishingbooker.repository.FreeTermRepository;
 import com.fishingbooker.repository.RentableRepository;
 import com.fishingbooker.repository.ReservationRepository;
@@ -12,7 +9,6 @@ import com.fishingbooker.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
@@ -36,15 +32,18 @@ public class ReservationServiceImpl implements ReservationService {
         List<FreeTerm> freeTerms = this.freeTermRepository.getFreeTermsByType(reservationDTO.getType());
         Map<Rentable, FreeTerm> freeRentables = new HashMap<>();
         for (FreeTerm term : freeTerms) {
-            if (!term.getType().equals(reservationDTO.getType()) || !term.getStartTime().isBefore(reservationDTO.getStart())
+            if (!term.getStartTime().isBefore(reservationDTO.getStart())
                     || !term.getEndTime().isAfter(reservationDTO.getEnd())) continue;
             if (term.getType() == ReservationType.COTTAGE)
                 freeRentables.put(rentableRepository.getCottageByNameAndOwner(term.getEntityName(), term.getOwnerUsername()), term);
             else if (term.getType() == ReservationType.BOAT)
                 freeRentables.put(rentableRepository.getBoatByNameAndOwner(term.getEntityName(), term.getOwnerUsername()), term);
-            else if (term.getType() == ReservationType.ADVENTURE)
-                freeRentables.put(rentableRepository.getAdventureByNameAndOwner(term.getEntityName(), term.getOwnerUsername()), term);
-
+            else if (term.getType() == ReservationType.ADVENTURE){
+                List<Rentable> adventures = rentableRepository.getAdventuresByOwner(term.getOwnerUsername());
+                for(Rentable a: adventures){
+                    freeRentables.put(a, term);
+                }
+            }
         }
         Iterator<Map.Entry<Rentable, FreeTerm>> iterator = freeRentables.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -55,7 +54,8 @@ public class ReservationServiceImpl implements ReservationService {
             if (term.getType() != ReservationType.ADVENTURE) {
                 if (reservationRepository.getOccupied(rentableName, ownerUsername, reservationDTO.getStart(), reservationDTO.getEnd()) != null)
                     iterator.remove();
-            } else if (reservationRepository.getOccupiedAdventure(term.getType(), ownerUsername, reservationDTO.getStart(), reservationDTO.getEnd()) != null)
+            }
+            else if (reservationRepository.getOccupiedAdventure(ownerUsername, reservationDTO.getStart(), reservationDTO.getEnd()) != null)
                 iterator.remove();
         }
         return List.copyOf(freeRentables.keySet());
@@ -78,7 +78,6 @@ public class ReservationServiceImpl implements ReservationService {
                 if (!hasOverlap(freeTerm, term) && !hasSequence(freeTerm, term)) continue;
                 freeTerm.setStartTime(getEarlierDate(freeTerm, term));
                 freeTerm.setEndTime(getLaterDate(freeTerm, term));
-                freeTerm.setId(term.getId());
                 this.freeTermRepository.delete(term);
                 iterator.remove();
             }

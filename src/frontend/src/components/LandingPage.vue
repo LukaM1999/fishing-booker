@@ -34,9 +34,9 @@
         <nav class="tabs">
           <div class="container">
             <ul>
-              <li @click="isActive = 'cottages'" v-bind:class="{ 'is-active': isActive === 'cottages' }"><router-link to="/cottages"> Cottages </router-link></li>
-              <li @click="isActive = 'boats'" v-bind:class="{ 'is-active': isActive === 'boats' }"><router-link to="/boats"> Boats </router-link></li>
-              <li @click="isActive = 'instructors'" v-bind:class="{ 'is-active': isActive === 'instructors' }"><router-link to="/instructors"> Instructors </router-link></li>
+              <li @click="setActiveTab('cottages')" v-bind:class="{ 'is-active': isActive === 'cottages' }"><router-link to="/cottages"> Cottages </router-link></li>
+              <li @click="setActiveTab('boats')" v-bind:class="{ 'is-active': isActive === 'boats' }"><router-link to="/boats"> Boats </router-link></li>
+              <li @click="setActiveTab('instructors')" v-bind:class="{ 'is-active': isActive === 'instructors' }"><router-link to="/instructors"> Instructors </router-link></li>
             </ul>
           </div>
         </nav>
@@ -80,13 +80,6 @@ export default {
   methods: {
     setActiveTab(tab){
       this.isActive = tab
-      this.$nextTick(() => window.scrollTo(0,document.body.scrollHeight))
-      // this.$nextTick(() => {
-      //   const expands = document.getElementsByClassName('fa-arrow-circle-down')
-      //   for (const expand of expands) {
-      //     expand.click()
-      //   }
-      // })
     },
     loginModal() {
       this.$buefy.modal.open({

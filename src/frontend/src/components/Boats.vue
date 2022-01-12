@@ -188,6 +188,7 @@ export default {
   async mounted() {
     await this.getBoats()
     this.total = this.boats.length
+    this.$nextTick(() => window.scrollTo(0,document.body.scrollHeight))
     // const cards = document.getElementsByClassName('md-card')
     // for (const card of cards) {
     //   card.classList.remove('md-expand-active')

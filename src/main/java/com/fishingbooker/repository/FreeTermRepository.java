@@ -11,7 +11,7 @@ import java.util.List;
 public interface FreeTermRepository extends JpaRepository<FreeTerm, Long> {
 
     @Query("select term from FreeTerm term " +
-            "where term.type = :type and term.endTime > current_timestamp ")
+            "where term.type = :type and term.endTime > current_timestamp")
     List<FreeTerm> getFreeTermsByType(@Param("type") ReservationType type);
 
     @Query("select term from FreeTerm term " +

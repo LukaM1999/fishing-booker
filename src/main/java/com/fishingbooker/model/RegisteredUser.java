@@ -14,7 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="username")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "username")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public class RegisteredUser implements UserDetails {

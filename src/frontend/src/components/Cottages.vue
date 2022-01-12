@@ -106,13 +106,9 @@
           </md-ripple>
         </md-card>
       </div>
-      <md-card class="rounded">
-        <md-ripple>
-          <span v-show="authority==='COTTAGE_OWNER'" class="fa fa-plus-circle fa-2x" @click="createCottageModal"></span>
-        </md-ripple>
-      </md-card>
+      <span v-show="authority==='COTTAGE_OWNER'" class="fa fa-plus-circle fa-3x" style="cursor: pointer" @click="createCottageModal"></span>
     </div>
-    <div class="mt-4" v-if="cottages">
+    <div class="mt-4" v-if="this.cottages">
       <b-pagination
           :total="total"
           v-model="current"
@@ -180,6 +176,7 @@ export default {
     this.authority = this.user?.role.authority;
     (this.authority === 'COTTAGE_OWNER') ? await this.getOwnerCottages() : await this.getCottages()
     this.total = this.cottages.length
+    this.$nextTick(() => window.scrollTo(0, document.body.scrollHeight))
   },
   methods: {
     async getCottages() {
@@ -194,15 +191,16 @@ export default {
         this.cottages = response.data
       }
     },
-    getImgUrl(value){
-      return `/cottages/c${value}.1.jpg`
+    getImgUrl(value) {
+      return `/c${value}.1.jpg`
     },
     cottageProfile(cottage) {
       localStorage.setItem('currentCottage', JSON.stringify(cottage))
       this.$router.push('/cottageProfile')
     },
-    pushCottage(cottage){
+    pushCottage(cottage) {
       this.cottages.push(cottage)
+      this.total += 1
     },
     createCottageModal() {
       this.$buefy.modal.open({
@@ -210,7 +208,7 @@ export default {
         component: CottageRegistration,
         hasModalCard: true,
         trapFocus: true,
-        events:{
+        events: {
           'added': this.pushCottage
         }
       })
@@ -228,6 +226,7 @@ export default {
       if (response.data) {
         this.cottages = this.cottages.filter(c => c.id !== this.delete)
         this.$toasted.success('Cottage successfully deleted!')
+        this.total -= 1
       }
     },
     updateCottageModal(cottage) {
@@ -237,12 +236,12 @@ export default {
         hasModalCard: true,
         trapFocus: true,
         props: {cottage},
-        events:{
+        events: {
           'updated': this.updateCottage
         }
       })
     },
-    updateCottage(){
+    updateCottage() {
       location.reload()
     },
     setSortOrder() {

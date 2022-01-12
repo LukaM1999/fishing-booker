@@ -3,7 +3,7 @@
     <nav class="navbar is-primary">
       <div class="navbar-brand">
         <a class="navbar-item">
-          <img :src="'../logo1.png'" alt="logo">
+          <img :src="'/logo1.png'" alt="logo">
         </a>
         <div class="navbar-burger" data-bs-target="navbarExampleTransparentExample">
           <span></span>
@@ -128,7 +128,7 @@ export default {
       this.$router.push('/')
     },
     getImgUrl(value) {
-      return `cottages/c${this.cottage.id}.${value}.jpg`
+      return `/c${this.cottage.id}.${value}.jpg`
     },
     switchGallery(value) {
       this.gallery = value

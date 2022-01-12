@@ -20,10 +20,10 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
                             @Param("startTime")LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
 
     @Query("select r from Reservation r where " +
-            "r.type = :type and r.ownerUsername = :owner " +
+            "r.type = 'ADVENTURE' and r.ownerUsername = :owner " +
             "and (:startTime between r.startTime and r.endTime or " +
             ":endTime between r.startTime and r.endTime)")
-    Reservation getOccupiedAdventure(@Param("type") ReservationType type, @Param("owner") String owner,
-                                     @Param("startTime")LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+    Reservation getOccupiedAdventure(@Param("owner") String owner, @Param("startTime")LocalDateTime startTime,
+                                     @Param("endTime") LocalDateTime endTime);
 
 }

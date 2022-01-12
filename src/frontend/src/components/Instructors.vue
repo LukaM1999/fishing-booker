@@ -157,6 +157,7 @@ export default {
   async mounted() {
     await this.getInstructors()
     this.total = this.instructors.length
+    this.$nextTick(() => window.scrollTo(0,document.body.scrollHeight))
     // this.$nextTick(() => {
     //   const expands = document.getElementsByClassName('fa-arrow-circle-down')
     //   for (const expand of expands) {

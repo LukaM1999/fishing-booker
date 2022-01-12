@@ -37,7 +37,7 @@ public class CottageServiceImpl implements CottageService{
             i += 1;
             String fileName = "c" + savedCottage.getId() + "." + i + ".jpg";
             images += fileName + ';';
-            FileUploadUtil.saveFile(FileUploadUtil.getImageFolder("cottages"), fileName, image);
+            FileUploadUtil.saveFile(FileUploadUtil.getImageFolder(""), fileName, image);
         }
         savedCottage.setImages(images.substring(0, images.length() - 1));
         return cottageRepository.save(savedCottage);

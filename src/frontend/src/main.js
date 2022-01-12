@@ -4,7 +4,7 @@ import VueRouter from "vue-router";
 import Registration from "@/components/Registration";
 import ApproveUser from "@/components/admin/ApproveUser";
 import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+import 'buefy/dist/buefy.min.css'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -26,6 +26,7 @@ import CottageOwnerHomepage from "@/components/cottage_owner/CottageOwnerHomepag
 import CottageOwnerProfile from "@/components/cottage_owner/CottageOwnerProfile";
 import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
 import AdventureRegistration from "@/components/instructor/AdventureRegistration"
+import Reservation from "@/components/customer/Reservation";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -77,7 +78,7 @@ const routes = [
     {
         path: '/cottageProfile',
         name: 'cottageProfile',
-        component: CottageProfile
+        component: CottageProfile,
     },
     {
         path: '/customer',
@@ -85,17 +86,17 @@ const routes = [
         component: CustomerHomepage,
         children: [
             {
-                path: 'cottages',
+                path: 'browse/cottages',
                 name: 'customerCottages',
                 component: Cottages
             },
             {
-                path: 'boats',
+                path: 'browse/boats',
                 name: 'customerBoats',
                 component: Boats
             },
             {
-                path: 'instructors',
+                path: 'browse/instructors',
                 name: 'customerInstructors',
                 component: Instructors
             },
@@ -108,6 +109,11 @@ const routes = [
                 path: 'cottageUpdate',
                 name: 'cottageUpdate',
                 component: CottageUpdate
+            },
+            {
+                path: 'reservation',
+                name: 'customerReservation',
+                component: Reservation
             }
         ]
     },
@@ -184,9 +190,43 @@ export const router = new VueRouter({
     mode: 'history'
 })
 
-export var Store = { user: null };
+router.beforeEach((to, from, next) => {
+    if (to.path.indexOf('customer') !== -1) {
+        if (JSON.parse(localStorage.getItem('user') || '{}')?.role?.authority !== 'CUSTOMER') {
+            alert('Customer must be logged in!')
+            next('/')
+        } else next()
+    }
+    else if (to.path.indexOf('cottageOwner') !== -1) {
+        if (JSON.parse(localStorage.getItem('user') || '{}')?.role?.authority !== 'COTTAGE_OWNER') {
+            alert('Cottage owner must be logged in!')
+            next('/')
+        } else next()
+    }
+    else if (to.path.indexOf('boatOwner') !== -1) {
+        if (JSON.parse(localStorage.getItem('user') || '{}')?.role?.authority !== 'BOAT_OWNER') {
+            alert('Boat owner must be logged in!')
+            next('/')
+        } else next()
+    }
+    else if (to.path.indexOf('instructor') !== -1 && to.path.indexOf('instructors') === -1) {
+        if (JSON.parse(localStorage.getItem('user') || '{}')?.role?.authority !== 'INSTRUCTOR') {
+            alert('Instructor must be logged in!')
+            next('/')
+        } else next()
+    }
+    else if (to.path.indexOf('admin') !== -1) {
+        if (JSON.parse(localStorage.getItem('user') || '{}')?.role?.authority !== 'ADMIN') {
+            alert('Admin must be logged in!')
+            next('/')
+        } else next()
+    }
+    else next()
+})
 
-new Vue({
+export var Store = {user: null};
+
+export var vue = new Vue({
     render: h => h(App),
-    router
+    router,
 }).$mount('#app')
