@@ -1,7 +1,5 @@
 package com.fishingbooker.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 
 @Entity
@@ -13,19 +11,19 @@ public class Adventure extends Rentable{
     @Column
     private String images;
 
-    @JoinColumn(name = "instructor_username", insertable = false, updatable = false)
+    @JoinColumn(name = "owner_username", insertable = false, updatable = false)
     @ManyToOne(targetEntity = Instructor.class, fetch = FetchType.EAGER)
     private Instructor instructor;
 
-    @Column(name = "instructor_username")
-    private String instructorUsername;
+    @Column(name = "owner_username")
+    private String ownerUsername;
 
-    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String instructorBio, String fishingEquipment, String instructorUsername, String images) {
+    public Adventure(long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String instructorBio, String fishingEquipment, String ownerUsername, String images) {
         super(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee);
         this.instructorBio = instructorBio;
         this.fishingEquipment = fishingEquipment;
         this.images = images;
-        this.instructorUsername = instructorUsername;
+        this.ownerUsername = ownerUsername;
     }
 
     public Adventure() {
@@ -56,12 +54,12 @@ public class Adventure extends Rentable{
         this.instructor = instructor;
     }
 
-    public String getInstructorUsername() {
-        return instructorUsername;
+    public String getOwnerUsername() {
+        return ownerUsername;
     }
 
-    public void setInstructorUsername(String instructorUsername) {
-        this.instructorUsername = instructorUsername;
+    public void setOwnerUsername(String instructorUsername) {
+        this.ownerUsername = instructorUsername;
     }
 
     public String getImages() {

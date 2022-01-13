@@ -274,7 +274,7 @@ export default {
         price: this.price,
         additionalServices: this.additionalServices,
         promoDescription: this.promoDescription,
-        boatOwnerUsername: Store.user?.username
+        ownerUsername: Store.user?.username
       }
       const formData = new FormData()
       for (let file of this.dropFiles) {

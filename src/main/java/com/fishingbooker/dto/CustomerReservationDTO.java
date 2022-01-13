@@ -9,6 +9,8 @@ import java.time.format.DateTimeFormatter;
 
 public class CustomerReservationDTO {
 
+    private Long rentableId;
+
     private ReservationType type;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
@@ -23,7 +25,16 @@ public class CustomerReservationDTO {
 
     public CustomerReservationDTO(){}
 
+    public CustomerReservationDTO(Long rentableId, ReservationType type, LocalDateTime start, LocalDateTime end, int capacity) {
+        this.rentableId = rentableId;
+        this.type = type;
+        this.start = start;
+        this.end = end;
+        this.capacity = capacity;
+    }
+
     public CustomerReservationDTO(ReservationType type, LocalDateTime start, LocalDateTime end, int capacity) {
+        this.rentableId = rentableId;
         this.type = type;
         this.start = start;
         this.end = end;
@@ -60,5 +71,13 @@ public class CustomerReservationDTO {
 
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public Long getRentableId() {
+        return rentableId;
+    }
+
+    public void setRentableId(Long rentableId) {
+        this.rentableId = rentableId;
     }
 }

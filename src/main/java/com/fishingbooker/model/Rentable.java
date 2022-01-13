@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import javax.annotation.processing.Generated;
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Objects;
 
 //@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
@@ -132,5 +133,18 @@ public abstract class Rentable {
 
     public void setCancellationFee(float cancellationFee) {
         this.cancellationFee = cancellationFee;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Rentable)) return false;
+        Rentable rentable = (Rentable) o;
+        return id.equals(rentable.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

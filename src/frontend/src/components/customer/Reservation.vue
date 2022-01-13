@@ -59,9 +59,9 @@
               <div class="col-md-2">
                 <b-field :label="'Select number of people'">
                   <b-numberinput
-                                 :max="100"
-                                 :min="1"
-                                 v-model="people">
+                      :max="100"
+                      :min="1"
+                      v-model="people">
                   </b-numberinput>
                 </b-field>
               </div>
@@ -141,7 +141,9 @@
                 <md-card class="md-primary" md-theme="orange-card" md-with-hover>
                   <md-ripple>
                     <md-card-media md-ratio="4:3">
-                      <img :src="'/' + rentable.images[0].toLowerCase() + rentable.id + '.1.jpg'" style="height: 100%" alt="Rentable image">
+                      <img :src="rentable.images ? '/' + rentable.images[0].toLowerCase() + rentable.id + '.1.jpg' : ''"
+                           style="height: 100%"
+                           alt="Rentable image">
                     </md-card-media>
                     <md-card-area>
                       <md-card-header>
@@ -259,8 +261,8 @@
                 </div>
               </div>
             </div>
-            <div class="col-4" v-if="selectedServices.length > 0">
-              <b-table class=""
+            <div class="col-4">
+              <b-table class="" v-if="selectedServices.length > 0"
                        :data="selectedServices"
                        :columns="columns"
                        hoverable
@@ -272,12 +274,19 @@
                   <h1 class="subtitle">Additional services total:</h1>
                 </div>
                 <div class="col justify-content-end d-flex mr-2">
-                  <h1 class="subtitle">{{calculateServicesTotal()}}</h1>
+                  <h1 class="subtitle">{{ calculateServicesTotal() }}</h1>
                 </div>
               </div>
               <div class="row mt-5">
                 <div class="col">
                   <h1 class="title">Total price: {{ calculateTotal() }} euros</h1>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col">
+                  <div class="buttons">
+                    <b-button type="is-primary" @click="reserveRentable" expanded>Confirm reservation</b-button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -349,6 +358,8 @@ export default {
       ],
       selectedServices: [],
       people: 1,
+      start: '',
+      end: ''
     }
   },
   async mounted() {
@@ -356,12 +367,6 @@ export default {
     this.minDate.setHours(0)
     this.minDate.setMinutes(0)
     this.selectedDate = this.minDate
-  },
-  watch: {
-    selectedDate(val) {
-      //console.log(val)
-      return val
-    }
   },
   methods: {
     async nextStep() {
@@ -388,13 +393,13 @@ export default {
     },
     calculateTotal() {
       let multiplier = 1
-      if(this.type === 'ADVENTURE') multiplier = this.people
+      if (this.type === 'ADVENTURE') multiplier = this.people
       if (this.selectedRentable === null) return 0
       if (this.selectedServices.length === 0) return this.selectedRentable.price * this.duration * multiplier
       return this.selectedRentable?.price * this.duration * multiplier + this.selectedServices?.reduce((prev, current) => prev + current.price, 0)
     },
-    calculateServicesTotal(){
-      if(this.selectedServices.length === 0) return 0
+    calculateServicesTotal() {
+      if (this.selectedServices.length === 0) return 0
       return this.selectedServices.reduce((prev, current) => prev + current.price, 0)
     },
     setDatetime() {
@@ -430,26 +435,29 @@ export default {
       let start
       let end
       let endHour
-      month = this.formatDateMonth(this.selectedDate);
-      day = this.formatDateDay(this.selectedDate);
+      month = this.formatDateMonth(new Date(this.selectedDate));
+      day = this.formatDateDay(new Date(this.selectedDate));
       if (this.type === 'ADVENTURE') {
         if (this.selectedTime.getHours() < 10) {
           hour = `0${this.selectedTime.getHours()}`
-          endHour = `0${Object.assign({}, this.selectedTime.getHours()) + this.duration}`
+          endHour = `0${new Date(this.selectedTime).getHours() + this.duration}`
         } else {
           hour = `${this.selectedTime.getHours()}`
-          endHour = `${Object.assign({}, this.selectedTime.getHours()) + this.duration}`
+          endHour = `${new Date(this.selectedTime).getHours() + this.duration}`
         }
+        if (endHour.length > 2) endHour = endHour.substring(1, 3)
+        console.log(endHour)
         start = `${this.selectedDate.getFullYear()}-${month}-${day} ${hour}:00`
         end = `${this.selectedDate.getFullYear()}-${month}-${day} ${endHour}:00`
       } else {
         let endDate = new Date(this.selectedDate)
-        console.log(endDate)
         endDate.setTime(endDate.getTime() + (this.duration * 24 * 60 * 60 * 1000));
         start = `${this.selectedDate.getFullYear()}-${month}-${day} 00:00`
         end = `${endDate.getFullYear()}-${this.formatDateMonth(endDate)}-${this.formatDateDay(endDate)} 00:00`
       }
-      console.log(this.selectedDate)
+
+      this.start = start
+      this.end = end
 
       const reservationDto = {
         type: this.type,
@@ -460,10 +468,34 @@ export default {
       const response = await axios.post('/reservation/getFreeRentables', reservationDto)
       if (response.data) {
         this.rentables = response.data.filter(rentable => rentable.capacity >= this.people)
-        console.log(this.rentables)
-
       }
-      //if (this.type !== 'ADVENTURE') this.selectedDate.setTime(this.selectedDate.getTime() - (this.duration * 24 * 60 * 60 * 1000))
+    },
+    async reserveRentable() {
+      const reservation = {
+        type: this.type,
+        name: this.selectedRentable.name,
+        ownerUsername: this.selectedRentable.ownerUsername,
+        customerUsername: JSON.parse(localStorage.getItem('user') || '{}')?.username,
+        startTime: this.start,
+        endTime: this.end,
+        additionalServices: this.selectedServices.reduce((prev, current) => prev + current.name + '=' + current.price + ";", ''),
+        guests: this.people,
+        isCancelled: false,
+        isDeal: false,
+        price: this.calculateTotal(),
+        rating: 0,
+        complaintExists: false
+      }
+
+      const response = await axios.post(`/reservation/reserveRentable/${this.selectedRentable.id}`, reservation)
+      if (response.data) {
+        //this.$router.push('/customer/upcomingReservations')
+        this.$toasted.success('Reservation confirmed successfully!')
+      } else {
+        this.$toasted.error('Reservation was unsuccessful')
+        this.activeStep = 0
+      }
+
     },
     setSelectedRentable(rentable) {
       if (this.selectedRentable === null) {
@@ -475,10 +507,10 @@ export default {
     },
     isNextDisabled(next) {
       if (this.activeStep === 1) {
-        if (this.selectedRentable === null) return true;
-        else return false
+        return this.selectedRentable === null;
       }
-      return false
+      return this.activeStep === 3;
+
     },
     setSortOrder() {
       this.ascending = !this.ascending

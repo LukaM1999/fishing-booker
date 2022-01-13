@@ -3,6 +3,7 @@ package com.fishingbooker.controller;
 import com.fishingbooker.dto.CustomerReservationDTO;
 import com.fishingbooker.model.FreeTerm;
 import com.fishingbooker.model.Rentable;
+import com.fishingbooker.model.Reservation;
 import com.fishingbooker.model.ReservationType;
 import com.fishingbooker.repository.RentableRepository;
 import com.fishingbooker.repository.ReservationRepository;
@@ -31,5 +32,11 @@ public class ReservationController {
     @PreAuthorize("!hasAuthority('ADMIN')")
     public FreeTerm createFreeTerm(@RequestBody FreeTerm freeTerm){
         return reservationService.createFreeTerm(freeTerm);
+    }
+
+    @PostMapping("/reserveRentable/{rentableId}")
+    @PreAuthorize("!hasAuthority('ADMIN')")
+    public Reservation reserveRentable(@PathVariable Long rentableId, @RequestBody Reservation reservation){
+        return reservationService.reserveRentable(rentableId, reservation);
     }
 }

@@ -14,11 +14,13 @@ public interface RentableRepository extends JpaRepository<Rentable, Long> {
     Rentable getCottageByNameAndOwner(@Param("name") String name, @Param("owner") String owner);
 
     @Query("select boat from Boat boat " +
-            "where boat.boatOwnerUsername = :owner and boat.name = :name ")
+            "where boat.ownerUsername = :owner and boat.name = :name ")
     Rentable getBoatByNameAndOwner(@Param("name") String name, @Param("owner") String owner);
 
 
     @Query("select adventure from Adventure adventure " +
-            "where adventure.instructorUsername = :owner ")
+            "where adventure.ownerUsername = :owner ")
     List<Rentable> getAdventuresByOwner(@Param("owner") String owner);
+
+    Rentable getRentableById(Long id);
 }

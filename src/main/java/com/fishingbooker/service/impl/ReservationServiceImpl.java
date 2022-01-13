@@ -88,6 +88,15 @@ public class ReservationServiceImpl implements ReservationService {
         return freeTerm;
     }
 
+    @Override
+    public Reservation reserveRentable(Long rentableId, Reservation reservation) {
+        CustomerReservationDTO reservationDTO = new CustomerReservationDTO(reservation.getType(), reservation.getStartTime(), reservation.getEndTime(), reservation.getGuests());
+        Rentable rentable = rentableRepository.getRentableById(rentableId);
+        if(rentable == null || !new HashSet<>(getFreeRentables(reservationDTO)).contains(rentable)) return null;
+        reservationRepository.save(reservation);
+        return reservation;
+    }
+
     private boolean hasSequence(FreeTerm freeTerm, FreeTerm term) {
         return isSequence(freeTerm.getStartTime(), term.getEndTime()) ||
                 isSequence(freeTerm.getEndTime(), term.getStartTime()) ||

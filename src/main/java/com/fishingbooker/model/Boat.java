@@ -28,14 +28,14 @@ public class Boat extends Rentable{
     @Column
     private String images;
 
-    @JoinColumn(name = "boat_owner_username", insertable = false, updatable = false)
+    @JoinColumn(name = "owner_username", insertable = false, updatable = false)
     @ManyToOne(targetEntity = BoatOwner.class, fetch = FetchType.EAGER)
     private BoatOwner boatOwner;
 
-    @Column(name = "boat_owner_username")
-    private String boatOwnerUsername;
+    @Column(name = "owner_username")
+    private String ownerUsername;
 
-    public Boat(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishFinder, String fishingEquipment, String images, String boatOwnerUsername) {
+    public Boat(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee, String boatType, float length, int motors, float power, float maxSpeed, boolean gps, boolean radar, boolean vhfRadio, boolean fishFinder, String fishingEquipment, String images, String ownerUsername) {
         super(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee);
         this.boatType = boatType;
         this.length = length;
@@ -48,7 +48,7 @@ public class Boat extends Rentable{
         this.fishFinder = fishFinder;
         this.fishingEquipment = fishingEquipment;
         this.images = images;
-        this.boatOwnerUsername = boatOwnerUsername;
+        this.ownerUsername = ownerUsername;
     }
 
     public Boat() {
@@ -150,9 +150,9 @@ public class Boat extends Rentable{
         this.boatOwner = boatOwner;
     }
 
-    public String getBoatOwnerUsername() {
-        return boatOwnerUsername;
+    public String getOwnerUsername() {
+        return ownerUsername;
     }
 
-    public void setBoatOwnerUsername(String boatOwnerUsername) { this.boatOwnerUsername = boatOwnerUsername; }
+    public void setOwnerUsername(String boatOwnerUsername) { this.ownerUsername = boatOwnerUsername; }
 }
