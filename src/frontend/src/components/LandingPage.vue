@@ -36,7 +36,7 @@
             <ul>
               <li @click="setActiveTab('cottages')" v-bind:class="{ 'is-active': isActive === 'cottages' }"><router-link to="/cottages"> Cottages </router-link></li>
               <li @click="setActiveTab('boats')" v-bind:class="{ 'is-active': isActive === 'boats' }"><router-link to="/boats"> Boats </router-link></li>
-              <li @click="setActiveTab('instructors')" v-bind:class="{ 'is-active': isActive === 'instructors' }"><router-link to="/instructors"> Instructors </router-link></li>
+              <li @click="setActiveTab('instructors')" v-bind:class="{ 'is-active': isActive === 'instructors' }"><router-link to="/adventures"> Adventures </router-link></li>
             </ul>
           </div>
         </nav>

@@ -27,6 +27,7 @@ import CottageOwnerProfile from "@/components/cottage_owner/CottageOwnerProfile"
 import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
 import AdventureRegistration from "@/components/instructor/AdventureRegistration"
 import Reservation from "@/components/customer/Reservation";
+import Adventures from "@/components/Adventures";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -59,9 +60,9 @@ const routes = [
                 component: Boats
             },
             {
-                path: 'instructors',
-                name: 'instructors',
-                component: Instructors
+                path: 'adventures',
+                name: 'adventures',
+                component: Adventures
             },
         ]
     },
@@ -96,9 +97,9 @@ const routes = [
                 component: Boats
             },
             {
-                path: 'browse/instructors',
-                name: 'customerInstructors',
-                component: Instructors
+                path: 'browse/adventures',
+                name: 'customerAdventures',
+                component: Adventures
             },
             {
                 path: 'profile',
@@ -138,9 +139,9 @@ const routes = [
                 component: Boats
             },
             {
-                path: 'instructors',
-                name: 'adminInstructors',
-                component: Instructors
+                path: 'adventures',
+                name: 'adminAdventures',
+                component: Adventures
             },
             {
                 path: 'profile',
@@ -163,7 +164,13 @@ const routes = [
                 path: 'register',
                 name: 'adventureRegistration',
                 component: AdventureRegistration
-            }
+            },
+            {
+                path: 'adventures',
+                name: 'instructorAdventures',
+                component: Adventures
+            },
+
         ]
     },
     {

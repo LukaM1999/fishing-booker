@@ -17,26 +17,15 @@
           <a class="navbar-item">
             Schedule
           </a>
-          <a class="navbar-item">
-            <router-link to="">
-              Adventures
-            </router-link>
-          </a>
-          <a class="navbar-item">
-            <router-link to="">
-              History
-            </router-link>
-          </a>
-          <a class="navbar-item">
-            <router-link to="">
-              Register new adventure
-            </router-link>
-          </a>
-          <a class="navbar-item">
-            <router-link to="">
-              Create appointment on sale
-            </router-link>
-          </a>
+          <router-link to="/instructor/adventures" class="navbar-item">
+             My Adventures
+          </router-link>
+          <router-link to="" class="navbar-item">
+            History
+          </router-link>
+          <router-link to="" class="navbar-item">
+            Create appointment on sale
+          </router-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
@@ -67,7 +56,7 @@ export default {
   name: "InstructorHomepage",
   data() {
     return {
-      user : null
+      user: null
     }
   },
   mounted() {

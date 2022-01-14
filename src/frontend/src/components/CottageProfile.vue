@@ -55,7 +55,7 @@
                     @click="switchGallery(true)">
           <b-carousel-item v-for="(item, i) in items" :key="i" style="height:80%">
             <a class="image ">
-              <img :src="'cottages/'+item" alt="'cottage_img'">
+              <img :src="'/'+item" alt="'cottage_img'">
             </a>
           </b-carousel-item>
           <span v-if="gallery" @click="switchGallery(false)" class="modal-close is-large"/>

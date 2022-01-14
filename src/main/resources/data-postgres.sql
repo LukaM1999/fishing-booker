@@ -21,8 +21,8 @@ insert into role(id, role_name) values (nextval('role_id_seq'), 'INSTRUCTOR');  
 insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Fishdude', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Fish', 'Dude', 'fishdude@gmail.com', 'Bulevar oslobodjenja 22', 'Novi Sad', 'Serbia', '453678', 5, true);
 insert into instructor(username, letter_of_intent) values ('Fishdude','Best instructor');
 
-insert into adventure(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, instructor_bio, fishing_equipment, owner_username)
-values (nextval('rentable_id_seq'), 'Silver Mirror Tour', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 4, 'Be polite.', 50, 'snacks=15;', 0, 'Ambitious and carefree adventurer', 'Fishing lines, hooks, rigs, bait', 'Fishdude');
+insert into adventure(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, instructor_bio, fishing_equipment, owner_username, images)
+values (nextval('rentable_id_seq'), 'Silver Mirror Tour', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 4, 'Be polite.', 50, 'snacks=15;', 0, 'Ambitious and carefree adventurer', 'Fishing lines, hooks, rigs, bait', 'Fishdude', 'a2.1.jpg;a2.2.jpg');
 
 insert into cottage(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, rooms, beds_per_room, owner_username, images)
 values (nextval('rentable_id_seq'), 'Prvenstvo Srbije', 'Serbia', 'Petrovaradin', 'Strazilovska 18', 'Mnogo jaka!', 8, 'Pravila nema', 20, 'wifi=5;chocolate=3', 0, 2, 2, 'Piwneuh', 'c3.1.jpg;c3.2.jpg;c3.3.jpg');
@@ -40,6 +40,9 @@ insert into cottage(id, name, country, city, address, promo_description, capacit
 values (nextval('rentable_id_seq'), 'Obsidian Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 20, 'wifi=5;', 0, 3, 2);
 insert into cottage(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, rooms, beds_per_room)
 values (nextval('rentable_id_seq'), 'Moon Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 50, 'wifi=5;', 0, 3, 2);
+
+insert into adventure(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, instructor_bio, fishing_equipment, owner_username, images)
+values (nextval('rentable_id_seq'), 'Tikvara - catfish fishing', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'Lets find dark place on Tikvaras beach', 1, 'Only women', 50, 'snacks=15;', 0, 'I have 70 hobbies', 'A big hook', 'Fishdude', 'a11.1.jpg;a11.2.jpg');
 
 insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment)
 values (nextval('rentable_id_seq'), '380 Realm Boston Whaler', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever', 16, 'Be polite.', 30, 'boots=10;', 5, 'Boston Whaler', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment');

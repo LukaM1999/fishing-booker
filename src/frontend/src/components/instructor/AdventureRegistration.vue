@@ -195,18 +195,18 @@ export default {
     async register(){
       const adventure = {
         name: this.name,
-        address: this.address,
-        city: this.city,
         country: this.country,
+        city: this.city,
+        address: this.address,
         promoDescription: this.promoDescription,
         capacity: this.capacity,
         rules: this.rules,
         price: this.price,
-        cancellationFee: this.cancellationFee,
         additionalServices: this.additionalServices,
+        cancellationFee: this.cancellationFee,
         instructorBio: this.biography,
         fishingEquipment: this.fishingEquipment,
-        ownerUsername: this.user.username
+        ownerUsername: JSON.parse(localStorage.getItem('user')).username
       }
       const formData = new FormData()
       for (let file of this.dropFiles) {
@@ -221,7 +221,7 @@ export default {
         this.$toasted.error('Error while registering adventure.')
       }
       this.$parent.close()
-
+      this.$emit('added')
     },
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1)
