@@ -42,7 +42,6 @@
 
 <script>
 import axios from "axios";
-import {Store} from "@/main";
 
 export default {
   name: "Login",

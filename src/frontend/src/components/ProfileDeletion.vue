@@ -34,20 +34,20 @@
 
 <script>
 import axios from "axios";
-import {Store} from "@/main";
 
 export default {
   name: "ProfileDeletion",
   data(){
     return {
-      deletionReason: ''
+      deletionReason: '',
+      profile: Object.assign({}, JSON.parse(localStorage.getItem('user'))),
     }
   },
   methods: {
     async sendDeletionRequest(){
       const deletionRequest = {
-        username: Store.user.username,
-        email: Store.user.email,
+        username: this.profile.username,
+        email: this.profile.email,
         deletionReason: this.deletionReason
       }
       const response = await axios.post('/user/sendDeletionRequest', deletionRequest)

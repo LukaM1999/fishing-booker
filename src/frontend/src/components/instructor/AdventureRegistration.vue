@@ -221,7 +221,7 @@ export default {
         this.$toasted.error('Error while registering adventure.')
       }
       this.$parent.close()
-      this.$emit('added')
+      this.$emit('added', response.data)
     },
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1)
