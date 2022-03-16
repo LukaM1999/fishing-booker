@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fishingbooker.dto.ApproveUserDTO;
+import com.fishingbooker.dto.LoginDTO;
 import com.fishingbooker.model.Customer;
 import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
@@ -32,7 +33,9 @@ public class UserController {
     // Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
     @GetMapping("/{username}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public RegisteredUser findByUsername(@PathVariable String username) { return this.userService.findByUsername(username); }
+    public RegisteredUser findByUsername(@PathVariable String username) {
+        return this.userService.findByUsername(username);
+    }
 
     @Transactional
     @GetMapping("/all")
@@ -67,8 +70,20 @@ public class UserController {
 
     @DeleteMapping("/delete/{username}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public boolean deleteUser(@PathVariable String username){
+    public boolean deleteUser(@PathVariable String username) {
         return this.userService.deleteUser(username);
+    }
+
+    @PutMapping("/checkPassword")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public boolean checkPassword(@RequestBody String username) {
+        return this.userService.checkPassword(username);
+    }
+
+    @PutMapping("/changePassword")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public boolean changePassword(@RequestBody LoginDTO loginDto) {
+        return this.userService.changePassword(loginDto.getUsername(), loginDto.getPassword());
     }
 
 }

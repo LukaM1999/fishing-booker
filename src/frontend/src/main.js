@@ -122,6 +122,7 @@ const routes = [
         path: '/admin',
         name: 'adminHomepage',
         component: AdminHomepage,
+        redirect: '/admin/cottages',
         children: [
             {
                 path: 'approve',

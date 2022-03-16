@@ -14,9 +14,6 @@
 
       <div id="navbarExampleTransparentExample" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item">
-            Home
-          </a>
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link">
               Browse
@@ -28,41 +25,36 @@
               <router-link to="/admin/boats" class="navbar-item">
                 Boats
               </router-link>
-              <router-link to="/admin/instructors" class="navbar-item">
+              <router-link to="/admin/adventures" class="navbar-item">
                 Adventures
               </router-link>
             </div>
           </div>
-          <a class="navbar-item has-link">
-            <router-link to="/admin/approve" class="navbar-item">
-              Approve users
-            </router-link>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Approve
+            </a>
+            <div class="navbar-dropdown is-boxed">
+              <router-link to="/admin/approve" class="navbar-item">
+                New users
+              </router-link>
+              <router-link to="" class="navbar-item">
+                Comments
+              </router-link>
+              <router-link to="" class="navbar-item">
+                Complaints
+              </router-link>
+            </div>
+          </div>
+          <router-link to="" class="navbar-item">
+            Business report and income
+          </router-link>
+          <router-link to="" class="navbar-item">
+            Transaction fee
+          </router-link>
+          <a @click="registerAdminModal" class="navbar-item">
+            Register admin
           </a>
-          <div class="navbar-item has-link is-hoverable has-dropdown ">
-            <router-link to="" class="navbar-item">
-              Business report and income
-            </router-link>
-          </div>
-          <div class="navbar-item has-link has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Transaction fee
-            </router-link>
-          </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Register admin
-            </router-link>
-          </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Comments
-            </router-link>
-          </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <router-link to="" class="navbar-item">
-              Complaints
-            </router-link>
-          </div>
         </div>
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
@@ -90,16 +82,25 @@
 
 <script>
 
+import Registration from "@/components/Registration";
+import RegisterAdminModal from "@/components/admin/RegisterAdminModal";
+import axios from "axios";
+import ChangePasswordModal from "@/components/admin/ChangePasswordModal";
+
 export default {
   name: "AdminHomepage",
   data() {
     return {
-      user : null,
-
+      user: {},
     }
   },
-  mounted() {
+  async mounted() {
     this.user = JSON.parse(localStorage.getItem('user'))
+    print(this.user)
+    const response = await this.axios.put('/user/checkPassword', this.user.username)
+    if(response.data === true){
+      this.changePasswordModal(this.user.username)
+    }
   },
   methods: {
     logOut() {
@@ -107,6 +108,24 @@ export default {
       localStorage.removeItem('user');
       localStorage.removeItem('jwt');
       this.$router.push('/')
+    },
+    registerAdminModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: RegisterAdminModal,
+        hasModalCard: true,
+        //customClass: 'custom-class custom-class-2',
+        trapFocus: true
+      })
+    },
+    changePasswordModal(){
+      this.$buefy.modal.open({
+        parent: this,
+        component: ChangePasswordModal,
+        hasModalCard: true,
+        trapFocus: true,
+        canCancel: false
+      })
     }
   },
 }

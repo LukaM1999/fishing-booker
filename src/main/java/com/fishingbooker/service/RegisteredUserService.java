@@ -23,4 +23,8 @@ public interface RegisteredUserService {
     boolean approveUser(String username);
 
     boolean deleteUser(String username);
+
+    boolean checkPassword(String username);
+
+    boolean changePassword(String username, String password);
 }

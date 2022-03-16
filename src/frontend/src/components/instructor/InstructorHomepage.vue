@@ -14,9 +14,9 @@
 
       <div id="navbarExampleTransparentExample" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item">
+          <router-link to="" class="navbar-item">
             Schedule
-          </a>
+          </router-link>
           <router-link to="/instructor/adventures" class="navbar-item">
              My Adventures
           </router-link>
@@ -30,7 +30,6 @@
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
-
             <div class="navbar-dropdown is-right is-boxed">
               <router-link to="/instructor/profile" class="navbar-item">
                 Profile information

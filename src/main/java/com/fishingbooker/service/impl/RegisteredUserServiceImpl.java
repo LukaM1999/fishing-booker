@@ -9,6 +9,7 @@ import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.model.Role;
 import com.fishingbooker.repository.*;
+import net.bytebuddy.build.BuildLogger;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -30,20 +31,16 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
 
     @Autowired
     private RegisteredUserRepository userRepository;
-
     @Autowired
     private InstructorRepository instructorRepository;
     @Autowired
     private CottageOwnerRepository cottageOwnerRepository;
     @Autowired
     private BoatOwnerRepository boatOwnerRepository;
-
     @Autowired
     private ProfileDeletionRequestRepository deletionRequestRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -135,6 +132,25 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         RegisteredUser user = userRepository.findByUsername(username);
         if(user == null) return false;
         userRepository.delete(user);
+        return true;
+    }
+
+    @Override
+    public boolean checkPassword(String username) {
+        RegisteredUser user = userRepository.findByUsername(username);
+        if(passwordEncoder.matches("admin", user.getPassword()))
+            return true;
+        return false;
+    }
+
+    @Override
+    public boolean changePassword(String username, String password) {
+        RegisteredUser user = this.userRepository.findByUsername(username);
+        if (user == null) return false;
+        if (password == null || password.isBlank())
+            return false;
+        user.setPassword(passwordEncoder.encode(password));
+        this.userRepository.save(user);
         return true;
     }
 }
