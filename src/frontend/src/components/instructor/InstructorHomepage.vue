@@ -23,8 +23,11 @@
           <router-link to="" class="navbar-item">
             History
           </router-link>
+          <router-link to="/instructor/reservation" class="navbar-item">
+            Custom Reservation
+          </router-link>
           <router-link to="" class="navbar-item">
-            Create appointment on sale
+            Business Report and Income
           </router-link>
         </div>
         <div class="navbar-end">
@@ -67,7 +70,8 @@ export default {
       localStorage.removeItem('user');
       localStorage.removeItem('jwt');
       this.$router.push('/')
-    }
+    },
+
   },
 }
 </script>

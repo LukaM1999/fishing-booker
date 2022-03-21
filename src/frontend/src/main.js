@@ -28,6 +28,7 @@ import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
 import AdventureRegistration from "@/components/instructor/AdventureRegistration"
 import Reservation from "@/components/customer/Reservation";
 import Adventures from "@/components/Adventures";
+import CustomReservation from "@/components/CustomReservation";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -155,6 +156,7 @@ const routes = [
         path: '/instructor',
         name: 'instructorHomepage',
         component: InstructorHomepage,
+        redirect: '/instructor/adventures',
         children: [
             {
                 path: 'profile',
@@ -170,6 +172,11 @@ const routes = [
                 path: 'adventures',
                 name: 'instructorAdventures',
                 component: Adventures
+            },
+            {
+                path: 'reservation',
+                name: 'instructorReservation',
+                component: CustomReservation
             },
 
         ]

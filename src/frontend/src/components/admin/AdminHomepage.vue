@@ -96,7 +96,6 @@ export default {
   },
   async mounted() {
     this.user = JSON.parse(localStorage.getItem('user'))
-    print(this.user)
     const response = await this.axios.put('/user/checkPassword', this.user.username)
     if(response.data === true){
       this.changePasswordModal(this.user.username)
