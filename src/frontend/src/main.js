@@ -29,6 +29,7 @@ import AdventureRegistration from "@/components/instructor/AdventureRegistration
 import Reservation from "@/components/customer/Reservation";
 import Adventures from "@/components/Adventures";
 import CustomReservation from "@/components/CustomReservation";
+import DeletionRequests from "@/components/admin/DeletionRequests";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -129,6 +130,11 @@ const routes = [
                 path: 'approve',
                 name: 'approveUser',
                 component: ApproveUser
+            },
+            {
+                path: 'requests',
+                name: 'requests',
+                component: DeletionRequests
             },
             {
                 path: 'cottages',

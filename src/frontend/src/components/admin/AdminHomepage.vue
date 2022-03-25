@@ -44,6 +44,9 @@
               <router-link to="" class="navbar-item">
                 Complaints
               </router-link>
+              <router-link to="/admin/requests" class="navbar-item">
+                Requests
+              </router-link>
             </div>
           </div>
           <router-link to="" class="navbar-item">

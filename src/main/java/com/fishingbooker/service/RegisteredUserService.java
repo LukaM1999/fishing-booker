@@ -13,6 +13,8 @@ public interface RegisteredUserService {
     RegisteredUser findById(Long id);
     @Transactional
     List<RegisteredUser> findAll();
+    List<ProfileDeletionRequest> findAllDeletionRequests();
+
     RegisteredUser findByUsername(String username);
     RegisteredUser save(RegisteredUser userRequest);
     boolean isPasswordValid(LoginDTO loginDto);
@@ -27,4 +29,6 @@ public interface RegisteredUserService {
     boolean checkPassword(String username);
 
     boolean changePassword(String username, String password);
+
+    boolean deleteRequest(String username);
 }

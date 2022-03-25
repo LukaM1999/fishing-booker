@@ -4,4 +4,5 @@ import com.fishingbooker.model.ProfileDeletionRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProfileDeletionRequestRepository extends JpaRepository<ProfileDeletionRequest, String> {
+    ProfileDeletionRequest findByUsername(String username);
 }

@@ -52,6 +52,10 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         return userRepository.findAll();
     }
 
+    public List<ProfileDeletionRequest> findAllDeletionRequests() throws AccessDeniedException {
+        return deletionRequestRepository.findAll();
+    }
+
     @Override
     public RegisteredUser findByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -130,6 +134,9 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
     @Override
     public boolean deleteUser(String username) {
         RegisteredUser user = userRepository.findByUsername(username);
+        ProfileDeletionRequest request = deletionRequestRepository.findByUsername(username);
+        if (request != null)
+            deletionRequestRepository.delete(request);
         if(user == null) return false;
         userRepository.delete(user);
         return true;
@@ -151,6 +158,14 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
             return false;
         user.setPassword(passwordEncoder.encode(password));
         this.userRepository.save(user);
+        return true;
+    }
+
+    @Override
+    public boolean deleteRequest(String username) {
+        ProfileDeletionRequest request = deletionRequestRepository.findByUsername(username);
+        if(request == null) return false;
+        deletionRequestRepository.delete(request);
         return true;
     }
 }

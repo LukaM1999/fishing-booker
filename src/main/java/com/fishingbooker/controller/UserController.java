@@ -45,6 +45,13 @@ public class UserController {
     }
 
     @Transactional
+    @GetMapping("/getDeletionRequests")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public List<ProfileDeletionRequest> loadAllDeletionRequests() {
+        return this.userService.findAllDeletionRequests();
+    }
+
+    @Transactional
     @GetMapping("/waitingApproval")
     @PreAuthorize("hasAuthority('ADMIN')")
     public List<ApproveUserDTO> waitingApproval() {
@@ -73,6 +80,13 @@ public class UserController {
     public boolean deleteUser(@PathVariable String username) {
         return this.userService.deleteUser(username);
     }
+
+    @DeleteMapping("/deleteRequest/{username}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public boolean deleteRequest(@PathVariable String username) {
+        return this.userService.deleteRequest(username);
+    }
+
 
     @PutMapping("/checkPassword")
     @PreAuthorize("hasAuthority('ADMIN')")
