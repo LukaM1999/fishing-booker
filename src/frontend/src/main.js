@@ -31,11 +31,13 @@ import Adventures from "@/components/Adventures";
 import CustomReservation from "@/components/CustomReservation";
 import DeletionRequests from "@/components/admin/DeletionRequests";
 
+
 Vue.config.productionTip = false
 Vue.config.devtools
 
 jwtInterceptor();
 
+Vue.use(Buefy)
 Vue.use(VueRouter)
 Vue.use(Toasted, {
     position: 'top-right',
@@ -43,7 +45,6 @@ Vue.use(Toasted, {
     keepOnHover: true,
 })
 Vue.use(VueAxios, axios)
-Vue.use(Buefy)
 
 const routes = [
     {

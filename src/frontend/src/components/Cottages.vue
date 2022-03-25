@@ -46,7 +46,7 @@
         </div>
       </div>
       <div class="col-md-1 align-self-center d-flex justify-content-center">
-        <button class="btn btn-primary" @click="setSortOrder">
+        <button class="button is-primary" @click="setSortOrder">
           <i :class="[ascending ? 'fa fa-sort-up' : 'fa fa-sort-down']"></i>
         </button>
       </div>

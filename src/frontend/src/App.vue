@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="my-component-wrapper">
     <router-view></router-view>
   </div>
 </template>
@@ -17,34 +17,98 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<style lang="scss">
+.my-component-wrapper {
+  @import "~bulma/sass/utilities/_all";
 
-.my-label {
-  display: inline-block !important;
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  height: 100% !important;
-  padding: 1rem 0.75rem !important;
-  pointer-events: none !important;
-  border: 1px solid transparent !important;
-  transform-origin: 0 0 !important;
-  transition: opacity .1s ease-in-out, transform .1s ease-in-out !important;
-  opacity: .65;
-  transform: scale(.85) translateY(-0.5rem) translateX(0.15rem);
-  font-weight: 400 !important;
-  font-size: 14px !important;
-}
+  // Set your colors
+  // Braco moja vamo samo menjate boje
+  $primary: black;
+  $info: #e9b4bc;
+  $info-invert: black;
+  $box-background-color: whitesmoke;
 
-.md-layout-item {
-  min-width: 15% !important;
-  max-width: 18% !important;
-}
+  // Lists and maps
+  $custom-colors: null !default;
+  $custom-shades: null !default;
+
+  // Setup $colors to use as bulma classes (e.g. 'is-twitter')
+  $colors: mergeColorMaps(
+          (
+              "white": (
+                  $white,
+                  $black,
+              ),
+              "black": (
+                  $black,
+                  $white,
+              ),
+              "light": (
+                  $light,
+                  $light-invert,
+              ),
+              "dark": (
+                  $dark,
+                  $dark-invert,
+              ),
+              "primary": (
+                  $primary,
+                  $primary-invert,
+                  $primary-light,
+                  $primary-dark,
+              ),
+              "link": (
+                  $link,
+                  $link-invert,
+                  $link-light,
+                  $link-dark,
+              ),
+              "info": (
+                  $info,
+                  $info-invert,
+                  $info-light,
+                  $info-dark,
+              ),
+              "success": (
+                  $success,
+                  $success-invert,
+                  $success-light,
+                  $success-dark,
+              ),
+              "warning": (
+                  $warning,
+                  $warning-invert,
+                  $warning-light,
+                  $warning-dark,
+              ),
+              "danger": (
+                  $danger,
+                  $danger-invert,
+                  $danger-light,
+                  $danger-dark,
+              ),
+          ),
+          $custom-colors
+  );
+
+  // Links
+  $link: $primary;
+  $link-invert: $primary-invert;
+  $link-focus-border: $primary;
+
+  // Import Bulma and Buefy styles
+  @import "~bulma";
+  @import "~buefy/src/scss/buefy";
+  }
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
+  }
+
+  .md-layout-item {
+    min-width: 15% !important;
+    max-width: 18% !important;
+  }
 </style>

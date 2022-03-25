@@ -1,56 +1,8 @@
 <template>
-  <div>
-    <nav class="navbar is-primary">
-      <div class="navbar-brand">
-        <a class="navbar-item">
-          <img :src="'/logo1.png'" alt="logo">
-        </a>
-        <div class="navbar-burger" data-bs-target="navbarExampleTransparentExample">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-
-      <div id="navbarExampleTransparentExample" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item">
-            <a href="cottageOwner/cottages">
-              My Cottages
-            </a>
-          </a>
-        </div>
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
-
-            <div class="navbar-dropdown is-right is-boxed">
-              <router-link to="/cottageOwner  /profile" class="navbar-item">
-                Profile information
-              </router-link>
-              <hr class="navbar-divider">
-              <a @click="logOut" class="navbar-item">
-                Log out
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-    <div class="row">
-      <nav class="level is-info m-3 rounded">
-        <div class="level-item has-text-left ml-5 is-justify-content-left">
-          <div>
-            <p class="heading">Name</p>
-            <p class="title">{{ cottage.name }}</p>
-          </div>
-        </div>
-      </nav>
-    </div>
-    <div class="row justify-content-center">
-      <div class="col"></div>
-      <div class="col-10">
+  <div class="tile is-ancestor m-5">
+    <div class="tile is-4 is-vertical is-parent">
+      <div class="tile is-child box">
+        <p class="title">{{ cottage.name }}</p>
         <b-carousel :autoplay="false" indicator-custom :indicator-inside="false" :overlay="gallery"
                     @click="switchGallery(true)">
           <b-carousel-item v-for="(item, i) in items" :key="i" style="height:80%">
@@ -66,10 +18,7 @@
           </template>
         </b-carousel>
       </div>
-      <div class="col"></div>
-    </div>
-    <div class="row">
-      <div class="col">
+      <div class="tile is-child box">
         <nav class="level is-info m-3 rounded">
           <div class="level-item has-text-centered">
             <div>
@@ -89,6 +38,8 @@
               <p class="title">{{ cottage.bedsPerRoom }}</p>
             </div>
           </div>
+        </nav>
+        <nav class="level is-info m-3 rounded">
           <div class="level-item has-text-centered">
             <div>
               <p class="heading">per person/day</p>
@@ -97,10 +48,15 @@
           </div>
         </nav>
       </div>
-      <div class="col m-5">
-
+    </div>
+    <div class="tile is-parent">
+      <div class="tile is-child box is-dark">
+        <p class="title">Three</p>
+        <button class="button is-primary mb-5">Hey there traveler</button>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus diam, consequat gravida libero rhoncus ut. Morbi maximus, leo sit amet vehicula eleifend, nunc dui porta orci, quis semper odio felis ut quam.</p>
+        <p>Suspendisse varius ligula in molestie lacinia. Maecenas varius eget ligula a sagittis. Pellentesque interdum, nisl nec interdum maximus, augue diam porttitor lorem, et sollicitudin felis neque sit amet erat. Maecenas imperdiet felis nisi, fringilla luctus felis hendrerit sit amet. Aenean vitae gravida diam, finibus dignissim turpis. Sed eget varius ligula, at volutpat tortor.</p>
+        <p>Integer sollicitudin, tortor a mattis commodo, velit urna rhoncus erat, vitae congue lectus dolor consequat libero. Donec leo ligula, maximus et pellentesque sed, gravida a metus. Cras ullamcorper a nunc ac porta. Aliquam ut aliquet lacus, quis faucibus libero. Quisque non semper leo.</p>
       </div>
-
     </div>
   </div>
 </template>
@@ -153,48 +109,5 @@ export default {
 
 .carousel-item {
   display: block;
-}
-.is-primary {
-  background-image: linear-gradient(to right, #99A799, #ADC2A9) !important;
-}
-.is-info{
-  background-image: linear-gradient(to bottom, ghostwhite, white) !important;
-}
-nav {
-  padding: 0 !important;
-}
-
-.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-a.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:active {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-.navbar-divider {
-  background-color: gray;
 }
 </style>
