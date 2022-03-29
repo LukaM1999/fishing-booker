@@ -19,13 +19,16 @@
               My Cottages
             </a>
           </a>
+          <router-link to="/cottageOwner/history" class="navbar-item">
+            Cottage reservation history
+          </router-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
 
             <div class="navbar-dropdown is-right is-boxed">
-              <router-link to="/cottageOwner  /profile" class="navbar-item">
+              <router-link to="/cottageOwner/profile" class="navbar-item">
                 Profile information
               </router-link>
               <hr class="navbar-divider">

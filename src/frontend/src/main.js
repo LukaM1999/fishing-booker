@@ -30,6 +30,7 @@ import Reservation from "@/components/customer/Reservation";
 import Adventures from "@/components/Adventures";
 import CustomReservation from "@/components/CustomReservation";
 import DeletionRequests from "@/components/admin/DeletionRequests";
+import History from "@/components/History";
 
 
 Vue.config.productionTip = false
@@ -103,6 +104,11 @@ const routes = [
                 path: 'browse/adventures',
                 name: 'customerAdventures',
                 component: Adventures
+            },
+            {
+                path: 'history',
+                name: 'customerHistory',
+                component: History
             },
             {
                 path: 'profile',
@@ -185,7 +191,11 @@ const routes = [
                 name: 'instructorReservation',
                 component: CustomReservation
             },
-
+            {
+                path: 'history',
+                name: 'adventureHistory',
+                component: History
+            },
         ]
     },
     {
@@ -202,7 +212,12 @@ const routes = [
                 path: 'profile',
                 name: 'cottageOwnerProfile',
                 component: CottageOwnerProfile
-            }
+            },
+            {
+                path: 'history',
+                name: 'cottageHistory',
+                component: History
+            },
         ]
     }
 ]

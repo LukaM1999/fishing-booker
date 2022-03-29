@@ -1,6 +1,7 @@
 package com.fishingbooker.controller;
 
 import com.fishingbooker.dto.CustomerReservationDTO;
+import com.fishingbooker.dto.ReservationHistoryDTO;
 import com.fishingbooker.model.FreeTerm;
 import com.fishingbooker.model.Rentable;
 import com.fishingbooker.model.Reservation;
@@ -38,5 +39,11 @@ public class ReservationController {
     @PreAuthorize("!hasAuthority('ADMIN')")
     public Reservation reserveRentable(@PathVariable Long rentableId, @RequestBody Reservation reservation){
         return reservationService.reserveRentable(rentableId, reservation);
+    }
+
+    @PostMapping("/getFinishedReservations")
+    @PreAuthorize("!hasAuthority('ADMIN')")
+    public List<Reservation> getFinishedReservations(@RequestBody ReservationHistoryDTO historyDto){
+        return reservationService.getFinishedReservations(historyDto.getType(), historyDto.getUsername(), historyDto.getIsCustomer());
     }
 }

@@ -26,4 +26,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     Reservation getOccupiedAdventure(@Param("owner") String owner, @Param("startTime")LocalDateTime startTime,
                                      @Param("endTime") LocalDateTime endTime);
 
+    @Query("select r from Reservation r where " +
+            "r.type = :type and r.customerUsername = :username " +
+            "and r.endTime <= current_timestamp ")
+    List<Reservation> getFinishedCustomerReservations(@Param("type") ReservationType type, @Param("username") String username);
+
+    @Query("select r from Reservation r where " +
+            "r.ownerUsername = :username " +
+            "and r.endTime <= current_timestamp ")
+    List<Reservation> getFinishedOwnerReservations(@Param("username") String username);
+
 }

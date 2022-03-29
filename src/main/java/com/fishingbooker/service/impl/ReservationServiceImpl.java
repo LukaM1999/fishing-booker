@@ -97,6 +97,13 @@ public class ReservationServiceImpl implements ReservationService {
         return reservation;
     }
 
+    @Override
+    public List<Reservation> getFinishedReservations(ReservationType type, String username, boolean isCustomer) {
+        if (isCustomer) return reservationRepository.getFinishedCustomerReservations(type, username);
+        return reservationRepository.getFinishedOwnerReservations(username);
+    }
+
+
     private boolean hasSequence(FreeTerm freeTerm, FreeTerm term) {
         return isSequence(freeTerm.getStartTime(), term.getEndTime()) ||
                 isSequence(freeTerm.getEndTime(), term.getStartTime()) ||

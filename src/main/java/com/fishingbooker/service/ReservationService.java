@@ -15,4 +15,6 @@ public interface ReservationService {
     FreeTerm createFreeTerm(FreeTerm freeTerm);
 
     Reservation reserveRentable(Long rentableId, Reservation reservation);
+
+    List<Reservation> getFinishedReservations(ReservationType type, String username, boolean isCustomer);
 }

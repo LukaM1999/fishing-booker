@@ -20,8 +20,8 @@
           <router-link to="/instructor/adventures" class="navbar-item">
              My Adventures
           </router-link>
-          <router-link to="" class="navbar-item">
-            History
+          <router-link to="/instructor/history" class="navbar-item">
+            Adventure reservation history
           </router-link>
           <router-link to="/instructor/reservation" class="navbar-item">
             Custom Reservation

@@ -33,22 +33,9 @@
               </router-link>
             </div>
           </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              History
-            </a>
-            <div class="navbar-dropdown is-boxed">
-              <a class="navbar-item">
-                Cottage reservations
-              </a>
-              <a class="navbar-item">
-                Boat reservations
-              </a>
-              <a class="navbar-item">
-                Adventure reservations
-              </a>
-            </div>
-          </div>
+          <router-link to="/customer/history" class="navbar-item">
+            Reservation history
+          </router-link>
           <a class="navbar-item">
             Upcoming reservations
           </a>
