@@ -206,7 +206,7 @@ const routes = [
             {
                 path: 'cottages',
                 name: 'customerCottages',
-                component: Cottages
+                component: Cottages,
             },
             {
                 path: 'profile',
@@ -218,6 +218,11 @@ const routes = [
                 name: 'cottageHistory',
                 component: History
             },
+            {
+                path: 'cottageProfile',
+                name: 'cottageProfile',
+                component: CottageProfile
+            }
         ]
     }
 ]

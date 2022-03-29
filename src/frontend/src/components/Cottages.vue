@@ -196,7 +196,7 @@ export default {
     },
     cottageProfile(cottage) {
       localStorage.setItem('currentCottage', JSON.stringify(cottage))
-      this.$router.push('/cottageProfile')
+      this.$router.push('cottageProfile')
     },
     pushCottage(cottage) {
       this.cottages.push(cottage)

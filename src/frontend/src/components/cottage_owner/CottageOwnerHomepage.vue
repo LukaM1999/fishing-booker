@@ -1,45 +1,39 @@
 <template>
   <div>
-    <nav class="navbar is-primary">
-      <div class="navbar-brand">
-        <a class="navbar-item">
-          <img :src="'../logo1.png'" alt="logo">
-        </a>
-        <div class="navbar-burger" data-bs-target="navbarExampleTransparentExample">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
+    <b-navbar class="is-primary">
+      <template #brand>
+        <b-navbar-item tag="router-link" :to="{ path: '/cottageOwner/cottages' }">
+          <img
+              src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
+              alt="Lightweight UI components for Vue.js based on Bulma"
+          >
+        </b-navbar-item>
+      </template>
+      <template #start>
+        <b-navbar-item href="/cottageOwner/cottages">
+          My Cottages
+        </b-navbar-item>
+        <b-navbar-item href="/cottageOwner/profile">
+          Profile information
+        </b-navbar-item>
+        <b-navbar-item href="#">
+          History
+        </b-navbar-item>
+        <b-navbar-item href="#">
+          Make a sale
+        </b-navbar-item>
+      </template>
 
-      <div id="navbarExampleTransparentExample" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item" >
-            <a to="/cottageOwner/cottages">
-              My Cottages
+      <template #end>
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <a class="button is-link" @click="logOut">
+              Log Out
             </a>
-          </a>
-          <router-link to="/cottageOwner/history" class="navbar-item">
-            Cottage reservation history
-          </router-link>
-        </div>
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
-
-            <div class="navbar-dropdown is-right is-boxed">
-              <router-link to="/cottageOwner/profile" class="navbar-item">
-                Profile information
-              </router-link>
-              <hr class="navbar-divider">
-              <a @click="logOut" class="navbar-item">
-                Log out
-              </a>
-            </div>
           </div>
-        </div>
-      </div>
-    </nav>
+        </b-navbar-item>
+      </template>
+    </b-navbar>
     <div>
       <router-view></router-view>
     </div>
@@ -65,45 +59,4 @@ export default {
 </script>
 
 <style scoped>
-.is-primary {
-  background-image: linear-gradient(to right, #99A799, #ADC2A9) !important;
-}
-
-nav {
-  padding: 0 !important;
-}
-
-.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-a.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:active {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-.navbar-divider {
-  background-color: gray;
-}
 </style>

@@ -50,6 +50,9 @@ public class Reservation {
     private boolean isDeal;
 
     @Column
+    private int salePercent;
+
+    @Column
     private double price;
 
     @Column
@@ -76,6 +79,26 @@ public class Reservation {
         this.price = price;
         this.rating = 0;
         this.complaintExists = false;
+        this.salePercent = 0;
+    }
+
+    public Reservation(Long id, ReservationType type, String name, String ownerUsername, LocalDateTime startTime,
+                       LocalDateTime endTime, String additionalServices, int guests, int salePercent, double price) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+        this.ownerUsername = ownerUsername;
+        this.customerUsername = null;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.isCancelled = false;
+        this.additionalServices = additionalServices;
+        this.guests = guests;
+        this.isDeal = true;
+        this.price = price;
+        this.rating = 0;
+        this.complaintExists = false;
+        this.salePercent = salePercent;
     }
 
     public Long getId() {
@@ -189,4 +212,8 @@ public class Reservation {
     public void setComplaintExists(boolean complaintExists) {
         this.complaintExists = complaintExists;
     }
+
+    public int getSalePercent() {return salePercent; }
+
+    public void setSalePercent(int salePercent) {this.salePercent = salePercent; }
 }

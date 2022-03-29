@@ -53,6 +53,15 @@
       <div class="tile is-child box is-dark">
         <p class="title">Three</p>
         <button class="button is-primary mb-5">Hey there traveler</button>
+        <b-field v-show="authority==='COTTAGE_OWNER'" label="Select a free term">
+          <b-datepicker
+              placeholder="Click to select..."
+              v-model="dates"
+              range
+              :min-date="minDate">
+          </b-datepicker>
+          <button class="button ml-5 is-link" @click="createFreeTerm()"> Create free term</button>
+        </b-field>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus diam, consequat gravida libero rhoncus ut. Morbi maximus, leo sit amet vehicula eleifend, nunc dui porta orci, quis semper odio felis ut quam.</p>
         <p>Suspendisse varius ligula in molestie lacinia. Maecenas varius eget ligula a sagittis. Pellentesque interdum, nisl nec interdum maximus, augue diam porttitor lorem, et sollicitudin felis neque sit amet erat. Maecenas imperdiet felis nisi, fringilla luctus felis hendrerit sit amet. Aenean vitae gravida diam, finibus dignissim turpis. Sed eget varius ligula, at volutpat tortor.</p>
         <p>Integer sollicitudin, tortor a mattis commodo, velit urna rhoncus erat, vitae congue lectus dolor consequat libero. Donec leo ligula, maximus et pellentesque sed, gravida a metus. Cras ullamcorper a nunc ac porta. Aliquam ut aliquet lacus, quis faucibus libero. Quisque non semper leo.</p>
@@ -64,6 +73,7 @@
 <script>
 import "buefy/dist/cjs/carousel"
 import {Store} from "@/main";
+import moment from "moment";
 
 export default {
   name: "CottageProfile",
@@ -71,13 +81,62 @@ export default {
     return {
       cottage: JSON.parse(localStorage.getItem('currentCottage')),
       items: [],
-      gallery: false
+      dates: [],
+      gallery: false,
+      authority: '',
+      user: null,
+      type: 'COTTAGE',
+      enitityName: '',
+      ownerUsername: '',
+      startTime: new Date(),
+      endTime: new Date(),
+      minDate: new Date()
     }
   },
   async mounted() {
     this.items = this.cottage.images.split(';')
+    this.user = JSON.parse(localStorage.getItem('user'))
+    this.authority = this.user?.role.authority
+    this.minDate = moment().add(1, 'days').toDate()
+    this.minDate.setHours(0)
+    this.minDate.setMinutes(0)
   },
   methods: {
+    async createFreeTerm(){
+      let sYear = this.dates[0].getFullYear()
+      let sMonth = this.formatDateMonth(new Date(this.dates[0]));
+      let sDay = this.formatDateDay(new Date(this.dates[0]));
+      let eYear = this.dates[this.dates.length - 1].getFullYear()
+      let eMonth = this.formatDateMonth(new Date(this.dates.slice(-1)[0]));
+      let eDay = this.formatDateDay(new Date(this.dates.slice(-1)[0]));
+
+      const freeTerm = {
+        type: this.type,
+        entityName: this.cottage.name,
+        ownerUsername: this.user.username,
+        startTime: sYear + '-' + sMonth + '-' + sDay + ' 00:00',
+        endTime: eYear + '-' + eMonth + '-' + eDay + ' 00:00'
+      }
+      console.log(freeTerm)
+      const response = await this.axios.post('/reservation/createFreeTerm', freeTerm)
+      if (response.data) {
+        this.$toasted.success('Free Term successfully created!')
+      } else {
+        this.$toasted.error('Error while creating free term.')
+      }
+    },
+    formatDateMonth(date) {
+      if (date.getMonth() + 1 < 10)
+        return `0${date.getMonth() + 1}`
+      else
+        return `${date.getMonth() + 1}`
+    },
+    formatDateDay(date) {
+      if (date.getDate() < 10)
+        return `0${date.getDate()}`
+      else
+        return `${date.getDate()}`
+    },
     logOut() {
       Store.user = null
       localStorage.removeItem('jwt')
