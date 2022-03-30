@@ -1,14 +1,19 @@
 version: 2.1
 jobs:
   build-and-test:
-    working_directory: ~/backend/fishing-booker
+    working_directory: ~/fishing-booker/backend/fishing-booker
     docker:
       - image: cimg/openjdk:11.0
       - image: circleci/postgres:9.6.2-alpine
+        auth:
+          username: lukam99
+          password: $DOCKERHUB_ACCESS_TOKEN
         environment:
-          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_USER: postgres
+          POSTGRES_DB: fishing-booker
     steps:
-      - checkout
+      - checkout:
+          path: ~/fishing-booker
       - run:
           name: Build
           command: mvn -B -DskipTests clean package
