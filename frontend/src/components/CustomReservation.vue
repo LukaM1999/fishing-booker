@@ -227,7 +227,7 @@
                   <md-card class="md-primary" md-theme="orange-card" md-with-hover>
                     <md-ripple>
                       <md-card-media md-ratio="4:3">
-                        <img :src="'/' + type[0].toLowerCase() + selectedRentable.id + '.1.jpg'" style="height: 100%"
+                        <img :src="backend + '/' + type[0].toLowerCase() + selectedRentable.id + '.1.jpg'" style="height: 100%"
                              alt="Rentable image">
                       </md-card-media>
                       <md-card-area>
@@ -313,6 +313,7 @@
 <script>
 import moment from "moment";
 import axios from "axios";
+import {backend} from "@/env";
 
 const {splitImages} = require('@/_helpers/imageHelpers');
 
@@ -320,6 +321,7 @@ export default {
   name: "CustomReservation",
   data() {
     return {
+      backend: backend,
       activeStep: 0,
       type: 'COTTAGE',
       selectedDate: new Date(),
@@ -471,7 +473,7 @@ export default {
         end: end,
         capacity: this.people
       }
-      const response = await axios.post('/reservation/getFreeRentables', reservationDto)
+      const response = await axios.post(backend + '/reservation/getFreeRentables', reservationDto)
       if (response.data) {
         this.rentables = response.data.filter(rentable => rentable.capacity >= this.people && rentable.ownerUsername === this.user.username)
       }
@@ -493,7 +495,7 @@ export default {
         complaintExists: false
       }
 
-      const response = await axios.post(`/reservation/reserveRentable/${this.selectedRentable.id}`, reservation)
+      const response = await axios.post(backend + `/reservation/reserveRentable/${this.selectedRentable.id}`, reservation)
       if (response.data) {
         //this.$router.push('/customer/upcomingReservations')
         this.$toasted.success('Reservation confirmed successfully!')

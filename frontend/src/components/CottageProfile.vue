@@ -7,7 +7,7 @@
                     @click="switchGallery(true)">
           <b-carousel-item v-for="(item, i) in items" :key="i" style="height:80%">
             <a class="image ">
-              <img :src="'/'+item" alt="'cottage_img'">
+              <img :src="backend + '/'+item" alt="'cottage_img'">
             </a>
           </b-carousel-item>
           <span v-if="gallery" @click="switchGallery(false)" class="modal-close is-large"/>
@@ -74,6 +74,7 @@
 import "buefy/dist/cjs/carousel"
 import {Store} from "@/main";
 import moment from "moment";
+import {backend} from "@/env";
 
 export default {
   name: "CottageProfile",
@@ -90,7 +91,8 @@ export default {
       ownerUsername: '',
       startTime: new Date(),
       endTime: new Date(),
-      minDate: new Date()
+      minDate: new Date(),
+      backend: backend
     }
   },
   async mounted() {
@@ -118,7 +120,7 @@ export default {
         endTime: eYear + '-' + eMonth + '-' + eDay + ' 00:00'
       }
       console.log(freeTerm)
-      const response = await this.axios.post('/reservation/createFreeTerm', freeTerm)
+      const response = await this.axios.post(backend + '/reservation/createFreeTerm', freeTerm)
       if (response.data) {
         this.$toasted.success('Free Term successfully created!')
       } else {
@@ -143,7 +145,7 @@ export default {
       this.$router.push('/')
     },
     getImgUrl(value) {
-      return `/c${this.cottage.id}.${value}.jpg`
+      return `${backend}/c${this.cottage.id}.${value}.jpg`
     },
     switchGallery(value) {
       this.gallery = value

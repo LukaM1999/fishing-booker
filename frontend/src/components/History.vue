@@ -118,6 +118,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "History",
@@ -136,14 +137,14 @@ export default {
   },
   methods: {
     async loadTab(){
-      const response = await axios.post('/reservation/getFinishedReservations',
+      const response = await axios.post(backend + '/reservation/getFinishedReservations',
           {type: this.activeTab.slice(0, -1).toUpperCase(), username: this.username, isCustomer: true})
       if(response.data)
         this.reservations = response.data
     },
 
     async getOwnerReservations(){
-      const response = await axios.post('/reservation/getFinishedReservations',
+      const response = await axios.post(backend + '/reservation/getFinishedReservations',
           {type: null, username: this.username, isCustomer: false})
       if (response.data)
         this.reservations = response.data

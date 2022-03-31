@@ -153,6 +153,7 @@ import MdRipple from "vue-material"
 import "vue-material/dist/vue-material.min.css"
 import "bootstrap/dist/css/bootstrap-grid.min.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
+import {backend} from "@/env";
 
 Vue.use(MdCard)
 Vue.use(MdRipple)
@@ -208,7 +209,7 @@ export default {
   },
   methods: {
     async getBoats() {
-      const response = await axios.get('/boat/all')
+      const response = await axios.get(backend + '/boat/all')
       if (response) {
         this.boats = response.data
       }

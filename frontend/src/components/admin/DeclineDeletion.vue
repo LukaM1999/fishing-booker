@@ -34,6 +34,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "DeclineDeletion",
@@ -48,7 +49,7 @@ export default {
   methods: {
     async decline(){
       //console.log(this.user)
-      const response = await this.axios.delete(`/user/deleteRequest/${this.user.username}`)
+      const response = await this.axios.delete(backend + `/user/deleteRequest/${this.user.username}`)
       if (response.data) {
         const email = {
           service_id: 'service_approve',

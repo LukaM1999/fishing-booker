@@ -140,6 +140,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css"
 import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
 import AdventureRegistration from "@/components/instructor/AdventureRegistration";
 import AdventureUpdate from "@/components/instructor/AdventureUpdate";
+import {backend} from "@/env";
 
 const {splitImages} = require('@/_helpers/imageHelpers');
 
@@ -181,19 +182,19 @@ export default {
   },
   methods: {
     async getAdventures() {
-      const response = await axios.get('/adventure/all')
+      const response = await axios.get(backend + '/adventure/all')
       if (response.data) {
         this.adventures = response.data
       }
     },
     async getOwnerAdventures() {
-      const response = await axios.get('/adventure/owner?username=' + this.user?.username)
+      const response = await axios.get(backend + '/adventure/owner?username=' + this.user?.username)
       if (response.data) {
         this.adventures = response.data
       }
     },
     getImgUrl(value) {
-      return `/a${value}.1.jpg`
+      return `${backend}/a${value}.1.jpg`
     },
     adventureProfile(adventure) {
       localStorage.setItem('currentAdventure', JSON.stringify(adventure))
@@ -223,7 +224,7 @@ export default {
       });
     },
     async deleteAdventure() {
-      const response = await axios.delete(`/adventure/delete/${this.delete}`)
+      const response = await axios.delete(backend + `/adventure/delete/${this.delete}`)
       if (response.data) {
         this.adventures = this.adventures.filter(c => c.id !== this.delete)
         this.$toasted.success('Adventure successfully deleted!')

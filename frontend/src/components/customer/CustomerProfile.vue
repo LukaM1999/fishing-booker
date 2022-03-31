@@ -94,6 +94,7 @@
 import axios from "axios";
 import PasswordConfirmation from "@/components/PasswordConfirmation";
 import ProfileDeletion from "@/components/ProfileDeletion";
+import {backend} from "@/env";
 
 export default {
   name: "CustomerProfile",
@@ -133,7 +134,7 @@ export default {
     async editProfile() {
       const { authorities, ...editedProfile } = this.profile
       editedProfile.role = { roleName: editedProfile.role.authority, id: editedProfile.role.id}
-      const response = await axios.put('/user/editProfile', { ...editedProfile })
+      const response = await axios.put(backend + '/user/editProfile', { ...editedProfile })
       if (response.data) {
         this.oldProfile = response.data
         localStorage.setItem('user', JSON.stringify(response.data))

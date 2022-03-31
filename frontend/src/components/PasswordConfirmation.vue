@@ -33,6 +33,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "PasswordConfirmation",
@@ -43,7 +44,7 @@ export default {
   },
   methods: {
     async isPasswordValid(){
-      const response = await axios.post('/auth/confirmPassword',
+      const response = await axios.post(backend + '/auth/confirmPassword',
           {username: JSON.parse(localStorage.getItem('user')).username, password: this.passwordConfirmation})
       if (response.data) {
         this.$emit('success')

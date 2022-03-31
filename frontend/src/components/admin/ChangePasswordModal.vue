@@ -29,6 +29,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "ChangePasswordModal",
@@ -44,7 +45,7 @@ export default {
   methods: {
     async changePassword(){
       const loginDto = {username: this.user.username, password: this.password}
-      const response = await axios.put('/user/changePassword', loginDto)
+      const response = await axios.put(backend + '/user/changePassword', loginDto)
       if (response.data) {
         this.$parent.close()
         this.$toasted.success('Successfully changed password!')

@@ -168,6 +168,8 @@
 </template>
 
 <script>
+import {backend} from "@/env";
+
 export default {
   name: "AdventureUpdate",
   props: {adventure : Object},
@@ -197,7 +199,7 @@ export default {
   methods: {
     async loadFiles(images) {
       for (let num in images) {
-        const response = await this.axios.get(`/${images[num]}`)
+        const response = await this.axios.get(backend + `/${images[num]}`)
         if (response.data) {
           this.dropFiles.push(response.data)
         }
@@ -229,7 +231,7 @@ export default {
       }
       formData.append('adventure', new Blob([JSON.stringify(adventure)], {type: 'application/json'}))
 
-      const response = await this.axios.post('/adventure/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
+      const response = await this.axios.post(backend + '/adventure/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
       if (response) {
         this.$toasted.success('Adventure successfully updated!')
       } else {

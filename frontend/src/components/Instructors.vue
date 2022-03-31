@@ -127,6 +127,7 @@ import MdRipple from "vue-material"
 import "vue-material/dist/vue-material.min.css"
 import "bootstrap/dist/css/bootstrap-grid.min.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
+import {backend} from "@/env";
 
 Vue.use(MdCard)
 Vue.use(MdRipple)
@@ -167,7 +168,7 @@ export default {
   },
   methods: {
     async getInstructors() {
-      const response = await axios.get('/instructor/all')
+      const response = await axios.get(backend + '/instructor/all')
       if (response) {
         this.instructors = response.data
       }

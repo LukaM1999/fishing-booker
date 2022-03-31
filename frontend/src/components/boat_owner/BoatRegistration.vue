@@ -222,6 +222,8 @@
 
 <script>
 import {Store} from "@/main";
+import {backend} from "@/env";
+import axios from "axios";
 
 export default {
   name: "BoatRegistration",
@@ -282,7 +284,7 @@ export default {
       }
       formData.append('boat', new Blob([JSON.stringify(boat)], {type: 'application/json'}))
 
-      const response = await this.axios.post('/boat/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
+      const response = await this.axios.post(backend + '/boat/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
       if (response) {
         this.$toasted.success('Boat successfully registered!')
       } else {

@@ -79,6 +79,7 @@
 <script>
 import axios from "axios";
 import DeclineRegistration from "@/components/admin/DeclineRegistration";
+import {backend} from "@/env";
 
 export default {
   name: "ApproveUser",
@@ -90,14 +91,14 @@ export default {
   },
   async mounted() {
     this.axios
-        .get('/user/waitingApproval')
+        .get(backend + '/user/waitingApproval')
         .then(response => {
           this.users = response.data
         });
   },
   methods: {
     async approve(user) {
-      const response = await this.axios.put('/user/approve', user.username)
+      const response = await this.axios.put(backend + '/user/approve', user.username)
       if (response.data) {
         this.removeUser(user)
         const email = {

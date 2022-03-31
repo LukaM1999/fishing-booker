@@ -165,6 +165,9 @@
 </template>
 
 <script>
+import {backend} from "@/env";
+import axios from "axios";
+
 export default {
   name: "CottageRegistration",
   data() {
@@ -208,7 +211,7 @@ export default {
       }
       formData.append('cottage', new Blob([JSON.stringify(cottage)], {type: 'application/json'}))
 
-      const response = await this.axios.post('/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
+      const response = await this.axios.post(backend + '/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
       if (response.data) {
         this.$toasted.success('Cottage successfully registered!')
       } else {

@@ -68,6 +68,7 @@
 import axios from "axios";
 import DeclineRegistration from "@/components/admin/DeclineRegistration";
 import DeclineDeletion from "@/components/admin/DeclineDeletion";
+import {backend} from "@/env";
 
 export default {
   name: "DeletionRequests",
@@ -78,14 +79,14 @@ export default {
   },
   async mounted() {
     this.axios
-        .get('/user/getDeletionRequests')
+        .get(backend + '/user/getDeletionRequests')
         .then(response => {
           this.requests = response.data
         });
   },
   methods: {
     async approve(user) {
-      const response = await this.axios.delete(`/user/delete/${user.username}`)
+      const response = await this.axios.delete(backend + `/user/delete/${user.username}`)
       if (response.data) {
         this.removeUser(user)
         const email = {

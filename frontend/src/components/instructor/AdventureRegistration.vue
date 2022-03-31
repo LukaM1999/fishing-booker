@@ -168,6 +168,8 @@
 </template>
 
 <script>
+import {backend} from "@/env";
+
 export default {
   name: "adventureRegistration",
   data(){
@@ -214,7 +216,7 @@ export default {
       }
       formData.append('adventure', new Blob([JSON.stringify(adventure)], {type: 'application/json'}))
 
-      const response = await this.axios.post('/adventure/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
+      const response = await this.axios.post(backend + '/adventure/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
       if (response) {
         this.$toasted.success('Adventure successfully registered!')
       } else {

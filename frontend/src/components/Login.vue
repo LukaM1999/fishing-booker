@@ -42,6 +42,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "Login",
@@ -54,7 +55,7 @@ export default {
   methods: {
     async userLogin() {
       const loginDto = {username: this.usernameLogin, password: this.passwordLogin}
-      const response = await axios.post('/auth/login', loginDto)
+      const response = await axios.post(backend + '/auth/login', loginDto)
       if (response.data) {
         localStorage.setItem('jwt', response.data.accessToken)
         localStorage.setItem('user', JSON.stringify(response.data.user))

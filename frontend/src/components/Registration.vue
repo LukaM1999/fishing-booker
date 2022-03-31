@@ -128,6 +128,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "Registration",
@@ -163,7 +164,7 @@ export default {
         role: this.role,
         letterOfIntent: this.letterOfIntent
       }
-      const response = await this.axios.post('/auth/signup', user)
+      const response = await this.axios.post(backend + '/auth/signup', user)
       if (response.data) {
         if (response.data.role.authority === 'CUSTOMER') {
           const email = {

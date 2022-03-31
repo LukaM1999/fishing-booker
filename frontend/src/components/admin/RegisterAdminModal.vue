@@ -89,6 +89,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "RegisterAdminModal",
@@ -123,7 +124,7 @@ export default {
         role: this.role,
         letterOfIntent: this.letterOfIntent
       }
-      const response = await this.axios.post('/auth/signup', user)
+      const response = await this.axios.post(backend + '/auth/signup', user)
 
       if (response.data) {
         this.$toasted.success('Registration request successfully sent!')

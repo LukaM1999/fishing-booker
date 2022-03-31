@@ -187,13 +187,13 @@ export default {
       }
     },
     async getOwnerCottages() {
-      const response = await axios.get('/cottage/owner?username=' + this.user?.username)
+      const response = await axios.get(backend + '/cottage/owner?username=' + this.user?.username)
       if (response.data) {
         this.cottages = response.data
       }
     },
     getImgUrl(value) {
-      return `/c${value}.1.jpg`
+      return `${backend}/c${value}.1.jpg`
     },
     cottageProfile(cottage) {
       localStorage.setItem('currentCottage', JSON.stringify(cottage))
@@ -223,7 +223,7 @@ export default {
       });
     },
     async deleteCottage() {
-      const response = await axios.delete(`/cottage/delete/${this.delete}`)
+      const response = await axios.delete(backend + `/cottage/delete/${this.delete}`)
       if (response.data) {
         this.cottages = this.cottages.filter(c => c.id !== this.delete)
         this.$toasted.success('Cottage successfully deleted!')

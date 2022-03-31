@@ -89,6 +89,7 @@ import Registration from "@/components/Registration";
 import RegisterAdminModal from "@/components/admin/RegisterAdminModal";
 import axios from "axios";
 import ChangePasswordModal from "@/components/admin/ChangePasswordModal";
+import {backend} from "@/env";
 
 export default {
   name: "AdminHomepage",
@@ -99,7 +100,7 @@ export default {
   },
   async mounted() {
     this.user = JSON.parse(localStorage.getItem('user'))
-    const response = await this.axios.put('/user/checkPassword', this.user.username)
+    const response = await this.axios.put(backend + '/user/checkPassword', this.user.username)
     if(response.data === true){
       this.changePasswordModal(this.user.username)
     }

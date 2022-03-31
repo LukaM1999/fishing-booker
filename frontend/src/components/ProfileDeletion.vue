@@ -34,6 +34,7 @@
 
 <script>
 import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "ProfileDeletion",
@@ -50,7 +51,7 @@ export default {
         email: this.profile.email,
         deletionReason: this.deletionReason
       }
-      const response = await axios.post('/user/sendDeletionRequest', deletionRequest)
+      const response = await axios.post(backend + '/user/sendDeletionRequest', deletionRequest)
       if (response.data){
         this.$toasted.success('Deletion request sent successfully!')
         this.$parent.close()

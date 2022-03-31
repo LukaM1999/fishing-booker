@@ -163,6 +163,8 @@
 </template>
 
 <script>
+import {backend} from "@/env";
+
 export default {
   name: "CottageUpdate",
   props: {cottage : Object},
@@ -191,7 +193,7 @@ export default {
   methods: {
     async loadFiles(images) {
       for (let num in images) {
-        const response = await this.axios.get(`/${images[num]}`)
+        const response = await this.axios.get(backend + `/${images[num]}`)
         if(response.data){
           this.dropFiles.push(response)
         }
@@ -225,7 +227,7 @@ export default {
 
       formData.append('cottage', new Blob([JSON.stringify(cottage)], {type: 'application/json'}))
 
-      const response = await this.axios.post('/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
+      const response = await this.axios.post(backend + '/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
       if (response) {
         this.$toasted.success('Cottage successfully registered!')
       } else {
