@@ -1,5 +1,7 @@
 package com.fishingbooker.repository;
 
+import com.fishingbooker.dto.CustomerReservationDTO;
+import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -34,4 +36,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "and r.endTime <= current_timestamp ")
     List<Reservation> getFinishedOwnerReservations(@Param("username") String username);
 
+    @Query("select r from Reservation r where " +
+            "r.ownerUsername = :username ")
+    List<Reservation> getAllByUsername(@Param("username") String username);
 }

@@ -63,7 +63,11 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public FreeTerm createFreeTerm(FreeTerm freeTerm) {
-        List<FreeTerm> freeTerms = this.freeTermRepository.getFreeTermsByNameAndUsername(freeTerm.getEntityName(), freeTerm.getOwnerUsername());
+        List<FreeTerm> freeTerms = new ArrayList<>();
+        if(freeTerm.getType() == ReservationType.ADVENTURE)
+            freeTerms = this.freeTermRepository.getFreeTermsByUsername(freeTerm.getOwnerUsername());
+        else
+            freeTerms = this.freeTermRepository.getFreeTermsByNameAndUsername(freeTerm.getEntityName(), freeTerm.getOwnerUsername());
 
         if (freeTerms.size() == 0) {
             this.freeTermRepository.save(freeTerm);
@@ -103,7 +107,6 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.getFinishedOwnerReservations(username);
     }
 
-
     private boolean hasSequence(FreeTerm freeTerm, FreeTerm term) {
         return isSequence(freeTerm.getStartTime(), term.getEndTime()) ||
                 isSequence(freeTerm.getEndTime(), term.getStartTime()) ||
@@ -140,5 +143,15 @@ public class ReservationServiceImpl implements ReservationService {
     private boolean isBetweenDates(LocalDateTime dateOfInterest, FreeTerm term) {
         return dateOfInterest.atZone(zoneId).toEpochSecond() >= term.getStartTime().atZone(zoneId).toEpochSecond()
                 && dateOfInterest.atZone(zoneId).toEpochSecond() <= term.getEndTime().atZone(zoneId).toEpochSecond();
+    }
+
+    @Override
+    public List<FreeTerm> getFreeTerms(String username) {
+        return this.freeTermRepository.getFreeTermsByUsername(username);
+    }
+
+    @Override
+    public List<Reservation> getAllReservationsByUsername(String username) {
+        return this.reservationRepository.getAllByUsername(username);
     }
 }

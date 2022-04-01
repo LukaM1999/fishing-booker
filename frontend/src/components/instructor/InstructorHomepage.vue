@@ -14,11 +14,11 @@
 
       <div id="navbarExampleTransparentExample" class="navbar-menu">
         <div class="navbar-start">
-          <router-link to="" class="navbar-item">
+          <router-link to="/instructor/schedule" class="navbar-item">
             Schedule
           </router-link>
           <router-link to="/instructor/adventures" class="navbar-item">
-             My Adventures
+            My Adventures
           </router-link>
           <router-link to="/instructor/history" class="navbar-item">
             Adventure reservation history

@@ -5,6 +5,7 @@ import com.fishingbooker.model.FreeTerm;
 import com.fishingbooker.model.Rentable;
 import com.fishingbooker.model.Reservation;
 import com.fishingbooker.model.ReservationType;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -16,4 +17,8 @@ public interface ReservationService {
     Reservation reserveRentable(Long rentableId, Reservation reservation);
 
     List<Reservation> getFinishedReservations(ReservationType type, String username, boolean isCustomer);
+
+    List<FreeTerm> getFreeTerms(String username);
+
+    List<Reservation> getAllReservationsByUsername(String username);
 }

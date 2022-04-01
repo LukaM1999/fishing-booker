@@ -31,7 +31,7 @@ import Adventures from "@/components/Adventures";
 import CustomReservation from "@/components/CustomReservation";
 import DeletionRequests from "@/components/admin/DeletionRequests";
 import History from "@/components/History";
-
+import Calendar from "@/components/Calendar";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -175,6 +175,11 @@ const routes = [
                 path: 'profile',
                 name: 'instructorProfile',
                 component: InstructorProfile
+            },
+            {
+                path: 'schedule',
+                name: 'instructorSchedule',
+                component: Calendar
             },
             {
                 path: 'register',
