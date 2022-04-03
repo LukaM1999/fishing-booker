@@ -4,13 +4,17 @@ jobs:
     working_directory: ~/fishing-booker/backend/fishing-booker
     docker:
       - image: cimg/openjdk:11.0
+        environment:
+          PGHOST: localhost
+          PGUSER: postgres
       - image: circleci/postgres:9.6.2-alpine
         auth:
           username: lukam99
           password: $DOCKERHUB_ACCESS_TOKEN
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_DB: fishing-booker
+          POSTGRES_DB: fishing
+          POSTGRES_HOST_AUTH_METHOD: trust
     steps:
       - checkout:
           path: ~/fishing-booker
@@ -41,7 +45,16 @@ orbs:
 workflows:
   heroku_deploy:
     jobs:
-      - build-and-test
+      - build-and-test:
+          context: SonarCloud
+          filters:
+                branches:
+                  only:
+                    - develop
       - heroku/deploy-via-git:
+          filters:
+                branches:
+                  only:
+                    - develop
           requires:
             - build-and-test
