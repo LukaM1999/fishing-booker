@@ -56,7 +56,7 @@ public class Reservation {
     private double price;
 
     @Column
-    private int rating;
+    private boolean isReviewed;
 
     @Column
     private boolean complaintExists;
@@ -77,7 +77,7 @@ public class Reservation {
         this.guests = guests;
         this.isDeal = isDeal;
         this.price = price;
-        this.rating = 0;
+        this.isReviewed = false;
         this.complaintExists = false;
         this.salePercent = 0;
     }
@@ -96,7 +96,7 @@ public class Reservation {
         this.guests = guests;
         this.isDeal = true;
         this.price = price;
-        this.rating = 0;
+        this.isReviewed = false;
         this.complaintExists = false;
         this.salePercent = salePercent;
     }
@@ -197,14 +197,6 @@ public class Reservation {
         this.price = price;
     }
 
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
     public boolean isComplaintExists() {
         return complaintExists;
     }
@@ -216,4 +208,12 @@ public class Reservation {
     public int getSalePercent() {return salePercent; }
 
     public void setSalePercent(int salePercent) {this.salePercent = salePercent; }
+
+    public boolean isReviewed() {
+        return isReviewed;
+    }
+
+    public void setReviewed(boolean reviewed) {
+        isReviewed = reviewed;
+    }
 }

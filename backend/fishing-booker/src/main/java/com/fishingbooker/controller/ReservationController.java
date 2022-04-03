@@ -53,4 +53,9 @@ public class ReservationController {
     public List<Reservation> getAllReservationsByUsername(@PathVariable String username) {
         return this.reservationService.getAllReservationsByUsername(username);
     }
+
+    @PostMapping("/review")
+    public void addReview(@RequestBody Review review) {
+        this.reservationService.addReview(review);
+    }
 }

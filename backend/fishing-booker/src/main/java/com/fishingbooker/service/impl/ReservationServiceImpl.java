@@ -5,6 +5,7 @@ import com.fishingbooker.model.*;
 import com.fishingbooker.repository.FreeTermRepository;
 import com.fishingbooker.repository.RentableRepository;
 import com.fishingbooker.repository.ReservationRepository;
+import com.fishingbooker.repository.ReviewRepository;
 import com.fishingbooker.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private FreeTermRepository freeTermRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     private ZoneId zoneId = ZoneId.systemDefault();
 
@@ -152,6 +156,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getAllReservationsByUsername(String username) {
-        return this.reservationRepository.getAllByUsername(username);
+        return this.reservationRepository.getAllByOwnerUsername(username);
+    }
+
+    @Override
+    public void addReview(Review review) {
+        Reservation reservation = this.reservationRepository.getById(review.getReservationId());
+        reservation.setReviewed(true);
+        this.reservationRepository.save(reservation);
+        this.reviewRepository.save(review);
     }
 }

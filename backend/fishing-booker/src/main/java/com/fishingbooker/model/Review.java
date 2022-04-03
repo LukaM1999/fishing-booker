@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class Comment {
+public class Review {
 
     @Id
     @Column
@@ -15,14 +15,22 @@ public class Comment {
     private String comment;
 
     @Column
+    private int rentableRating;
+
+    @Column
+    private int ownerRating;
+
+    @Column
     private boolean isPublic;
 
-    public Comment(){}
+    public Review(){}
 
-    public Comment(Long reservationId, String comment) {
+    public Review(Long reservationId, String comment, int rentableRating, int ownerRating) {
         this.reservationId = reservationId;
         this.comment = comment;
         this.isPublic = false;
+        this.rentableRating = rentableRating;
+        this.ownerRating = ownerRating;
     }
 
     public Long getReservationId() {
@@ -47,5 +55,21 @@ public class Comment {
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public int getRentableRating() {
+        return rentableRating;
+    }
+
+    public void setRentableRating(int rentableRating) {
+        this.rentableRating = rentableRating;
+    }
+
+    public int getOwnerRating() {
+        return ownerRating;
+    }
+
+    public void setOwnerRating(int ownerRating) {
+        this.ownerRating = ownerRating;
     }
 }

@@ -42,12 +42,9 @@
                     {{ props.row.price }}
                   </b-table-column>
 
-                  <b-table-column field="rating" label="Rating" sortable numeric v-slot="props">
-                    {{ props.row.rating }}
-                  </b-table-column>
-
-                  <b-table-column field="rating" label="Review" v-slot="props">
-                    <button title="Review" class="btn btn-warning" :disabled="props.row.rating !== 0" v-if="props.row.rating === 0">
+                  <b-table-column field="reviewed" label="Review" v-slot="props">
+                    <button title="Review" @click="openReviewModal(props.row)" class="btn btn-warning"
+                            :disabled="props.row.reviewed || props.row.cancelled">
                       <i class="fa fa-star fa-2x"></i>
                     </button>
                   </b-table-column>
@@ -103,10 +100,6 @@
                   {{ props.row.price }}
                 </b-table-column>
 
-                <b-table-column field="rating" label="Rating" sortable numeric v-slot="props">
-                  {{ props.row.rating }}
-                </b-table-column>
-
               </b-table>
             </div>
           </div>
@@ -119,6 +112,7 @@
 <script>
 import axios from "axios";
 import {backend} from "@/env";
+import ReservationReview from "@/components/customer/ReservationReview";
 
 export default {
   name: "History",
@@ -128,6 +122,8 @@ export default {
       role: JSON.parse(localStorage.getItem('user') || '{}')?.role?.authority,
       activeTab: 'cottages',
       reservations: [],
+      modalRating: false,
+      rating: 0,
     }
   },
   async mounted() {
@@ -148,7 +144,26 @@ export default {
           {type: null, username: this.username, isCustomer: false})
       if (response.data)
         this.reservations = response.data
-    }
+    },
+
+    // Function to open buefy reservation review modal with ReservationReview component as parent
+    // and pass the reservation to it, with handlers for close and submit
+    openReviewModal(reservation) {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ReservationReview,
+        props: {
+          reservation: reservation,
+        },
+        events: {
+          'submit': () => {
+            this.$toasted.success('Review submitted!');
+          }
+        }
+      })
+    },
+
+
   },
   filters: {
     addressFormat(value) {

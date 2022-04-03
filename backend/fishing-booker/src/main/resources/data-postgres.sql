@@ -59,5 +59,5 @@ insert into free_term(id, type, entity_name, owner_username, start_time, end_tim
 insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextval('free_term_id_seq'), 'BOAT', '380 Realm Boston Whaler', 'Popaye', '2022-04-07', '2022-04-09');
 insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextval('free_term_id_seq'), 'ADVENTURE', 'Silver Mirror Tour', 'Fishdude', '2022-04-15', '2022-04-27');
 
-insert into reservation(id, type, name, owner_username, customer_username, start_time, end_time, additional_services, guests, is_cancelled, is_deal, price, rating, complaint_exists)
-values (nextval('reservation_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', 'imbiamba', '2022-01-08', '2022-01-21', 'Some services', 1, false, false, 10000, 0, false);
+insert into reservation(id, type, name, owner_username, customer_username, start_time, end_time, additional_services, guests, is_cancelled, is_deal, price, is_reviewed, complaint_exists, sale_percent)
+values (nextval('reservation_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', 'imbiamba', '2022-01-08', '2022-01-21', 'Some services', 1, false, false, 10000, false, false, 0);
