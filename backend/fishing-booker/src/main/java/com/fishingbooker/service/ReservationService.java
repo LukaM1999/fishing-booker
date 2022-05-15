@@ -32,4 +32,8 @@ public interface ReservationService {
     List<FreeTerm> createDayOff(FreeTermDTO dto);
 
     void cancelReservation(Long reservationId);
+    
+    List<Reservation> getActions(String name, String ownerUsername);
+
+    void reserveAction(Long id, String customerUsername);
 }

@@ -1,7 +1,6 @@
 package com.fishingbooker.repository;
 
-import com.fishingbooker.model.Reservation;
-import com.fishingbooker.model.ReservationType;
+import com.fishingbooker.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -51,4 +50,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "r.ownerUsername = :username " +
             "and r.name = :rentableName")
     List<Reservation> getAllByNameAndUsername(String rentableName, String username);
+    
+    @Query( "select r from Reservation r where " +
+            "r.ownerUsername = :ownerUsername " +
+            "and r.name = :name and r.isDeal = true " +
+            "and r.startTime > current_timestamp " +
+            "and r.customerUsername is null")
+    List<Reservation> getActions(@Param("name") String name, @Param("ownerUsername") String ownerUsername);
+
+    Reservation getReservationById(Long id);
 }

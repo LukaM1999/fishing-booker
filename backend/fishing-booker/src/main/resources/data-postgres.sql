@@ -29,7 +29,7 @@ values (nextval('rentable_id_seq'), 'Prvenstvo Srbije', 'Serbia', 'Petrovaradin'
 insert into cottage(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, rooms, beds_per_room, owner_username, images)
 values (nextval('rentable_id_seq'), 'Silver Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 30, 'wifi=5;chocolate=3', 0, 3, 2, 'Piwneuh', 'c4.1.jpg;c4.2.jpg;c4.3.jpg');
 insert into cottage(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, rooms, beds_per_room, owner_username, images)
-values (nextval('rentable_id_seq'), 'Black Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 40, 'wifi=5;chocolate=3', 0, 3, 2, 'Piwneuh', 'c5.1.jpg;c5.2.jpg;c5.3.jpg');
+values (nextval('rentable_id_seq'), 'Black Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 40, 'wifi=5;aircool=3', 0, 3, 2, 'Piwneuh', 'c5.1.jpg;c5.2.jpg;c5.3.jpg');
 insert into cottage(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, rooms, beds_per_room)
 values (nextval('rentable_id_seq'), 'Gold Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 20, 'wifi=5;', 0, 3, 2);
 insert into cottage(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, rooms, beds_per_room)

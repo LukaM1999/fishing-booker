@@ -19,7 +19,7 @@
         <b-navbar-item href="/cottageOwner/history">
           History
         </b-navbar-item>
-        <b-navbar-item href="#">
+        <b-navbar-item href="/cottageOwner/action">
           Make a sale
         </b-navbar-item>
       </template>

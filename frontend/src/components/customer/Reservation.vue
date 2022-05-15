@@ -284,7 +284,7 @@
               </div>
               <div class="row mt-5">
                 <div class="col">
-                  <h1 class="title">Total price: {{ calculateTotal() }} euros</h1>
+                  <h1 cla ss="title">Total price: {{ calculateTotal() }} euros</h1>
                 </div>
               </div>
               <div class="row mt-4">

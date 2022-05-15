@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 
 import static com.fishingbooker.model.ReservationType.ADVENTURE;
@@ -49,8 +50,8 @@ public class ReservationServiceImpl implements ReservationService {
         List<FreeTerm> freeTerms = this.freeTermRepository.getFreeTermsByType(reservationDTO.getType());
         Map<Rentable, FreeTerm> freeRentables = new HashMap<>();
         for (FreeTerm term : freeTerms) {
-            if (!term.getStartTime().isBefore(reservationDTO.getStart())
-                    || !term.getEndTime().isAfter(reservationDTO.getEnd())) continue;
+            if (!isBetweenDates(reservationDTO.getStart(), term.getStartTime(), term.getEndTime())
+                    || !isBetweenDates(reservationDTO.getEnd(), term.getStartTime(), term.getEndTime())) continue;
             if (term.getType() == ReservationType.COTTAGE)
                 freeRentables.put(rentableRepository.getCottageByNameAndOwner(term.getEntityName(), term.getOwnerUsername()), term);
             else if (term.getType() == ReservationType.BOAT)
@@ -130,6 +131,19 @@ public class ReservationServiceImpl implements ReservationService {
     public List<Reservation> getReservations(ReservationType type, String username, boolean isCustomer) {
         if (isCustomer) return reservationRepository.getCustomerReservations(type, username);
         return reservationRepository.getOwnerReservations(username);
+
+    }
+    
+    @Override    
+    public List<Reservation> getActions(String name, String ownerUsername){
+        return reservationRepository.getActions(name, ownerUsername);
+    }
+
+    @Override
+    public void reserveAction(Long id, String customerUserrname){
+        Reservation reservation = reservationRepository.getReservationById(id);
+        reservation.setCustomerUsername(customerUserrname);
+        reservationRepository.save(reservation);
     }
 
     private boolean hasSequence(FreeTerm freeTerm, FreeTerm term) {
@@ -284,5 +298,11 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = this.reservationRepository.getById(reservationId);
         reservation.setCancelled(true);
         this.reservationRepository.save(reservation);
+    }
+
+    //is date between or is equal to start or end
+    private boolean isBetweenDates(LocalDateTime dateOfInterest, LocalDateTime start, LocalDateTime end) {
+        return dateOfInterest.atZone(zoneId).toEpochSecond() >= start.atZone(zoneId).toEpochSecond()
+                && dateOfInterest.atZone(zoneId).toEpochSecond() <= end.atZone(zoneId).toEpochSecond();
     }
 }

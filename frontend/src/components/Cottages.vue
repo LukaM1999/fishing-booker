@@ -59,7 +59,7 @@
               <md-card-actions md-alignment="right">
                 <md-button v-show="authority==='COTTAGE_OWNER'||authority==='ADMIN'" class="md-icon-button"
                            @click="confirmDialog(cottage)">
-                  <span class="fa fa-trash"></span>
+                  <span class="fa fa-trash-alt"></span>
                 </md-button>
                 <md-button v-show="authority==='COTTAGE_OWNER'" class="md-icon-button"
                            @click="updateCottageModal(cottage)">

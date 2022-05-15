@@ -16,7 +16,6 @@ import CustomerHomepage from "@/components/customer/CustomerHomepage";
 import LandingPage from "@/components/LandingPage";
 import Cottages from "@/components/Cottages";
 import Boats from "@/components/Boats";
-import Instructors from "@/components/Instructors";
 import CustomerProfile from "@/components/customer/CustomerProfile";
 import AdminHomepage from "@/components/admin/AdminHomepage";
 import AdminProfile from "@/components/admin/AdminProfile";
@@ -37,6 +36,7 @@ import Penalties from "@/components/customer/Penalties";
 import SaleSubscriptions from "@/components/customer/SaleSubscriptions";
 import Complaints from "@/components/admin/Complaints";
 
+import CottageAction from "@/components/cottage_owner/CottageAction";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -253,7 +253,12 @@ const routes = [
                 path: 'cottageProfile',
                 name: 'cottageProfile',
                 component: CottageProfile
-            }
+            },
+            {
+                path: 'action',
+                name: 'action',
+                component: CottageAction
+            },
         ]
     }
 ]

@@ -4,7 +4,7 @@
       <div class="tile is-child box">
         <p class="title">{{ cottage.name }}</p>
         <b-carousel :autoplay="false" indicator-custom :indicator-inside="false" :overlay="gallery"
-                    @click="switchGallery(true)">
+                    @click="switchGallery(false)">
           <b-carousel-item v-for="(item, i) in items" :key="i" style="height:80%">
             <a class="image ">
               <img :src="backend + '/'+item" alt="'cottage_img'">
@@ -78,10 +78,6 @@
             </b-field>
           </div>
         </div>
-
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam semper diam at erat pulvinar, at pulvinar felis blandit. Vestibulum volutpat tellus diam, consequat gravida libero rhoncus ut. Morbi maximus, leo sit amet vehicula eleifend, nunc dui porta orci, quis semper odio felis ut quam.</p>
-        <p>Suspendisse varius ligula in molestie lacinia. Maecenas varius eget ligula a sagittis. Pellentesque interdum, nisl nec interdum maximus, augue diam porttitor lorem, et sollicitudin felis neque sit amet erat. Maecenas imperdiet felis nisi, fringilla luctus felis hendrerit sit amet. Aenean vitae gravida diam, finibus dignissim turpis. Sed eget varius ligula, at volutpat tortor.</p>
-        <p>Integer sollicitudin, tortor a mattis commodo, velit urna rhoncus erat, vitae congue lectus dolor consequat libero. Donec leo ligula, maximus et pellentesque sed, gravida a metus. Cras ullamcorper a nunc ac porta. Aliquam ut aliquet lacus, quis faucibus libero. Quisque non semper leo.</p>
         <div class="row mt-5" v-show="authority==='COTTAGE_OWNER'">
           <div class="col"></div>
           <div class="col-8">
@@ -89,9 +85,46 @@
             </calendar>
           </div>
           <div class="col"></div>
+          <div>
+        <button v-show="authority==='COTTAGE_OWNER'" class="button is-primary mb-5">Statistics</button>
+          </div>
+        <div class="mt-5">
+            <button class="button is-link" v-if="authority==='COTTAGE_OWNER'" @click="createAction()">
+                Create an action for this cottage
+            </button>
+          </div>
+        </div>
+        <p class="title mt-5"> Actions for this cottage: </p>
+        <p class="subtitle mt-5" v-if="actions.length===0"> Unfortunately there are no special deals for this cottage</p>
+        <div class="columns mt-5 scrollable" v-if="actions.length !== 0">
+          <div class="col-2 ml-3" v-for="a in actions" v-bind:key="a.id">
+            <div class="card">
+              <div class="card-content">
+                <p class="subtitle">
+                  Start Date:
+                </p>
+                <p class="subtitle">
+                  <strong>{{ a.startTime.substring(0, 10) }}</strong>
+                </p>
+                <p class="subtitle">
+                  End Date:
+                </p>
+                <p class="subtitle">
+                  <strong>{{ a.endTime.substring(0, 10) }}</strong>
+                </p>
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item"  v-if="authority==='CUSTOMER'">
+                  <button class="button" @click="reserveAction(a.id)">
+                   Reserve
+                  </button>
+                </p>
+              </footer>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+  </div>
   </div>
 </template>
 
@@ -111,11 +144,11 @@ export default {
       cottage: JSON.parse(localStorage.getItem('currentCottage')),
       items: [],
       dates: [],
+      actions: [],
       gallery: false,
       authority: '',
       user: null,
       type: 'COTTAGE',
-      enitityName: '',
       ownerUsername: '',
       startTime: new Date(),
       endTime: new Date(),
@@ -134,6 +167,7 @@ export default {
     this.minDate.setHours(0)
     this.minDate.setMinutes(0)
     await this.getIsSubscribed()
+    await this.getActions()
   },
   methods: {
     async getIsSubscribed() {
@@ -171,8 +205,8 @@ export default {
       })
       this.subscriptionText = 'Unsubscribe'
       this.$toasted.success('Subscribed successfully!')
-    },
-    async createFreeTerm(){
+    }, 
+    async createFreeTerm() {
       let sYear = this.dates[0].getFullYear()
       let sMonth = this.formatDateMonth(new Date(this.dates[0]));
       let sDay = this.formatDateDay(new Date(this.dates[0]));
@@ -187,7 +221,6 @@ export default {
         startTime: sYear + '-' + sMonth + '-' + sDay + ' 00:00',
         endTime: eYear + '-' + eMonth + '-' + eDay + ' 00:00'
       }
-      console.log(freeTerm)
       const response = await this.axios.post(backend + '/reservation/createFreeTerm', freeTerm)
       if (response.data) {
         this.$toasted.success('Free Term successfully created!')
@@ -195,6 +228,26 @@ export default {
       } else {
         this.$toasted.error('Error while creating free term.')
       }
+    },
+    async getActions() {
+      const response = await this.axios.post(backend + '/reservation/getActions', {
+        name: this.cottage.name,
+        ownerUsername: this.cottage.ownerUsername
+      })
+      if (response.data) {
+        this.actions = response.data;
+        console.log(this.actions)
+      }
+    },
+    async reserveAction(id){
+      const response = await this.axios.patch(backend + '/reservation/reserveAction', {
+        id: id,
+        customerUsername: this.user.username
+      })
+      this.actions.splice(this.actions.findIndex(a => a.id === id), 1)
+    },
+    async createAction() {
+      await this.$router.push({path: '/cottageOwner/action', params: {cottageId: this.cottage.id}})
     },
     formatDateMonth(date) {
       if (date.getMonth() + 1 < 10)
@@ -247,7 +300,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .is-active .al img {
   filter: grayscale(0%);
 }

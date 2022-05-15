@@ -1,9 +1,11 @@
 package com.fishingbooker.controller;
 
+import com.fishingbooker.dto.ActionDTO;
 import com.fishingbooker.dto.CustomerReservationDTO;
 import com.fishingbooker.dto.EventDTO;
 import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.dto.ReservationHistoryDTO;
+import com.fishingbooker.dto.ReserveActionDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.RentableRepository;
 import com.fishingbooker.repository.ReservationRepository;
@@ -38,6 +40,30 @@ public class ReservationController {
     @PreAuthorize("!hasAuthority('ADMIN')")
     public Reservation reserveRentable(@PathVariable Long rentableId, @RequestBody Reservation reservation){
         return reservationService.reserveRentable(rentableId, reservation);
+    }
+
+    @PostMapping("/createAction/{rentableId}")
+    @PreAuthorize("!hasAuthority('ADMIN')")
+    public Reservation createAction(@PathVariable Long rentableId, @RequestBody Reservation reservation){
+        FreeTerm freeTerm = new FreeTerm();
+        freeTerm.setStartTime(reservation.getStartTime());
+        freeTerm.setEndTime(reservation.getEndTime());
+        freeTerm.setOwnerUsername(reservation.getOwnerUsername());
+        freeTerm.setType(reservation.getType());
+        freeTerm.setEntityName(reservation.getName());
+
+        reservationService.createFreeTerm(freeTerm);
+        return reservationService.reserveRentable(rentableId, reservation);
+    }
+
+    @PostMapping("/getActions")
+    public List<Reservation> getActions(@RequestBody ActionDTO actionDTO){
+        return reservationService.getActions(actionDTO.getName(), actionDTO.getOwnerUsername());
+    }
+
+    @PatchMapping("/reserveAction")
+    public void reserveAction(@RequestBody ReserveActionDTO reserveActionDTO){
+        this.reservationService.reserveAction(reserveActionDTO.getId(), reserveActionDTO.getCustomerUsername());
     }
 
     @PostMapping("/getFinishedReservations")

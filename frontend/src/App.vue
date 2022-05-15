@@ -23,9 +23,9 @@ export default {
 
   // Set your colors
   // Braco moja vamo samo menjate boje
-  $primary: black;
-  $info: #e9b4bc;
-  $info-invert: black;
+  $primary: #2f3e46;
+  $info: #84a98c;
+  $link: #84A98C;
   $box-background-color: whitesmoke;
 
   // Lists and maps
