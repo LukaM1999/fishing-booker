@@ -1,8 +1,7 @@
 package com.fishingbooker.repository;
 
-import com.fishingbooker.dto.CustomerReservationDTO;
-import com.fishingbooker.dto.FreeTermDTO;
-import com.fishingbooker.model.*;
+import com.fishingbooker.model.Reservation;
+import com.fishingbooker.model.ReservationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -39,4 +38,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> getAllByOwnerUsername(String username);
 
     Reservation getById(Long id);
+
+    @Query("select r from Reservation r where " +
+            "r.ownerUsername = :username " +
+            "and r.name = :rentableName")
+    List<Reservation> getAllByNameAndUsername(String rentableName, String username);
 }

@@ -1,6 +1,8 @@
 package com.fishingbooker.controller;
 
 import com.fishingbooker.dto.CustomerReservationDTO;
+import com.fishingbooker.dto.EventDTO;
+import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.dto.ReservationHistoryDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.RentableRepository;
@@ -44,18 +46,25 @@ public class ReservationController {
         return reservationService.getFinishedReservations(historyDto.getType(), historyDto.getUsername(), historyDto.getIsCustomer());
     }
 
-    @GetMapping("/getFreeTerms/{username}")
-    public List<FreeTerm> getFreeTerms(@PathVariable String username) {
-        return this.reservationService.getFreeTerms(username);
+    @PostMapping("/getFreeTerms")
+    @PreAuthorize("!hasAuthority('ADMIN')")
+    public List<FreeTerm> getFreeTerms(@RequestBody EventDTO event) {
+        return this.reservationService.getFreeTerms(event);
     }
 
-    @GetMapping("/getAllReservations/{username}")
-    public List<Reservation> getAllReservationsByUsername(@PathVariable String username) {
-        return this.reservationService.getAllReservationsByUsername(username);
+    @PostMapping("/getAllReservations")
+    @PreAuthorize("!hasAuthority('ADMIN')")
+    public List<Reservation> getAllReservations(@RequestBody EventDTO event) {
+        return this.reservationService.getAllReservations(event);
     }
 
     @PostMapping("/review")
     public void addReview(@RequestBody Review review) {
         this.reservationService.addReview(review);
+    }
+
+    @PostMapping("/createDayOff")
+    public List<FreeTerm> createDayOff(@RequestBody FreeTermDTO dto){
+        return this.reservationService.createDayOff(dto);
     }
 }

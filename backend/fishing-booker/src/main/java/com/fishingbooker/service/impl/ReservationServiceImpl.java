@@ -1,6 +1,8 @@
 package com.fishingbooker.service.impl;
 
 import com.fishingbooker.dto.CustomerReservationDTO;
+import com.fishingbooker.dto.EventDTO;
+import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.FreeTermRepository;
 import com.fishingbooker.repository.RentableRepository;
@@ -150,13 +152,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<FreeTerm> getFreeTerms(String username) {
-        return this.freeTermRepository.getFreeTermsByUsername(username);
+    public List<FreeTerm> getFreeTerms(EventDTO event) {
+        if(event.getType() == ReservationType.ADVENTURE)
+            return this.freeTermRepository.getFreeTermsByUsername(event.getUsername());
+        return this.freeTermRepository.getFreeTermsByNameAndUsername(event.getRentableName(), event.getUsername());
     }
 
     @Override
-    public List<Reservation> getAllReservationsByUsername(String username) {
-        return this.reservationRepository.getAllByOwnerUsername(username);
+    public List<Reservation> getAllReservations(EventDTO event) {
+        if(event.getType() == ReservationType.ADVENTURE)
+            return this.reservationRepository.getAllByOwnerUsername(event.getUsername());
+        return this.reservationRepository.getAllByNameAndUsername(event.getRentableName(), event.getUsername());
     }
 
     @Override
@@ -165,5 +171,64 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setReviewed(true);
         this.reservationRepository.save(reservation);
         this.reviewRepository.save(review);
+    }
+
+    @Override
+    public List<FreeTerm> createDayOff(FreeTermDTO dto) {
+        List<FreeTerm> freeTerms;
+        List<Reservation> reservations;
+        if(dto.getType() == ReservationType.ADVENTURE){
+            freeTerms = this.freeTermRepository.getFreeTermsByUsername(dto.getUsername());
+            reservations = this.reservationRepository.getAllByOwnerUsername(dto.getUsername());
+        }
+        else{
+            reservations = this.reservationRepository.getAllByNameAndUsername(dto.getRentableName(), dto.getUsername());
+            freeTerms = this.freeTermRepository.getFreeTermsByNameAndUsername(dto.getRentableName(), dto.getUsername());
+        }
+
+        if (freeTerms.size() == 0) {
+            return freeTerms;
+        }
+
+        if(reservations.size() != 0){
+            for(Reservation reservation : reservations){
+                if(dto.getStart().getDayOfYear() >= reservation.getStartTime().getDayOfYear()
+                        && dto.getStart().getDayOfYear() <= reservation.getEndTime().getDayOfYear()){
+                    return new ArrayList<FreeTerm>();
+                }
+            }
+        }
+
+        for(FreeTerm freeTerm: freeTerms) {
+            if(isBetweenDates(dto.getStart(), freeTerm)){
+                this.freeTermRepository.deleteById(freeTerm.getId());
+                FreeTerm earlierFreeTerm =
+                        new FreeTerm(null,
+                                freeTerm.getType(),
+                                freeTerm.getEntityName(),
+                                freeTerm.getOwnerUsername(),
+                                freeTerm.getStartTime(),
+                                dto.getStart()
+                        );
+                if(!freeTerm.getStartTime().equals(dto.getStart())){
+                    this.freeTermRepository.save(earlierFreeTerm);
+                }
+                FreeTerm laterFreeTerm =
+                        new FreeTerm(null,
+                                freeTerm.getType(),
+                                freeTerm.getEntityName(),
+                                freeTerm.getOwnerUsername(),
+                                dto.getStart().plusDays(1),
+                                freeTerm.getEndTime()
+                        );
+                if(!freeTerm.getEndTime().equals(dto.getStart().plusDays(1))){
+                    this.freeTermRepository.save(laterFreeTerm);
+                }
+            }
+        }
+        if(dto.getType() == ReservationType.ADVENTURE)
+            return this.freeTermRepository.getFreeTermsByUsername(dto.getUsername());
+        else
+            return this.freeTermRepository.getFreeTermsByNameAndUsername(dto.getRentableName(), dto.getUsername());
     }
 }

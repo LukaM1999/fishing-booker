@@ -10,7 +10,7 @@
              today-button
              events-on-month-view="short"
              :show-all-day-events="'short'"
-             :editable-events="{ delete: true }"
+             :editable-events="{ delete: false, resize: true}"
     >
     </vue-cal>
   </div>
@@ -30,6 +30,7 @@ export default {
       user: {},
       events: [
       ],
+      rentableName: ""
     }
   },
   mounted() {
@@ -40,7 +41,12 @@ export default {
   components: {VueCal},
   methods: {
     async getFreeTerms() {
-      const response = await axios.get(backend + `/reservation/getFreeTerms/${this.user.username}`)
+      const event = {
+        username: this.user.username,
+        type: this.user.role.authority === "INSTRUCTOR" ? 2 : 1,
+        rentableName: this.rentableName
+      }
+      const response = await axios.post(backend + `/reservation/getFreeTerms`, event)
       if(response.data != null || response.data?.length !== 0){
         this.createEventsFromFreeTerms(response.data)
       }
@@ -60,7 +66,12 @@ export default {
       }
     },
     async getAllReservations() {
-      const response = await axios.get(backend + `/reservation/getAllReservations/${this.user.username}`)
+      const event = {
+        username: this.user.username,
+        type: this.user.role.authority === "INSTRUCTOR" ? 2 : 1,
+        rentableName: this.rentableName
+      }
+      const response = await axios.post(backend + `/reservation/getAllReservations`, event)
       if(response.data != null || response.data?.length !== 0){
         this.createEventsFromReservations(response.data)
       }
@@ -70,14 +81,16 @@ export default {
         let content = `Type: <b>${array[i].type}</b><br>
         Name: <b>${array[i].name}</b><br>
         Customer: <b>${array[i].customerUsername}</b><br>
-        Price: <b>${array[i].price} euros</b><br>`;
-        const event = {
+        Price: <b>${array[i].price} euros</b><br>
+        Start: <b>${array[i].startTime}</b><br>
+        End: <b>${array[i].endTime}</b><br>`;
+          const event = {
           start: `${array[i].startTime}`,
           end: `${array[i].endTime}`,
           title: 'Reserved',
           content: content,
           class: 'leisure',
-          deletable: false
+          deletable: false,
         }
         this.events.push(event)
       }

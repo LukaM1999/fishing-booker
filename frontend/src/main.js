@@ -32,6 +32,8 @@ import CustomReservation from "@/components/CustomReservation";
 import DeletionRequests from "@/components/admin/DeletionRequests";
 import History from "@/components/History";
 import Calendar from "@/components/Calendar";
+import InstructorSchedule from "@/components/instructor/InstructorSchedule";
+
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -179,7 +181,7 @@ const routes = [
             {
                 path: 'schedule',
                 name: 'instructorSchedule',
-                component: Calendar
+                component: InstructorSchedule
             },
             {
                 path: 'register',

@@ -1,6 +1,8 @@
 package com.fishingbooker.service;
 
 import com.fishingbooker.dto.CustomerReservationDTO;
+import com.fishingbooker.dto.EventDTO;
+import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.model.FreeTerm;
 import com.fishingbooker.model.Rentable;
 import com.fishingbooker.model.Reservation;
@@ -19,9 +21,11 @@ public interface ReservationService {
 
     List<Reservation> getFinishedReservations(ReservationType type, String username, boolean isCustomer);
 
-    List<FreeTerm> getFreeTerms(String username);
+    List<FreeTerm> getFreeTerms(EventDTO event);
 
-    List<Reservation> getAllReservationsByUsername(String username);
+    List<Reservation> getAllReservations(EventDTO event);
 
     void addReview(Review review);
+
+    List<FreeTerm> createDayOff(FreeTermDTO dto);
 }
