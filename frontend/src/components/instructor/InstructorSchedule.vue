@@ -7,41 +7,30 @@
     </div>
     <div class="row mt-4">
       <div class="col">
-        <calendar></calendar>
+        <calendar :key="key"></calendar>
       </div>
       <div class="col">
         <div class="row mt-5">
           <div class="col">
-            <form onsubmit="createFreeTerm">
-              <div class="row">
-                <b-field label="Add available days">
-                  <b-datepicker
-                      v-model="selectedDate"
-                      placeholder="Click to select..."
-                      icon="calendar-today"
-                  ></b-datepicker>
-                </b-field>
-              </div>
-              <div>
-                <button class="btn btn-dark mt-3" type="submit">Submit</button>
-              </div>
-            </form>
+            <b-field label="Add available days">
+              <b-datepicker
+                  placeholder="Click to select..."
+                  v-model="dates"
+                  range
+                  :min-date="minDate">
+              </b-datepicker>
+              <button class="button ml-5 is-link" @click="createFreeTerm()">Submit</button>
+            </b-field>
           </div>
           <div class="col">
-            <form>
-              <div class="row">
-                <b-field label="Add day off">
-                  <b-datepicker
-                      v-model="selectedDate"
-                      placeholder="Click to select..."
-                      icon="calendar-today"
-                      ></b-datepicker>
-                </b-field>
-              </div>
-              <div>
-                <button class="btn btn-dark mt-3" @click="addDayOff">Submit</button>
-              </div>
-            </form>
+            <b-field label="Add day off">
+              <b-datepicker
+                  placeholder="Click to select..."
+                  v-model="selectedDate"
+                  :min-date="minDate">
+              </b-datepicker>
+              <button class="button ml-5 is-link" @click="addDayOff()">Submit</button>
+            </b-field>
           </div>
         </div>
       </div>
@@ -59,13 +48,20 @@ export default {
   components: {Calendar},
   data() {
     return {
-      selectedDate: new Date(),
+      selectedDate: null,
       user: {},
-      key: 0
+      key: 0,
+      startTime: new Date(),
+      endTime: new Date(),
+      minDate: new Date(),
+      dates: [],
     }
   },
   mounted() {
     this.user = JSON.parse(localStorage.getItem('user'))
+    this.minDate = moment().add(1, 'days').toDate()
+    this.minDate.setHours(0)
+    this.minDate.setMinutes(0)
   },
   methods: {
     async addDayOff(){
@@ -78,14 +74,50 @@ export default {
       }
       const response = await axios.post(backend + '/reservation/createDayOff', dayOff)
       if(response.data != null){
-        //this.key += 1
         this.$toasted.success('Day off successfully created!')
+        this.key = this.key + 1
       }
       else
         this.$toasted.error('Something went wrong!')
     },
     formatDate(date){
       return moment(date).format('YYYY-MM-DD HH:mm')
+    },
+    async createFreeTerm(){
+      let sYear = this.dates[0].getFullYear()
+      let sMonth = this.formatDateMonth(new Date(this.dates[0]));
+      let sDay = this.formatDateDay(new Date(this.dates[0]));
+      let eYear = this.dates[this.dates.length - 1].getFullYear()
+      let eMonth = this.formatDateMonth(new Date(this.dates.slice(-1)[0]));
+      let eDay = this.formatDateDay(new Date(this.dates.slice(-1)[0]));
+
+      const freeTerm = {
+        type: 'ADVENTURE',
+        entityName: '',
+        ownerUsername: this.user.username,
+        startTime: sYear + '-' + sMonth + '-' + sDay + ' 00:00',
+        endTime: eYear + '-' + eMonth + '-' + eDay + ' 00:00'
+      }
+      console.log(freeTerm)
+      const response = await this.axios.post(backend + '/reservation/createFreeTerm', freeTerm)
+      if (response.data) {
+        this.$toasted.success('Free Term successfully created!')
+        this.key = this.key + 1
+      } else {
+        this.$toasted.error('Error while creating free term.')
+      }
+    },
+    formatDateMonth(date) {
+      if (date.getMonth() + 1 < 10)
+        return `0${date.getMonth() + 1}`
+      else
+        return `${date.getMonth() + 1}`
+    },
+    formatDateDay(date) {
+      if (date.getDate() < 10)
+        return `0${date.getDate()}`
+      else
+        return `${date.getDate()}`
     },
   }
 
