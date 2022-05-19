@@ -1,6 +1,6 @@
 <template>
-  <div class="row mt-5">
-    <div class="col">
+  <div class="row mt-5 d-flex justify-content-center">
+    <div class="col-8">
       <div class="row" v-if="role === 'CUSTOMER'">
         <div class="col">
           <h1 class="text-center">Reservation history</h1>
@@ -50,7 +50,8 @@
                   </b-table-column>
 
                   <b-table-column field="complaintExists" label="Complaint" v-slot="props">
-                    <button title="Complaint" class="btn btn-danger" :disabled="props.row.complaintExists" v-if="!props.row.complaintExists">
+                    <button title="Complaint" class="btn btn-danger" :disabled="props.row.complaintExists"
+                            v-if="!props.row.complaintExists">
                       <i class="fa fa-exclamation-circle fa-2x"></i>
                     </button>
                   </b-table-column>
@@ -75,13 +76,31 @@
               <b-table class="mt-4 mb-4"
                        :data="reservations"
                        hoverable
-                       striped>
+                       striped
+                       >
                 <b-table-column field="name" label="Name" sortable v-slot="props">
                   {{ props.row.name }}
                 </b-table-column>
 
-                <b-table-column field="customerUsername" label="Customer" sortable v-slot="props">
-                  {{ props.row.customerUsername }}
+                <b-table-column field="customerUsername" label="Customer" sortable v-slot="props" centered>
+                  <b-tooltip
+                      type="is-light"
+                      :triggers="['click']"
+                      :auto-close="['outside', 'escape']"
+                      position="is-bottom">
+                    <template v-slot:content>
+                      <p class="subtitle is-6">Username: <strong>{{ customerProfile.username }}</strong></p>
+                      <p class="subtitle is-6">Full name: <strong>{{ customerProfile.name }} {{ customerProfile.surname }}</strong></p>
+                      <p class="subtitle is-6 ">Phone: <strong>{{ customerProfile.phone }}</strong></p>
+                      <p class="subtitle is-6 ">Email: <strong>{{ customerProfile.email }}</strong></p>
+                      <div class="row d-flex justify-content-center text-center">
+                        <div class="col">
+                          <button class="btn btn-dark btn-sm" @click="openCustomReservationModal">Create new reservation</button>
+                        </div>
+                      </div>
+                    </template>
+                    <b-button :label="props.row.customerUsername" @click="getCustomerProfile(props.row)" type="is-light" />
+                  </b-tooltip>
                 </b-table-column>
 
                 <b-table-column field="startTime" label="From" sortable v-slot="props">
@@ -100,6 +119,11 @@
                   {{ props.row.price }}
                 </b-table-column>
 
+                <b-table-column field="report" label="Report" v-slot="props" centered>
+                  <b-button label="Report" @click="openReportModal(props.row)" type="is-dark">
+                  </b-button>
+                </b-table-column>
+
               </b-table>
             </div>
           </div>
@@ -113,6 +137,11 @@
 import axios from "axios";
 import {backend} from "@/env";
 import ReservationReview from "@/components/customer/ReservationReview";
+import CustomReservation from "@/components/CustomReservation";
+
+// focusable
+//     :selected.sync="selected"
+// :click="openProfileModal"
 
 export default {
   name: "History",
@@ -124,22 +153,34 @@ export default {
       reservations: [],
       modalRating: false,
       rating: 0,
+      selected: {},
+      customerProfile: {
+        username: '',
+        name: '',
+        surname: '',
+        email: '',
+        phone: '',
+      }
     }
   },
   async mounted() {
-    if(this.role === 'CUSTOMER')
+    if (this.role === 'CUSTOMER')
       await this.loadTab()
     else await this.getOwnerReservations()
   },
   methods: {
-    async loadTab(){
+    async loadTab() {
       const response = await axios.post(backend + '/reservation/getFinishedReservations',
           {type: this.activeTab.slice(0, -1).toUpperCase(), username: this.username, isCustomer: true})
-      if(response.data)
+      if (response.data)
         this.reservations = response.data
     },
 
-    async getOwnerReservations(){
+    consolePrint(selected) {
+      console.log(selected)
+    },
+
+    async getOwnerReservations() {
       const response = await axios.post(backend + '/reservation/getFinishedReservations',
           {type: null, username: this.username, isCustomer: false})
       if (response.data)
@@ -163,7 +204,51 @@ export default {
       })
     },
 
+    //function that calls the backend to get the customer profile
+    async getCustomerProfile(reservation) {
+      const response = await axios.get(backend + `/user/${reservation.customerUsername}`)
+      if (response.data){
+        this.customerProfile = {
+          username: response.data.username,
+          name: response.data.name,
+          surname: response.data.surname,
+          email: response.data.email,
+          phone: response.data.phone,
+        }
+      }
+      else{
+        this.customerProfile = {}
+        this.$toasted.error('Error loading customer profile!');
+      }
+    },
 
+    //function that opens report modal
+    openReportModal(reservation) {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ReservationReview,
+        props: {
+          reservation: reservation,
+          isReport: true
+        },
+        events: {
+          'submit': () => {
+            this.$toasted.success('Report submitted!');
+          }
+        }
+      })
+    },
+
+    //function that opens modal with component CustomReservation and sends customer username as props
+    openCustomReservationModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: CustomReservation,
+        props: {
+          username: this.customerProfile.username
+        }
+      })
+    },
   },
   filters: {
     addressFormat(value) {

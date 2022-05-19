@@ -26,7 +26,7 @@ public class UserController {
     // Ukoliko nema, server ce vratiti gresku 403 Forbidden
     // Korisnik jeste autentifikovan, ali nije autorizovan da pristupi resursu
     @GetMapping("/{username}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'COTTAGE_OWNER', 'INSTRUCTOR', 'BOAT_OWNER')")
     public RegisteredUser findByUsername(@PathVariable String username) {
         return this.userService.findByUsername(username);
     }

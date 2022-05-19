@@ -194,11 +194,6 @@ const routes = [
                 component: Adventures
             },
             {
-                path: 'reservation',
-                name: 'instructorReservation',
-                component: CustomReservation
-            },
-            {
                 path: 'history',
                 name: 'adventureHistory',
                 component: History

@@ -23,9 +23,6 @@
           <router-link to="/instructor/history" class="navbar-item">
             Adventure reservation history
           </router-link>
-          <router-link to="/instructor/reservation" class="navbar-item">
-            Custom Reservation
-          </router-link>
           <router-link to="" class="navbar-item">
             Business Report and Income
           </router-link>

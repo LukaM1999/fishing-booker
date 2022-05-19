@@ -6,13 +6,13 @@
           :animated="true"
           :rounded="true"
           :has-navigation="true">
-        <b-step-item step="1" label="Type and date" :clickable="false">
+        <b-step-item step="1" label="Date and time" :clickable="false">
           <form @submit.prevent="nextStep">
             <div class="row mb-3 mt-4 justify-content-center">
               <div class="col-md-3">
                 <div class="form-floating">
                   <input type="text" class="form-control" id="floatingName"
-                         v-model="customerUsername" required>
+                         v-model="customerUsername" required disabled>
                   <label for="floatingName">Customer username*</label>
                 </div>
               </div>
@@ -359,7 +359,10 @@ export default {
       user: {}
     }
   },
+  props: ['username'],
+
   async mounted() {
+    this.customerUsername = this.username;
     this.minDate = moment().add(3, 'days').toDate()
     this.minDate.setHours(0)
     this.minDate.setMinutes(0)
@@ -498,6 +501,7 @@ export default {
       const response = await axios.post(backend + `/reservation/reserveRentable/${this.selectedRentable.id}`, reservation)
       if (response.data) {
         //this.$router.push('/customer/upcomingReservations')
+        this.$parent.close()
         this.$toasted.success('Reservation confirmed successfully!')
       } else {
         this.$toasted.error('Reservation was unsuccessful')

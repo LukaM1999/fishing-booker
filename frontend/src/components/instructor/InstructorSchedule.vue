@@ -5,34 +5,34 @@
         <p style="font-size: xx-large;"><strong>Schedule</strong></p>
       </div>
     </div>
-    <div class="row mt-4">
-      <div class="col">
-        <calendar :key="key"></calendar>
-      </div>
-      <div class="col">
-        <div class="row mt-5">
-          <div class="col">
-            <b-field label="Add available days">
-              <b-datepicker
-                  placeholder="Click to select..."
-                  v-model="dates"
-                  range
-                  :min-date="minDate">
-              </b-datepicker>
-              <button class="button ml-5 is-link" @click="createFreeTerm()">Submit</button>
-            </b-field>
-          </div>
-          <div class="col">
-            <b-field label="Add day off">
-              <b-datepicker
-                  placeholder="Click to select..."
-                  v-model="selectedDate"
-                  :min-date="minDate">
-              </b-datepicker>
-              <button class="button ml-5 is-link" @click="addDayOff()">Submit</button>
-            </b-field>
-          </div>
+    <div class="d-flex justify-content-center">
+      <div class="row mt-5 d-flex justify-content-evenly">
+        <div class="col">
+          <b-field label="Add available days">
+            <b-datepicker
+                placeholder="Click to select..."
+                v-model="dates"
+                range
+                :min-date="minDate">
+            </b-datepicker>
+            <button class="button ml-5 is-link" @click="createFreeTerm()">Submit</button>
+          </b-field>
         </div>
+        <div class="col">
+          <b-field label="Add day off">
+            <b-datepicker
+                placeholder="Click to select..."
+                v-model="selectedDate"
+                :min-date="minDate">
+            </b-datepicker>
+            <button class="button ml-5 is-link" @click="addDayOff()">Submit</button>
+          </b-field>
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 row d-flex justify-content-center">
+      <div class="col-8">
+        <calendar :key="key"></calendar>
       </div>
     </div>
   </div>
@@ -43,6 +43,7 @@ import Calendar from "@/components/Calendar";
 import axios from "axios";
 import {backend} from "@/env";
 import moment from "moment";
+
 export default {
   name: "InstructorSchedule",
   components: {Calendar},
@@ -64,7 +65,7 @@ export default {
     this.minDate.setMinutes(0)
   },
   methods: {
-    async addDayOff(){
+    async addDayOff() {
       const dayOff = {
         start: this.formatDate(this.selectedDate),
         end: this.formatDate(this.selectedDate),
@@ -73,17 +74,16 @@ export default {
         type: this.user.role.authority === "INSTRUCTOR" ? 2 : 1,
       }
       const response = await axios.post(backend + '/reservation/createDayOff', dayOff)
-      if(response.data != null){
+      if (response.data != null) {
         this.$toasted.success('Day off successfully created!')
         this.key = this.key + 1
-      }
-      else
+      } else
         this.$toasted.error('Something went wrong!')
     },
-    formatDate(date){
+    formatDate(date) {
       return moment(date).format('YYYY-MM-DD HH:mm')
     },
-    async createFreeTerm(){
+    async createFreeTerm() {
       let sYear = this.dates[0].getFullYear()
       let sMonth = this.formatDateMonth(new Date(this.dates[0]));
       let sDay = this.formatDateDay(new Date(this.dates[0]));
@@ -125,5 +125,10 @@ export default {
 </script>
 
 <style scoped>
+
+.page {
+  display: flex;
+  justify-content: space-around;
+}
 
 </style>

@@ -16,7 +16,7 @@
         <b-navbar-item href="/cottageOwner/profile">
           Profile information
         </b-navbar-item>
-        <b-navbar-item href="#">
+        <b-navbar-item href="/cottageOwner/history">
           History
         </b-navbar-item>
         <b-navbar-item href="#">
