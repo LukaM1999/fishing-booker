@@ -21,6 +21,8 @@ public interface ReservationService {
 
     List<Reservation> getFinishedReservations(ReservationType type, String username, boolean isCustomer);
 
+    List<Reservation> getReservations(ReservationType type, String username, boolean isCustomer);
+
     List<FreeTerm> getFreeTerms(EventDTO event);
 
     List<Reservation> getAllReservations(EventDTO event);
@@ -28,4 +30,6 @@ public interface ReservationService {
     void addReview(Review review);
 
     List<FreeTerm> createDayOff(FreeTermDTO dto);
+
+    void cancelReservation(Long reservationId);
 }

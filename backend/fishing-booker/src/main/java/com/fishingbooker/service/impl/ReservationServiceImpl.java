@@ -113,6 +113,12 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.getFinishedOwnerReservations(username);
     }
 
+    @Override
+    public List<Reservation> getReservations(ReservationType type, String username, boolean isCustomer) {
+        if (isCustomer) return reservationRepository.getCustomerReservations(type, username);
+        return reservationRepository.getOwnerReservations(username);
+    }
+
     private boolean hasSequence(FreeTerm freeTerm, FreeTerm term) {
         return isSequence(freeTerm.getStartTime(), term.getEndTime()) ||
                 isSequence(freeTerm.getEndTime(), term.getStartTime()) ||
@@ -230,5 +236,12 @@ public class ReservationServiceImpl implements ReservationService {
             return this.freeTermRepository.getFreeTermsByUsername(dto.getUsername());
         else
             return this.freeTermRepository.getFreeTermsByNameAndUsername(dto.getRentableName(), dto.getUsername());
+    }
+
+    @Override
+    public void cancelReservation(Long reservationId) {
+        Reservation reservation = this.reservationRepository.getById(reservationId);
+        reservation.setCancelled(true);
+        this.reservationRepository.save(reservation);
     }
 }

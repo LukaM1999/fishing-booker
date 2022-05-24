@@ -39,7 +39,19 @@
                   </b-table-column>
 
                   <b-table-column field="price" label="Price" sortable numeric v-slot="props">
-                    {{ props.row.price }}
+                    {{ props.row.price }} €
+                  </b-table-column>
+
+                  <b-table-column label="Status" sortable v-slot="props">
+                    {{ getStatus(props.row) }}
+                  </b-table-column>
+
+                  <b-table-column field="cancelled" label="Cancel" v-slot="props">
+                    <button @click="cancelReservation(props.row)" title="Cancel" class="btn btn-danger"
+                            :disabled="isCancelDisabled(props.row)"
+                            v-if="!props.row.cancelled">
+                      <i class="fa fa-ban fa-2x"></i>
+                    </button>
                   </b-table-column>
 
                   <b-table-column field="reviewed" label="Review" v-slot="props">
@@ -116,7 +128,11 @@
                 </b-table-column>
 
                 <b-table-column field="price" label="Price" sortable numeric v-slot="props">
-                  {{ props.row.price }}
+                  {{ props.row.price }} €
+                </b-table-column>
+
+                <b-table-column label="Status" sortable v-slot="props">
+                  {{ getStatus(props.row) }}
                 </b-table-column>
 
                 <b-table-column field="report" label="Report" v-slot="props" centered>
@@ -138,10 +154,6 @@ import axios from "axios";
 import {backend} from "@/env";
 import ReservationReview from "@/components/customer/ReservationReview";
 import CustomReservation from "@/components/CustomReservation";
-
-// focusable
-//     :selected.sync="selected"
-// :click="openProfileModal"
 
 export default {
   name: "History",
@@ -170,18 +182,41 @@ export default {
   },
   methods: {
     async loadTab() {
-      const response = await axios.post(backend + '/reservation/getFinishedReservations',
+      const response = await axios.post(backend + '/reservation/getReservations',
           {type: this.activeTab.slice(0, -1).toUpperCase(), username: this.username, isCustomer: true})
       if (response.data)
         this.reservations = response.data
     },
 
-    consolePrint(selected) {
-      console.log(selected)
+    getStatus(reservation) {
+      if(reservation.cancelled) return 'Cancelled'
+      const now = new Date()
+      const start = new Date(reservation.startTime)
+      const end = new Date(reservation.endTime)
+      if (now < start)
+        return 'Upcoming'
+      else if (now > end)
+        return 'Finished'
+      else
+        return 'In progress'
+    },
+
+    isCancelDisabled(reservation){
+      const end = new Date(reservation.endTime)
+      return new Date() >= end.addDays(3) || reservation.cancelled
+    },
+
+    async cancelReservation(reservation) {
+      await axios.patch(backend + '/reservation/cancelReservation/' + reservation.id).catch(error => {
+        this.$toasted.error('Cancellation unsuccessful')
+        throw error
+      })
+      this.$toasted.success('Reservation cancelled')
+      reservation.cancelled = true
     },
 
     async getOwnerReservations() {
-      const response = await axios.post(backend + '/reservation/getFinishedReservations',
+      const response = await axios.post(backend + '/reservation/getReservations',
           {type: null, username: this.username, isCustomer: false})
       if (response.data)
         this.reservations = response.data

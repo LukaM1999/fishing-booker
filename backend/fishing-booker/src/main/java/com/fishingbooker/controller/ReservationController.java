@@ -46,6 +46,12 @@ public class ReservationController {
         return reservationService.getFinishedReservations(historyDto.getType(), historyDto.getUsername(), historyDto.getIsCustomer());
     }
 
+    @PostMapping("/getReservations")
+    @PreAuthorize("!hasAuthority('ADMIN')")
+    public List<Reservation> getReservations(@RequestBody ReservationHistoryDTO historyDto){
+        return reservationService.getReservations(historyDto.getType(), historyDto.getUsername(), historyDto.getIsCustomer());
+    }
+
     @PostMapping("/getFreeTerms")
     @PreAuthorize("!hasAuthority('ADMIN')")
     public List<FreeTerm> getFreeTerms(@RequestBody EventDTO event) {
@@ -67,4 +73,10 @@ public class ReservationController {
     public List<FreeTerm> createDayOff(@RequestBody FreeTermDTO dto){
         return this.reservationService.createDayOff(dto);
     }
+
+    @PatchMapping("/cancelReservation/{reservationId}")
+    public void cancelReservation(@PathVariable Long reservationId) {
+        this.reservationService.cancelReservation(reservationId);
+    }
+
 }
