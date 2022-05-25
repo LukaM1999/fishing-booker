@@ -57,6 +57,14 @@ export default {
     reservation: {
       type: Object,
       required: true
+    },
+    rentableName: {
+      type: String,
+      required: true
+    },
+    ownerUsername: {
+      type: String,
+      required: true
     }
   },
 
@@ -76,7 +84,10 @@ export default {
           reservationId: this.reservation.id,
           comment: this.review,
           rentableRating: this.rentableRating,
-          ownerRating: this.ownerRating
+          ownerRating: this.ownerRating,
+          rentableName: this.rentableName,
+          reservationType: this.reservation.type,
+          ownerUsername: this.ownerUsername
         })
         this.reservation.reviewed = true
         this.$emit('close')

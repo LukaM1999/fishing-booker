@@ -93,6 +93,8 @@
                 <p class="md-title">{{ boat.name }}</p>
                 <p class="md-subhead">{{ boat.address }}, {{ boat.city }}, {{ boat.country }}</p>
                 <p class="md-subhead">{{ boat.promoDescription }}</p>
+                <b-rate v-model="boat.averageRating" show-score
+                        :max="5" disabled :custom-text="` (${boat.timesRated})`"></b-rate>
               </md-card-header>
             </md-card-area>
             <md-card-expand>

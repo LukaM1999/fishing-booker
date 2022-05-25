@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
+import static com.fishingbooker.model.ReservationType.ADVENTURE;
+
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
@@ -31,6 +33,15 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     private PenaltyRepository penaltyRepository;
 
+    @Autowired
+    private AdventureRepository adventureRepository;
+
+    @Autowired
+    private CottageRepository cottageRepository;
+
+    @Autowired
+    private BoatRepository boatRepository;
+
     private ZoneId zoneId = ZoneId.systemDefault();
 
     @Override
@@ -44,7 +55,7 @@ public class ReservationServiceImpl implements ReservationService {
                 freeRentables.put(rentableRepository.getCottageByNameAndOwner(term.getEntityName(), term.getOwnerUsername()), term);
             else if (term.getType() == ReservationType.BOAT)
                 freeRentables.put(rentableRepository.getBoatByNameAndOwner(term.getEntityName(), term.getOwnerUsername()), term);
-            else if (term.getType() == ReservationType.ADVENTURE){
+            else if (term.getType() == ADVENTURE){
                 List<Rentable> adventures = rentableRepository.getAdventuresByOwner(term.getOwnerUsername());
                 for(Rentable a: adventures){
                     freeRentables.put(a, term);
@@ -57,7 +68,7 @@ public class ReservationServiceImpl implements ReservationService {
             String rentableName = rentableFreeTermMap.getKey().getName();
             FreeTerm term = rentableFreeTermMap.getValue();
             String ownerUsername = term.getOwnerUsername();
-            if (term.getType() != ReservationType.ADVENTURE) {
+            if (term.getType() != ADVENTURE) {
                 if (reservationRepository.getOccupied(rentableName, ownerUsername, reservationDTO.getStart(), reservationDTO.getEnd()) != null)
                     iterator.remove();
             }
@@ -70,7 +81,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public FreeTerm createFreeTerm(FreeTerm freeTerm) {
         List<FreeTerm> freeTerms = new ArrayList<>();
-        if(freeTerm.getType() == ReservationType.ADVENTURE)
+        if(freeTerm.getType() == ADVENTURE)
             freeTerms = this.freeTermRepository.getFreeTermsByUsername(freeTerm.getOwnerUsername());
         else
             freeTerms = this.freeTermRepository.getFreeTermsByNameAndUsername(freeTerm.getEntityName(), freeTerm.getOwnerUsername());
@@ -161,14 +172,14 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<FreeTerm> getFreeTerms(EventDTO event) {
-        if(event.getType() == ReservationType.ADVENTURE)
+        if(event.getType() == ADVENTURE)
             return this.freeTermRepository.getFreeTermsByUsername(event.getUsername());
         return this.freeTermRepository.getFreeTermsByNameAndUsername(event.getRentableName(), event.getUsername());
     }
 
     @Override
     public List<Reservation> getAllReservations(EventDTO event) {
-        if(event.getType() == ReservationType.ADVENTURE)
+        if(event.getType() == ADVENTURE)
             return this.reservationRepository.getAllByOwnerUsername(event.getUsername());
         return this.reservationRepository.getAllByNameAndUsername(event.getRentableName(), event.getUsername());
     }
@@ -179,13 +190,41 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setReviewed(true);
         this.reservationRepository.save(reservation);
         this.reviewRepository.save(review);
+        double avgRating = this.reviewRepository.getAverageRatingByNameAndOwner(reservation.getName(), reservation.getOwnerUsername());
+        int timesRated = this.reviewRepository.getNumberOfReviewsByNameAndOwner(reservation.getName(), reservation.getOwnerUsername());
+        switch (review.getReservationType()) {
+            case ADVENTURE: {
+                Adventure adventure = this.adventureRepository.getAdventureByNameAndOwnerUsername(review.getRentableName(), review.getOwnerUsername());
+                adventure.setAverageRating(avgRating);
+                adventure.setTimesRated(timesRated);
+                this.adventureRepository.save(adventure);
+                break;
+            }
+            case COTTAGE: {
+                Cottage cottage = this.cottageRepository.getCottageByNameAndOwnerUsername(review.getRentableName(), review.getOwnerUsername());
+                cottage.setAverageRating(avgRating);
+                cottage.setTimesRated(timesRated);
+                this.cottageRepository.save(cottage);
+                break;
+            }
+            case BOAT: {
+                Boat boat = this.boatRepository.getBoatByNameAndOwnerUsername(review.getRentableName(), review.getOwnerUsername());
+                boat.setAverageRating(avgRating);;
+                boat.setTimesRated(timesRated);
+                this.boatRepository.save(boat);
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 
     @Override
     public List<FreeTerm> createDayOff(FreeTermDTO dto) {
         List<FreeTerm> freeTerms;
         List<Reservation> reservations;
-        if(dto.getType() == ReservationType.ADVENTURE){
+        if(dto.getType() == ADVENTURE){
             freeTerms = this.freeTermRepository.getFreeTermsByUsername(dto.getUsername());
             reservations = this.reservationRepository.getAllByOwnerUsername(dto.getUsername());
         }
@@ -234,7 +273,7 @@ public class ReservationServiceImpl implements ReservationService {
                 }
             }
         }
-        if(dto.getType() == ReservationType.ADVENTURE)
+        if(dto.getType() == ADVENTURE)
             return this.freeTermRepository.getFreeTermsByUsername(dto.getUsername());
         else
             return this.freeTermRepository.getFreeTermsByNameAndUsername(dto.getRentableName(), dto.getUsername());

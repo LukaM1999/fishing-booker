@@ -1,8 +1,6 @@
 package com.fishingbooker.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Review {
@@ -22,6 +20,17 @@ public class Review {
 
     @Column
     private boolean isPublic;
+
+    @Column
+    private String rentableName;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private ReservationType reservationType;
+
+    @Column
+    private String ownerUsername;
+
 
     public Review(){}
 
@@ -71,5 +80,29 @@ public class Review {
 
     public void setOwnerRating(int ownerRating) {
         this.ownerRating = ownerRating;
+    }
+
+    public String getRentableName() {
+        return rentableName;
+    }
+
+    public void setRentableName(String rentableName) {
+        this.rentableName = rentableName;
+    }
+
+    public String getOwnerUsername() {
+        return ownerUsername;
+    }
+
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
+    }
+
+    public ReservationType getReservationType() {
+        return reservationType;
+    }
+
+    public void setReservationType(ReservationType reservationType) {
+        this.reservationType = reservationType;
     }
 }

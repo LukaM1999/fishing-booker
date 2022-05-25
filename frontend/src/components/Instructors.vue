@@ -68,6 +68,8 @@
                   <p class="md-title">{{ instructor.name }}</p>
                   <p class="md-subhead">{{ instructor.address }}, {{ instructor.city }}, {{ instructor.country }}</p>
                   <p class="md-subhead">{{ instructor.promoDescription }}</p>
+                  <b-rate v-model="instructor.averageRating" show-score
+                          :max="5" disabled :custom-text="` (${instructor.timesRated})`"></b-rate>
                 </md-card-header>
               </md-card-area>
             <md-card-expand>

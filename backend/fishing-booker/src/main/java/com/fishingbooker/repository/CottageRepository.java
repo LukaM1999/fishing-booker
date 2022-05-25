@@ -12,4 +12,6 @@ public interface CottageRepository extends JpaRepository<Cottage, Long> {
     @Modifying
     @Query("delete from Cottage c where c.id = ?1")
     void deleteById(Long entityId);
+
+    Cottage getCottageByNameAndOwnerUsername(String name, String ownerUsername);
 }

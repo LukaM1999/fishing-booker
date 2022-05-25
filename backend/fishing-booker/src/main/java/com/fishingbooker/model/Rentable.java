@@ -1,5 +1,7 @@
 package com.fishingbooker.model;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -33,6 +35,14 @@ public abstract class Rentable {
     @Column
     private float cancellationFee;
 
+    @Column
+    @ColumnDefault("0")
+    private int timesRated;
+
+    @Column
+    @ColumnDefault("0")
+    private double averageRating;
+
     public Rentable(Long id, String name, String country, String city, String address, String promoDescription, int capacity, String rules, float price, String additionalServices, float cancellationFee) {
         this.id = id;
         this.name = name;
@@ -45,6 +55,8 @@ public abstract class Rentable {
         this.price = price;
         this.additionalServices = additionalServices;
         this.cancellationFee = cancellationFee;
+        this.timesRated = 0;
+        this.averageRating = 0;
     }
 
     public Rentable() {
@@ -128,6 +140,22 @@ public abstract class Rentable {
 
     public void setCancellationFee(float cancellationFee) {
         this.cancellationFee = cancellationFee;
+    }
+
+    public int getTimesRated() {
+        return timesRated;
+    }
+
+    public void setTimesRated(int timesRated) {
+        this.timesRated = timesRated;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 
     @Override

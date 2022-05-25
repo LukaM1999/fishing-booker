@@ -230,6 +230,8 @@ export default {
         component: ReservationReview,
         props: {
           reservation: reservation,
+          rentableName: reservation.name,
+          ownerUsername: reservation.ownerUsername
         },
         events: {
           'submit': () => {
