@@ -1,16 +1,14 @@
 package com.fishingbooker.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
-public class Subscription {
+public class SaleSubscription {
 
     @Id
-    @GeneratedValue
-    private int id;
+    @SequenceGenerator(name = "sale_subscription_id_gen", sequenceName = "sale_subscription_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sale_subscription_id_gen")
+    private Long id;
 
     @Column
     private String entityName;
@@ -21,20 +19,20 @@ public class Subscription {
     @Column
     private String customerUsername;
 
-    public Subscription() { }
+    public SaleSubscription() { }
 
-    public Subscription(int id, String entityName, String ownerUsername, String customerUsername) {
+    public SaleSubscription(Long id, String entityName, String ownerUsername, String customerUsername) {
         this.id = id;
         this.entityName = entityName;
         this.ownerUsername = ownerUsername;
         this.customerUsername = customerUsername;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

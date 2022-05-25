@@ -34,6 +34,7 @@ import History from "@/components/History";
 import Calendar from "@/components/Calendar";
 import InstructorSchedule from "@/components/instructor/InstructorSchedule";
 import Penalties from "@/components/customer/Penalties";
+import SaleSubscriptions from "@/components/customer/SaleSubscriptions";
 
 
 Vue.config.productionTip = false
@@ -115,6 +116,11 @@ const routes = [
                 component: Adventures
             },
             {
+                path: 'browse/cottageProfile',
+                name: 'customerCottageProfile',
+                component: CottageProfile
+            },
+            {
                 path: 'history',
                 name: 'customerHistory',
                 component: History
@@ -138,6 +144,11 @@ const routes = [
                 path: 'penalties',
                 name: 'customerPenalties',
                 component: Penalties
+            },
+            {
+                path: 'saleSubscriptions',
+                name: 'customerSaleSubscriptions',
+                component: SaleSubscriptions
             }
         ]
     },

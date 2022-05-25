@@ -45,6 +45,9 @@
           <router-link to="/customer/penalties" class="navbar-item">
             Penalties
           </router-link>
+          <router-link to="/customer/saleSubscriptions" class="navbar-item">
+            Sale subscriptions
+          </router-link>
         </div>
         <div class="navbar-end">
           <div class="navbar-item has-dropdown is-hoverable">

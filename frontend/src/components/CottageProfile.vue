@@ -52,7 +52,9 @@
     <div class="tile is-parent">
       <div class="tile is-child box is-dark">
         <p class="title">Three</p>
-        <button class="button is-primary mb-5">Hey there traveler</button>
+        <button v-if="authority === 'CUSTOMER'" @click="subscribe()" class="button is-primary mb-5">
+          {{subscriptionText}}
+        </button>
         <div class="row">
           <div class="col">
             <b-field v-show="authority==='COTTAGE_OWNER'" label="Add available days">
@@ -121,6 +123,7 @@ export default {
       backend: backend,
       key: 0,
       selectedDate: null,
+      subscriptionText: 'Subscribed',
     }
   },
   async mounted() {
@@ -130,8 +133,45 @@ export default {
     this.minDate = moment().add(1, 'days').toDate()
     this.minDate.setHours(0)
     this.minDate.setMinutes(0)
+    await this.getIsSubscribed()
   },
   methods: {
+    async getIsSubscribed() {
+      if (this.authority !== 'CUSTOMER') {
+        return false
+      }
+      const {data} = await axios.get(`${backend}/saleSubscription/isSubscribed`, {params: {entityName: this.cottage.name
+      ,ownerUsername: this.cottage.ownerUsername, customerUsername: this.user.username}})
+      if(data) {
+        this.subscriptionText = 'Unsubscribe'
+        return true
+      }
+      this.subscriptionText = 'Subscribe'
+      return false
+    },
+    async subscribe(){
+      if (this.authority !== 'CUSTOMER') {
+        return
+      }
+      const isSubscribed = await this.getIsSubscribed()
+      if(isSubscribed) {
+        await axios.delete(`${backend}/saleSubscription`, {params: {entityName: this.cottage.name
+        ,ownerUsername: this.cottage.ownerUsername, customerUsername: this.user.username}}).catch(e => {
+          this.$toasted.error('Error occurred while unsubscribing')
+          throw e
+        })
+        this.subscriptionText = 'Subscribe'
+        this.$toasted.success('Unsubscribed successfully')
+        return
+      }
+      await axios.post(`${backend}/saleSubscription`, {entityName: this.cottage.name
+      ,ownerUsername: this.cottage.ownerUsername, customerUsername: this.user.username}).catch(e => {
+        this.$toasted.error('Failed to subscribe')
+        throw e
+      })
+      this.subscriptionText = 'Unsubscribe'
+      this.$toasted.success('Subscribed successfully!')
+    },
     async createFreeTerm(){
       let sYear = this.dates[0].getFullYear()
       let sMonth = this.formatDateMonth(new Date(this.dates[0]));
