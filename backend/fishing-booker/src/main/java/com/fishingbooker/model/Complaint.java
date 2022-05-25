@@ -12,6 +12,12 @@ public class Complaint {
     private Long reservationId;
 
     @Column
+    private String issuerUsername;
+
+    @Column
+    private String subjectUsername;
+
+    @Column
     private String complaint;
 
     @Column
@@ -20,13 +26,19 @@ public class Complaint {
     @Column
     private boolean isFromCustomer;
 
+    @Column
+    private boolean isForPenalty;
+
     public Complaint() {}
 
-    public Complaint(Long reservationId, String complaint, boolean isFromCustomer) {
+    public Complaint(Long reservationId, String issuerUsername, String subjectUsername, String complaint, boolean isReviewed, boolean isFromCustomer, boolean isForPenalty) {
         this.reservationId = reservationId;
+        this.issuerUsername = issuerUsername;
+        this.subjectUsername = subjectUsername;
         this.complaint = complaint;
-        this.isReviewed = false;
+        this.isReviewed = isReviewed;
         this.isFromCustomer = isFromCustomer;
+        this.isForPenalty = isForPenalty;
     }
 
     public Long getReservationId() {
@@ -59,5 +71,29 @@ public class Complaint {
 
     public void setFromCustomer(boolean fromCustomer) {
         isFromCustomer = fromCustomer;
+    }
+
+    public boolean isForPenalty() {
+        return isForPenalty;
+    }
+
+    public void setForPenalty(boolean forPenalty) {
+        isForPenalty = forPenalty;
+    }
+
+    public String getIssuerUsername() {
+        return issuerUsername;
+    }
+
+    public void setIssuerUsername(String issuerUsername) {
+        this.issuerUsername = issuerUsername;
+    }
+
+    public String getSubjectUsername() {
+        return subjectUsername;
+    }
+
+    public void setSubjectUsername(String subjectUsername) {
+        this.subjectUsername = subjectUsername;
     }
 }

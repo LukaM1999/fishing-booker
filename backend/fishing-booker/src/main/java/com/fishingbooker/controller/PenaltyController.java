@@ -28,8 +28,7 @@ public class PenaltyController {
         return penaltyService.findPenaltiesByCustomerUsername(customerUsername);
     }
 
-    @PostMapping("/")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/add")
     public Penalty createPenalty(@RequestBody Penalty penalty) {
         return penaltyService.createPenalty(penalty);
     }

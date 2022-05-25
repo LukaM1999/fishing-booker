@@ -107,7 +107,7 @@
                       <p class="subtitle is-6 ">Email: <strong>{{ customerProfile.email }}</strong></p>
                       <div class="row d-flex justify-content-center text-center">
                         <div class="col">
-                          <button class="btn btn-dark btn-sm" @click="openCustomReservationModal">Create new reservation</button>
+                          <button v-if="getStatus(props.row) === 'In progress'" class="btn btn-dark btn-sm" @click="openCustomReservationModal">Create new reservation</button>
                         </div>
                       </div>
                     </template>
@@ -136,7 +136,7 @@
                 </b-table-column>
 
                 <b-table-column field="report" label="Report" v-slot="props" centered>
-                  <b-button label="Report" @click="openReportModal(props.row)" type="is-dark">
+                  <b-button label="Report" v-if="getStatus(props.row) === 'Finished'" @click="openReportModal(props.row)" type="is-dark">
                   </b-button>
                 </b-table-column>
 
@@ -154,6 +154,7 @@ import axios from "axios";
 import {backend} from "@/env";
 import ReservationReview from "@/components/customer/ReservationReview";
 import CustomReservation from "@/components/CustomReservation";
+import Report from "@/components/Report";
 
 export default {
   name: "History",
@@ -263,10 +264,9 @@ export default {
     openReportModal(reservation) {
       this.$buefy.modal.open({
         parent: this,
-        component: ReservationReview,
+        component: Report,
         props: {
           reservation: reservation,
-          isReport: true
         },
         events: {
           'submit': () => {

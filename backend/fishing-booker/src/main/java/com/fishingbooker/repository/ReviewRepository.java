@@ -1,6 +1,5 @@
 package com.fishingbooker.repository;
 
-import com.fishingbooker.dto.RatingDTO;
 import com.fishingbooker.model.Review;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
