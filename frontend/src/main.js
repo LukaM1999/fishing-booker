@@ -5,7 +5,7 @@ import Registration from "@/components/Registration";
 import ApproveUser from "@/components/admin/ApproveUser";
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.min.css'
-
+import moment from "moment";
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import Toasted from 'vue-toasted';
@@ -33,6 +33,7 @@ import DeletionRequests from "@/components/admin/DeletionRequests";
 import History from "@/components/History";
 import Calendar from "@/components/Calendar";
 import InstructorSchedule from "@/components/instructor/InstructorSchedule";
+import Penalties from "@/components/customer/Penalties";
 
 
 Vue.config.productionTip = false
@@ -48,6 +49,12 @@ Vue.use(Toasted, {
     keepOnHover: true,
 })
 Vue.use(VueAxios, axios)
+
+Vue.filter('formatDate', function(value) {
+    if (value) {
+        return moment(String(value)).format('DD.MM.YYYY. hh:mm')
+    }
+});
 
 const routes = [
     {
@@ -126,6 +133,11 @@ const routes = [
                 path: 'reservation',
                 name: 'customerReservation',
                 component: Reservation
+            },
+            {
+                path: 'penalties',
+                name: 'customerPenalties',
+                component: Penalties
             }
         ]
     },

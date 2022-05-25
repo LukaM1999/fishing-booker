@@ -1,11 +1,16 @@
 <template>
   <div class="row mt-5">
     <div class="col">
+      <div class="row" v-if="reservationBlocked">
+        <div class="col">
+          <h1 class="text-center">Booking new reservations denied.</h1>
+        </div>
+      </div>
       <b-steps
           v-model="activeStep"
           :animated="true"
           :rounded="true"
-          :has-navigation="true">
+          :has-navigation="true" v-if="!reservationBlocked">
         <b-step-item step="1" label="Type and date" :clickable="false">
           <form @submit.prevent="nextStep">
             <div class="row mb-3 mt-4 justify-content-center">
@@ -328,6 +333,9 @@ export default {
   name: "Reservation",
   data() {
     return {
+      username: JSON.parse(localStorage.getItem('user') || '{}')?.username,
+      role: JSON.parse(localStorage.getItem('user') || '{}')?.role?.authority,
+      reservationBlocked: false,
       backend: backend,
       activeStep: 0,
       type: 'COTTAGE',
@@ -369,8 +377,14 @@ export default {
     this.minDate.setHours(0)
     this.minDate.setMinutes(0)
     this.selectedDate = this.minDate
+    this.reservationBlocked = await this.isReserveBlocked()
   },
   methods: {
+    async isReserveBlocked(){
+      if(this.role !== 'CUSTOMER') return false
+      const response = await axios.get(`${backend}/penalty/count/${this.username}`)
+      return response.data >= 3;
+    },
     async nextStep() {
       this.activeStep += 1
       if (this.activeStep === 1)

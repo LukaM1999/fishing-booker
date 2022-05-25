@@ -37,13 +37,13 @@
             Reservation history
           </router-link>
           <a class="navbar-item">
-            Upcoming reservations
-          </a>
-          <a class="navbar-item">
             Send complaint
           </a>
           <router-link to="/customer/reservation" class="navbar-item">
             Reservation
+          </router-link>
+          <router-link to="/customer/penalties" class="navbar-item">
+            Penalties
           </router-link>
         </div>
         <div class="navbar-end">

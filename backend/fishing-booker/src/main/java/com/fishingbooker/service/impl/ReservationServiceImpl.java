@@ -4,10 +4,7 @@ import com.fishingbooker.dto.CustomerReservationDTO;
 import com.fishingbooker.dto.EventDTO;
 import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.model.*;
-import com.fishingbooker.repository.FreeTermRepository;
-import com.fishingbooker.repository.RentableRepository;
-import com.fishingbooker.repository.ReservationRepository;
-import com.fishingbooker.repository.ReviewRepository;
+import com.fishingbooker.repository.*;
 import com.fishingbooker.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +27,9 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Autowired
     private ReviewRepository reviewRepository;
+
+    @Autowired
+    private PenaltyRepository penaltyRepository;
 
     private ZoneId zoneId = ZoneId.systemDefault();
 
@@ -100,6 +100,8 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation reserveRentable(Long rentableId, Reservation reservation) {
+        if(penaltyRepository.countPenaltiesByCustomerUsername(reservation.getCustomerUsername()) >= 3)
+            return null;
         CustomerReservationDTO reservationDTO = new CustomerReservationDTO(reservation.getType(), reservation.getStartTime(), reservation.getEndTime(), reservation.getGuests());
         Rentable rentable = rentableRepository.getRentableById(rentableId);
         if(rentable == null || !new HashSet<>(getFreeRentables(reservationDTO)).contains(rentable)) return null;

@@ -27,11 +27,11 @@
                   </b-table-column>
 
                   <b-table-column field="startTime" label="From" sortable v-slot="props">
-                    {{ props.row.startTime }}
+                    {{ props.row.startTime | formatDate }}
                   </b-table-column>
 
                   <b-table-column field="endTime" label="To" sortable v-slot="props">
-                    {{ props.row.endTime }}
+                    {{ props.row.endTime | formatDate }}
                   </b-table-column>
 
                   <b-table-column field="guests" label="Guests" sortable numeric v-slot="props">
@@ -116,11 +116,11 @@
                 </b-table-column>
 
                 <b-table-column field="startTime" label="From" sortable v-slot="props">
-                  {{ props.row.startTime }}
+                  {{ props.row.startTime | formatDate }}
                 </b-table-column>
 
                 <b-table-column field="endTime" label="To" sortable v-slot="props">
-                  {{ props.row.endTime }}
+                  {{ props.row.endTime | formatDate }}
                 </b-table-column>
 
                 <b-table-column field="guests" label="Guests" sortable numeric v-slot="props">
