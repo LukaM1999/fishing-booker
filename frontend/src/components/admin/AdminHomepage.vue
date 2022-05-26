@@ -38,10 +38,10 @@
               <router-link to="/admin/approve" class="navbar-item">
                 New users
               </router-link>
-              <router-link to="" class="navbar-item">
-                Comments
+              <router-link to="/admin/reviews" class="navbar-item">
+                Reviews
               </router-link>
-              <router-link to="" class="navbar-item">
+              <router-link to="/admin/complaints" class="navbar-item">
                 Complaints
               </router-link>
               <router-link to="/admin/requests" class="navbar-item">
@@ -50,7 +50,7 @@
             </div>
           </div>
           <router-link to="" class="navbar-item">
-            Business report and income
+            Business
           </router-link>
           <router-link to="" class="navbar-item">
             Transaction fee

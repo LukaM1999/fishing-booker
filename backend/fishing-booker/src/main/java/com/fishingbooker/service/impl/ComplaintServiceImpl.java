@@ -40,13 +40,13 @@ public class ComplaintServiceImpl implements ComplaintService {
     }
 
     @Override
-    public Optional<Complaint> findById(Long id) {
-        return complaintRepository.findById(id);
+    public List<Complaint> getById(Long id) {
+        return complaintRepository.findAllByReservationId(id);
     }
 
     @Override
     public Complaint updateComplaint(Complaint complaint) {
-        Optional<Complaint> updatedComplaint = complaintRepository.findById(complaint.getReservationId());
+        Optional<Complaint> updatedComplaint = complaintRepository.findById(complaint.getId());
         updatedComplaint.ifPresent(value -> value.setReviewed(true));
         return complaintRepository.save(updatedComplaint.orElseThrow());
     }

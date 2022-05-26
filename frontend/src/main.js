@@ -35,6 +35,7 @@ import Calendar from "@/components/Calendar";
 import InstructorSchedule from "@/components/instructor/InstructorSchedule";
 import Penalties from "@/components/customer/Penalties";
 import SaleSubscriptions from "@/components/customer/SaleSubscriptions";
+import Complaints from "@/components/admin/Complaints";
 
 
 Vue.config.productionTip = false
@@ -162,6 +163,11 @@ const routes = [
                 path: 'approve',
                 name: 'approveUser',
                 component: ApproveUser
+            },
+            {
+                path: 'complaints',
+                name: 'complaints',
+                component: Complaints
             },
             {
                 path: 'requests',

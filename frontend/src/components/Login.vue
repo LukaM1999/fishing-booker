@@ -55,7 +55,9 @@ export default {
   methods: {
     async userLogin() {
       const loginDto = {username: this.usernameLogin, password: this.passwordLogin}
-      const response = await axios.post(backend + '/auth/login', loginDto)
+      const response = await axios.post(backend + '/auth/login', loginDto).catch(e => {
+        this.$toasted.error('Wrong username or password!')
+      })
       if (response.data) {
         localStorage.setItem('jwt', response.data.accessToken)
         localStorage.setItem('user', JSON.stringify(response.data.user))

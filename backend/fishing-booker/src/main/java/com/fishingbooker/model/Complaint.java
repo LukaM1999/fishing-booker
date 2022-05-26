@@ -1,13 +1,15 @@
 package com.fishingbooker.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Complaint {
 
     @Id
+    @Column
+    @SequenceGenerator(name = "complaint_id_gen", sequenceName = "complaint_id_seq", initialValue = 1, allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "complaint_id_gen")
+    private Long id;
     @Column
     private Long reservationId;
 
@@ -31,7 +33,8 @@ public class Complaint {
 
     public Complaint() {}
 
-    public Complaint(Long reservationId, String issuerUsername, String subjectUsername, String complaint, boolean isReviewed, boolean isFromCustomer, boolean isForPenalty) {
+    public Complaint(Long id, Long reservationId, String issuerUsername, String subjectUsername, String complaint, boolean isReviewed, boolean isFromCustomer, boolean isForPenalty) {
+        this.id = id;
         this.reservationId = reservationId;
         this.issuerUsername = issuerUsername;
         this.subjectUsername = subjectUsername;
@@ -39,6 +42,14 @@ public class Complaint {
         this.isReviewed = isReviewed;
         this.isFromCustomer = isFromCustomer;
         this.isForPenalty = isForPenalty;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getReservationId() {

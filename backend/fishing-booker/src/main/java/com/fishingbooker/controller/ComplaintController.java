@@ -22,8 +22,8 @@ public class ComplaintController {
     }
 
     @GetMapping("/{reservationId}")
-    public Complaint getById(@PathVariable Long reservationId) {
-        return this.complaintService.findById(reservationId).orElseThrow();
+    public List<Complaint> getById(@PathVariable Long reservationId) {
+        return this.complaintService.getById(reservationId);
     }
 
     @PostMapping(value = "/add")

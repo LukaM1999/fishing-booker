@@ -61,12 +61,16 @@ export default {
     },
   },
   async mounted() {
-    const response = await this.axios.get(`${backend}/complaint/${this.reservation.id}`);
-    if (response.data !== null) {
-      if(!response.data.fromCustomer){
-        this.review = response.data.complaint;
-        this.forPenalty = response.data.forPenalty;
-        this.canSend = false;
+    const response = await this.axios.get(`${backend}/complaint/${this.reservation.id}`).catch(() => {
+      this.canSend = true;
+    });
+    if (response.data.length > 0) {
+      for(let i = 0; i < response.data.length; i++){
+        if(!response.data[i].fromCustomer){
+          this.review = response.data[i].complaint;
+          this.forPenalty = response.data[i].forPenalty;
+          this.canSend = false;
+        }
       }
     }
     },

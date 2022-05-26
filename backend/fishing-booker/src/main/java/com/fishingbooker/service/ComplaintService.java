@@ -13,7 +13,7 @@ public interface ComplaintService {
 
     List<Complaint> findAll();
 
-    Optional<Complaint> findById(Long id);
+    List<Complaint> getById(Long id);
 
     Complaint updateComplaint(Complaint complaint);
 }
