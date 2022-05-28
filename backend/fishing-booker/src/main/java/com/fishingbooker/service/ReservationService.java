@@ -8,7 +8,6 @@ import com.fishingbooker.model.Rentable;
 import com.fishingbooker.model.Reservation;
 import com.fishingbooker.model.ReservationType;
 import com.fishingbooker.model.Review;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -28,6 +27,10 @@ public interface ReservationService {
     List<Reservation> getAllReservations(EventDTO event);
 
     void addReview(Review review);
+
+    List<Review> getReviews();
+
+    void updateReview(Review review);
 
     List<FreeTerm> createDayOff(FreeTermDTO dto);
 

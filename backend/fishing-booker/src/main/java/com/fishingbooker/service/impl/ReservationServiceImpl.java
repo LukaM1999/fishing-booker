@@ -235,6 +235,25 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<Review> getReviews() {
+        List<Review> reviews = this.reviewRepository.findAll();
+        List<Review> reviewsToReturn = new ArrayList<>();
+        for(Review review : reviews) {
+            if (!review.isPublic())
+                reviewsToReturn.add(review);
+        }
+        return reviewsToReturn;
+    }
+
+    @Override
+    public void updateReview(Review review) {
+        Optional<Review> reviewToUpdate = this.reviewRepository.findById(review.getReservationId());
+        reviewToUpdate.orElseThrow().setApproved(review.isApproved());
+        reviewToUpdate.orElseThrow().setPublic(review.isPublic());
+        this.reviewRepository.save(reviewToUpdate.orElseThrow());
+    }
+
+    @Override
     public List<FreeTerm> createDayOff(FreeTermDTO dto) {
         List<FreeTerm> freeTerms;
         List<Reservation> reservations;

@@ -37,6 +37,7 @@ import SaleSubscriptions from "@/components/customer/SaleSubscriptions";
 import Complaints from "@/components/admin/Complaints";
 
 import CottageAction from "@/components/cottage_owner/CottageAction";
+import Reviews from "@/components/admin/Reviews";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -163,6 +164,11 @@ const routes = [
                 path: 'approve',
                 name: 'approveUser',
                 component: ApproveUser
+            },
+            {
+                path: 'reviews',
+                name: 'reviews',
+                component: Reviews
             },
             {
                 path: 'complaints',

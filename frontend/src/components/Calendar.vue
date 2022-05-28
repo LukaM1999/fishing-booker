@@ -90,7 +90,7 @@ export default {
           end: `${array[i].endTime}`,
           title: 'Reserved',
           content: content,
-          class: 'leisure',
+          class: !array[i].deal ? 'leisure' : 'deal',
           deletable: false,
         }
         this.events.push(event)
@@ -129,6 +129,8 @@ export default {
 
 .vuecal__event.leisure {background-color: rgba(54, 153, 38, 0.9);border: 1px solid rgb(19, 198, 13);color: #fff;}
 .vuecal__event.sport {background-color: rgba(37, 199, 175, 0.9);border: 1px solid rgb(22, 177, 154);color: #fff;}
+.vuecal__event.deal {background-color: rgba(202, 176, 37, 0.9);border: 1px solid rgb(177, 146, 37);color: #fff;}
+
 
 .vuecal__event.lunch {
   background: repeating-linear-gradient(45deg, transparent, transparent 10px, #f2f2f2 10px, #f2f2f2 20px);/* IE 10+ */

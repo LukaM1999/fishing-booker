@@ -95,6 +95,16 @@ public class ReservationController {
         this.reservationService.addReview(review);
     }
 
+    @GetMapping("/getReviews")
+    public List<Review> getReviews() {
+        return this.reservationService.getReviews();
+    }
+
+    @PutMapping("/updateReview")
+    public void updateReview(@RequestBody Review review) {
+        this.reservationService.updateReview(review);
+    }
+
     @PostMapping("/createDayOff")
     public List<FreeTerm> createDayOff(@RequestBody FreeTermDTO dto){
         return this.reservationService.createDayOff(dto);

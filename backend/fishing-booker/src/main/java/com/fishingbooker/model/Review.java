@@ -22,6 +22,9 @@ public class Review {
     private boolean isPublic;
 
     @Column
+    private boolean isApproved;
+
+    @Column
     private String rentableName;
 
     @Column
@@ -40,6 +43,7 @@ public class Review {
         this.isPublic = false;
         this.rentableRating = rentableRating;
         this.ownerRating = ownerRating;
+        this.isApproved = false;
     }
 
     public Long getReservationId() {
@@ -64,6 +68,14 @@ public class Review {
 
     public void setPublic(boolean aPublic) {
         isPublic = aPublic;
+    }
+
+    public boolean isApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(boolean approved) {
+        isApproved = approved;
     }
 
     public int getRentableRating() {
