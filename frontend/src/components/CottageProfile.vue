@@ -19,6 +19,16 @@
         </b-carousel>
       </div>
       <div class="tile is-child box">
+        <l-map
+            :zoom="zoom"
+            :center="center"
+            style="height: 500px; width: 100%"
+        >
+          <l-tile-layer
+              :url="url"
+          />
+          <l-marker :lat-lng="marker"/>
+        </l-map>
         <nav class="level is-info m-3 rounded">
           <div class="level-item has-text-centered">
             <div>
@@ -135,10 +145,13 @@ import moment from "moment";
 import {backend} from "@/env";
 import Calendar from "@/components/Calendar";
 import axios from "axios";
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import { latLng } from "leaflet";
+
 
 export default {
   name: "CottageProfile",
-  components: {Calendar},
+  components: {Calendar, LMap, LTileLayer, LMarker},
   data() {
     return {
       cottage: JSON.parse(localStorage.getItem('currentCottage')),
@@ -157,6 +170,11 @@ export default {
       key: 0,
       selectedDate: null,
       subscriptionText: 'Subscribed',
+
+      zoom: 13,
+      center: [47.41322, -1.219482],
+      marker: latLng(47.41322,-1.219482),
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
     }
   },
   async mounted() {
@@ -168,8 +186,22 @@ export default {
     this.minDate.setMinutes(0)
     await this.getIsSubscribed()
     await this.getActions()
+    await this.getGeoLocation()
   },
   methods: {
+    async getGeoLocation(){
+      var config = {
+        method: 'get',
+        url: `https://api.geoapify.com/v1/geocode/search?text=${this.cottage.country}' '${this.cottage.city}' '${this.cottage.address}&lang=en&apiKey=3e759fb569c640dcb289d932c50d4962`,
+      }
+
+      const {data} = await axios(config).catch(err => {
+        console.log(err)
+      })
+      this.center = [data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]]
+      this.marker = latLng(data.features[0].properties.lat, data.features[0].properties.lon)
+
+    },
     async getIsSubscribed() {
       if (this.authority !== 'CUSTOMER') {
         return false
@@ -236,7 +268,6 @@ export default {
       })
       if (response.data) {
         this.actions = response.data;
-        console.log(this.actions)
       }
     },
     async reserveAction(action){

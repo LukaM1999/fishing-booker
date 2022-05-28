@@ -17,6 +17,7 @@
     "emailjs": "^3.7.0",
     "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
+    "leaflet": "^1.8.0",
     "moment": "^2.29.1",
     "serve-static": "^1.15.0",
     "vue": "^2.6.11",
@@ -24,7 +25,8 @@
     "vue-cal": "^3.10.1",
     "vue-material": "^1.0.0-beta-15",
     "vue-router": "^3.5.3",
-    "vue-toasted": "^1.1.28"
+    "vue-toasted": "^1.1.28",
+    "vue2-leaflet": "^2.7.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

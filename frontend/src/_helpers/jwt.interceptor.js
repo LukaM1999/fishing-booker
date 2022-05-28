@@ -5,6 +5,9 @@ import App from "@/App";
 export function jwtInterceptor(){
     axios.interceptors.request.use(async config => {
         // add auth header with jwt if account is logged in and request is to the api url
+        if(config.url.startsWith('https://api.geoapify.com')){
+            return config;
+        }
         const token = localStorage.jwt;
         if (token && !isTokenExpired(token)) {
             config.headers.common['Authorization'] = `Bearer ${token}`;

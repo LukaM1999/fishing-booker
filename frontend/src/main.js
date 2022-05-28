@@ -39,6 +39,11 @@ import Complaints from "@/components/admin/Complaints";
 import CottageAction from "@/components/cottage_owner/CottageAction";
 import Reviews from "@/components/admin/Reviews";
 
+//map support
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
+import 'leaflet/dist/leaflet.css';
+import { Icon } from 'leaflet';
+
 Vue.config.productionTip = false
 Vue.config.devtools
 
@@ -52,6 +57,17 @@ Vue.use(Toasted, {
     keepOnHover: true,
 })
 Vue.use(VueAxios, axios)
+
+//map support
+Vue.component('l-map', LMap);
+Vue.component('l-tile-layer', LTileLayer);
+Vue.component('l-marker', LMarker);
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+    iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+    iconUrl: require('leaflet/dist/images/marker-icon.png'),
+    shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
+});
 
 Vue.filter('formatDate', function(value) {
     if (value) {
