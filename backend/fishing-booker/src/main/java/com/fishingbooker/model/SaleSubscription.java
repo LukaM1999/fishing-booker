@@ -3,6 +3,7 @@ package com.fishingbooker.model;
 import javax.persistence.*;
 
 @Entity
+@Table
 public class SaleSubscription {
 
     @Id
@@ -21,8 +22,7 @@ public class SaleSubscription {
 
     public SaleSubscription() { }
 
-    public SaleSubscription(Long id, String entityName, String ownerUsername, String customerUsername) {
-        this.id = id;
+    public SaleSubscription(String entityName, String ownerUsername, String customerUsername) {
         this.entityName = entityName;
         this.ownerUsername = ownerUsername;
         this.customerUsername = customerUsername;

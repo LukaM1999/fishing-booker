@@ -1,4 +1,4 @@
-package com.example.fishingbooker;
+package com.fishingbooker;
 
 import com.fishingbooker.FishingBookerApplication;
 import org.junit.jupiter.api.Test;
