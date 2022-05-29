@@ -62,6 +62,7 @@ public class ReservationController {
     }
 
     @PatchMapping("/reserveAction")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public void reserveAction(@RequestBody ReserveActionDTO reserveActionDTO){
         this.reservationService.reserveAction(reserveActionDTO.getId(), reserveActionDTO.getCustomerUsername());
     }
@@ -91,6 +92,7 @@ public class ReservationController {
     }
 
     @PostMapping("/review")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public void addReview(@RequestBody Review review) {
         this.reservationService.addReview(review);
     }
@@ -111,6 +113,7 @@ public class ReservationController {
     }
 
     @PatchMapping("/cancelReservation/{reservationId}")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
     public void cancelReservation(@PathVariable Long reservationId) {
         this.reservationService.cancelReservation(reservationId);
     }

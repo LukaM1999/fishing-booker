@@ -315,6 +315,9 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public void cancelReservation(Long reservationId) {
         Reservation reservation = this.reservationRepository.getById(reservationId);
+        if(reservation.isCancelled() || reservation.getStartTime().isBefore(LocalDateTime.now().plusDays(3))){
+            throw new IllegalArgumentException("Reservation is already cancelled or is too late to cancel");
+        }
         reservation.setCancelled(true);
         this.reservationRepository.save(reservation);
     }

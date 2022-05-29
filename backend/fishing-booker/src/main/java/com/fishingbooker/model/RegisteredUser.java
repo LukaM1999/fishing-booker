@@ -69,6 +69,7 @@ public class RegisteredUser implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return new ArrayList<Role>(List.of(this.role));
     }
