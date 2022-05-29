@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 public class RegisteredUserServiceTest {
 
     @Mock
