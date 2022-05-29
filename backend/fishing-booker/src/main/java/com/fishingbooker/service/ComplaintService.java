@@ -16,4 +16,6 @@ public interface ComplaintService {
     List<Complaint> getById(Long id);
 
     Complaint updateComplaint(Complaint complaint);
+
+    Complaint getCustomerComplaint(Long reservationId);
 }

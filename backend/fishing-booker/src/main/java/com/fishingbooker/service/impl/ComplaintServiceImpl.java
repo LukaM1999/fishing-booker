@@ -50,4 +50,9 @@ public class ComplaintServiceImpl implements ComplaintService {
         updatedComplaint.ifPresent(value -> value.setReviewed(true));
         return complaintRepository.save(updatedComplaint.orElseThrow());
     }
+
+    @Override
+    public Complaint getCustomerComplaint(Long reservationId) {
+        return complaintRepository.getCustomerComplaint(reservationId);
+    }
 }

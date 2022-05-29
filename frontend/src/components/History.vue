@@ -62,8 +62,7 @@
                   </b-table-column>
 
                   <b-table-column field="complaintExists" label="Complaint" v-slot="props">
-                    <button title="Complaint" class="btn btn-danger" :disabled="props.row.complaintExists"
-                            v-if="!props.row.complaintExists">
+                    <button title="Complaint" @click="openComplaintModal(props.row)" class="btn btn-danger">
                       <i class="fa fa-exclamation-circle fa-2x"></i>
                     </button>
                   </b-table-column>
@@ -155,6 +154,7 @@ import {backend} from "@/env";
 import ReservationReview from "@/components/customer/ReservationReview";
 import CustomReservation from "@/components/CustomReservation";
 import Report from "@/components/Report";
+import Complaint from "@/components/customer/Complaint";
 
 export default {
   name: "History",
@@ -242,7 +242,16 @@ export default {
       })
     },
 
-    //function that calls the backend to get the customer profile
+    openComplaintModal(reservation){
+      this.$buefy.modal.open({
+        parent: this,
+        component: Complaint,
+        props: {
+          reservation: reservation,
+        },
+      })
+    },
+
     async getCustomerProfile(reservation) {
       const response = await axios.get(backend + `/user/${reservation.customerUsername}`)
       if (response.data){

@@ -27,13 +27,20 @@ public class ComplaintController {
     }
 
     @PostMapping(value = "/add")
+    @PreAuthorize("!hasAuthority('ADMIN')")
     public Complaint create(@RequestBody Complaint complaint) {
         return this.complaintService.createComplaint(complaint);
     }
 
     @PutMapping(value = "/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Complaint update(@RequestBody Complaint complaint) {
         return this.complaintService.updateComplaint(complaint);
     }
 
+    @GetMapping(value = "/customer/{reservationId}")
+    @PreAuthorize("hasAuthority('CUSTOMER')")
+    public Complaint getCustomerComplaint(@PathVariable Long reservationId) {
+        return this.complaintService.getCustomerComplaint(reservationId);
+    }
 }
