@@ -115,7 +115,7 @@
               </div>
               <footer class="card-footer">
                 <p class="card-footer-item"  v-if="authority==='CUSTOMER'">
-                  <button class="button" @click="reserveAction(a.id)">
+                  <button class="button" @click="reserveAction(a)">
                    Reserve
                   </button>
                 </p>
@@ -239,12 +239,39 @@ export default {
         console.log(this.actions)
       }
     },
-    async reserveAction(id){
-      const response = await this.axios.patch(backend + '/reservation/reserveAction', {
-        id: id,
+    async reserveAction(action){
+      await this.axios.patch(backend + '/reservation/reserveAction', {
+        id: action.id,
         customerUsername: this.user.username
+      }).catch(e => {
+        this.$toasted.error('Error while reserving action.')
+        throw e
       })
-      this.actions.splice(this.actions.findIndex(a => a.id === id), 1)
+      this.$toasted.success('Action successfully reserved!')
+      this.actions.splice(this.actions.findIndex(a => a.id === action.id), 1)
+      const email = {
+        service_id: 'service_approve',
+        template_id: 'template_approved',
+        user_id: 'user_62WYz6KIasgbXlUB5EEGw',
+        template_params: {
+          'to_name': this.user.username,
+          'to_email': JSON.parse(localStorage.getItem('user') || '{}')?.email,
+          'subject': 'Reservation confirmed',
+          'message': `<p>Your reservation for <strong>${action.name}</strong> has been confirmed.</p>
+          <p><u>Start time</u>: ${action.startTime}</p>
+          <p><u>End time</u>: ${action.endTime}</p>
+          <p><u>Number of guests</u>: ${action.guests}</p>
+          <p><u>Additional services</u>: ${action.additionalServices}</p>
+          <p><u>Discount</u>: ${action.salePercent}%</p>
+          <br>
+          <p><u><strong>TOTAL PRICE</strong></u>: ${action.price} EUR</p>`
+        }
+      };
+      await axios.post('https://api.emailjs.com/api/v1.0/email/send', email).catch(error => {
+        this.$toasted.error('Reservation email could not be sent')
+        throw error
+      })
+      await this.$router.push('/customer/history')
     },
     async createAction() {
       await this.$router.push({path: '/cottageOwner/action', params: {cottageId: this.cottage.id}})

@@ -504,14 +504,33 @@ export default {
       }
 
       const response = await axios.post(backend + `/reservation/reserveRentable/${this.selectedRentable.id}`, reservation)
-      if (response.data) {
-        //this.$router.push('/customer/upcomingReservations')
-        this.$toasted.success('Reservation confirmed successfully!')
-      } else {
-        this.$toasted.error('Reservation was unsuccessful')
-        this.activeStep = 0
-      }
-
+          .catch(error => {
+            this.$toasted.error('Reservation was unsuccessful')
+            throw error
+          })
+      this.$toasted.success('Reservation confirmed successfully!')
+      const email = {
+        service_id: 'service_approve',
+        template_id: 'template_approved',
+        user_id: 'user_62WYz6KIasgbXlUB5EEGw',
+        template_params: {
+          'to_name': reservation.customerUsername,
+          'to_email': JSON.parse(localStorage.getItem('user') || '{}')?.email,
+          'subject': 'Reservation confirmed',
+          'message': `<p>Your reservation for <strong>${reservation.name}</strong> has been confirmed.</p>
+          <p><u>Start time</u>: ${reservation.startTime}</p>
+          <p><u>End time</u>: ${reservation.endTime}</p>
+          <p><u>Number of guests</u>: ${reservation.guests}</p>
+          <p><u>Additional services</u>: ${reservation.additionalServices}</p>
+          <br>
+          <p><u><strong>TOTAL PRICE</strong></u>: ${reservation.price} EUR</p>`
+        }
+      };
+      await axios.post('https://api.emailjs.com/api/v1.0/email/send', email).catch(error => {
+        this.$toasted.error('Reservation email could not be sent')
+        throw error
+      })
+      await this.$router.push('/customer/history')
     },
     setSelectedRentable(rentable) {
       if (this.selectedRentable === null) {
@@ -546,16 +565,6 @@ export default {
       let formatAddress = (function (value) {
         return value.address + ", " + value.city + ", " + value.country
       })
-      // const types = this.allTypes.filter((type, index) => this.typeCheckboxes[index] === true)
-      // const filteredRentables = []
-      // for (let i = 0; i < types.length; i++) {
-      //   filteredRentables.push(...tempRentables.filter((r) => {
-      //     return r.type.toLowerCase().includes(types[i].toLowerCase())
-      //   }))
-      // }
-      //
-      // if (filteredRentables.length > 0) tempRentables = filteredRentables
-
       if (this.nameSearch !== '') {
         tempRentables = tempRentables.filter((r) => {
           return r.name.toLowerCase().includes(this.nameSearch.toLowerCase())
@@ -570,11 +579,11 @@ export default {
         })
       }
 
-      // if (this.ratingSearch !== '') {
-      //   tempRentables = tempRentables.filter((r) => {
-      //     return Math.round(r.rating) === Math.round(this.ratingSearch)
-      //   })
-      // }
+      if (this.ratingSearch !== '') {
+        tempRentables = tempRentables.filter((r) => {
+          return Math.round(r.rating) === Math.round(this.ratingSearch)
+        })
+      }
 
       tempRentables = tempRentables.sort((a, b) => {
         if (this.sortBy === 'Name') {
@@ -590,14 +599,11 @@ export default {
           if (this.ascending) return result
           return result * -1
         }
-        // else if (this.sortBy === 'Rating') {
-        //   if (this.ascending) return a.rating - b.rating
-        //   return b.rating - a.rating
-        // }
+        else if (this.sortBy === 'Rating') {
+          if (this.ascending) return a.rating - b.rating
+          return b.rating - a.rating
+        }
       })
-
-      //if (this.onlyOpen) tempRentables = tempRentables.filter((r) => { return r.status == 'OPEN' })
-
       return tempRentables
     }
   }
