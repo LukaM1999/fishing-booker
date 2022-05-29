@@ -6,6 +6,7 @@ import com.fishingbooker.dto.JwtDTO;
 import com.fishingbooker.dto.LoginDTO;
 import com.fishingbooker.dto.RegistrationDTO;
 import com.fishingbooker.model.*;
+import com.fishingbooker.service.PointsService;
 import com.fishingbooker.service.impl.CustomerServiceImpl;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import com.fishingbooker.util.TokenUtils;
@@ -43,6 +44,9 @@ public class AuthController {
 
     @Autowired
     private CustomerServiceImpl customerService;
+
+    @Autowired
+    private PointsService pointsService;
 
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
@@ -110,7 +114,7 @@ public class AuthController {
         }
         //CottageOwner owner = (CottageOwner) this.userService.save(new CottageOwner(registrationDTO));
         //RegisteredUser user = this.userService.save(registeredUser);
-
+        pointsService.createUserPoints(new UserPoints(registrationDTO.getUsername(), 0));
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 

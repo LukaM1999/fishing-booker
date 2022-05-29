@@ -38,6 +38,7 @@ import Complaints from "@/components/admin/Complaints";
 
 import CottageAction from "@/components/cottage_owner/CottageAction";
 import Reviews from "@/components/admin/Reviews";
+import Loyalty from "@/components/admin/Loyalty";
 
 //map support
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
@@ -215,6 +216,11 @@ const routes = [
                 path: 'profile',
                 name: 'adminProfile',
                 component: AdminProfile
+            },
+            {
+                path: 'business',
+                name: 'business',
+                component: Loyalty
             }
         ]
     },

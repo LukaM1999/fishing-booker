@@ -5,6 +5,7 @@ import com.fishingbooker.dto.EventDTO;
 import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.*;
+import com.fishingbooker.service.PointsService;
 import com.fishingbooker.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    @Autowired
+    private PointsService pointsService;
     @Autowired
     private RentableRepository rentableRepository;
 
@@ -120,8 +123,31 @@ public class ReservationServiceImpl implements ReservationService {
         CustomerReservationDTO reservationDTO = new CustomerReservationDTO(reservation.getType(), reservation.getStartTime(), reservation.getEndTime(), reservation.getGuests());
         Rentable rentable = rentableRepository.getRentableById(rentableId);
         if(rentable == null || !new HashSet<>(getFreeRentables(reservationDTO)).contains(rentable)) return null;
+        reservation.setSalePercent(checkForCustomerSale(reservation));
+        reservation.setPrice(reservation.getPrice() - reservation.getPrice() * reservation.getSalePercent()/100);
         reservationRepository.save(reservation);
+        updatePoints(reservation);
         return reservation;
+    }
+
+    public void updatePoints(Reservation reservation){
+        UserPoints customerPoints = pointsService.getUserPoints(reservation.getCustomerUsername());
+        UserPoints ownerPoints = pointsService.getUserPoints(reservation.getOwnerUsername());
+        List<Points> points = pointsService.getPoints();
+
+        customerPoints.setPoints(customerPoints.getPoints() + points.get(0).getCustomerPoints());
+        ownerPoints.setPoints(ownerPoints.getPoints() + points.get(0).getOwnerPoints());
+
+        pointsService.updateUserPoints(customerPoints);
+        pointsService.updateUserPoints(ownerPoints);
+    }
+
+    public int checkForCustomerSale(Reservation reservation){
+        UserPoints customerPoints = pointsService.getUserPoints(reservation.getCustomerUsername());
+        List<Points> points = pointsService.getPoints();
+        if(customerPoints.getPoints() >= points.get(0).getSilver() && customerPoints.getPoints() < points.get(0).getGold()) return 10;
+        if(customerPoints.getPoints() >= points.get(0).getGold()) return 20;
+        return 0;
     }
 
     @Override
@@ -143,9 +169,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public void reserveAction(Long id, String customerUserrname){
+    public void reserveAction(Long id, String customerUsername){
         Reservation reservation = reservationRepository.getReservationById(id);
-        reservation.setCustomerUsername(customerUserrname);
+        reservation.setCustomerUsername(customerUsername);
+        reservation.setPrice(reservation.getPrice() - reservation.getPrice() * checkForCustomerSale(reservation)/100);
+        updatePoints(reservation);
         reservationRepository.save(reservation);
     }
 

@@ -49,11 +49,8 @@
               </router-link>
             </div>
           </div>
-          <router-link to="" class="navbar-item">
+          <router-link to="/admin/business" class="navbar-item">
             Business
-          </router-link>
-          <router-link to="" class="navbar-item">
-            Transaction fee
           </router-link>
           <a @click="registerAdminModal" class="navbar-item">
             Register admin

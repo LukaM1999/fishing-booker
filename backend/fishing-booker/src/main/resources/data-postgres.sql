@@ -75,3 +75,10 @@ insert into penalty(id, customer_username, issued_at) values (nextval('penalty_i
 insert into penalty(id, customer_username, issued_at) values (nextval('penalty_id_seq'), 'imbiamba', '2022-05-08 12:00');
 insert into penalty(id, customer_username, issued_at) values (nextval('penalty_id_seq'), 'imbiamba', '2022-05-20 17:00');
 
+insert into points(id, customer_points, owner_points, system_tax, silver, gold) values (1, 15, 15, 7, 500, 800);
+insert into user_points(username, points) values ('imbiamba', 0);
+insert into user_points(username, points) values ('Piwneuh', 0);
+insert into user_points(username, points) values ('Popeye', 0);
+insert into user_points(username, points) values ('Fishdude', 0);
+
+
