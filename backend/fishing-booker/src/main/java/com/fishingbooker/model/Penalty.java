@@ -25,10 +25,8 @@ public class Penalty {
 
     public Penalty(){}
 
-    public Penalty(Long id, String customerUsername, LocalDateTime issuedAt) {
-        this.id = id;
+    public Penalty(String customerUsername) {
         this.customerUsername = customerUsername;
-        this.issuedAt = issuedAt;
     }
 
     public Long getId() {

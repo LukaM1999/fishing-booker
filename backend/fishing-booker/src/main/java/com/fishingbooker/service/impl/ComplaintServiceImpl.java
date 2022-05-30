@@ -1,8 +1,10 @@
 package com.fishingbooker.service.impl;
 
 import com.fishingbooker.model.Complaint;
+import com.fishingbooker.model.Penalty;
 import com.fishingbooker.repository.ComplaintRepository;
 import com.fishingbooker.service.ComplaintService;
+import com.fishingbooker.service.PenaltyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,9 @@ public class ComplaintServiceImpl implements ComplaintService {
 
     @Autowired
     private ComplaintRepository complaintRepository;
+
+    @Autowired
+    private PenaltyService penaltyService;
 
     @Override
     public Complaint createComplaint(Complaint complaint) {
@@ -47,7 +52,11 @@ public class ComplaintServiceImpl implements ComplaintService {
     @Override
     public Complaint updateComplaint(Complaint complaint) {
         Optional<Complaint> updatedComplaint = complaintRepository.findById(complaint.getId());
-        updatedComplaint.ifPresent(value -> value.setReviewed(true));
+        updatedComplaint.ifPresent(value -> {
+            value.setReviewed(true);
+            if(value.isForPenalty())
+                penaltyService.createPenalty(new Penalty(complaint.getSubjectUsername()));
+        });
         return complaintRepository.save(updatedComplaint.orElseThrow());
     }
 
