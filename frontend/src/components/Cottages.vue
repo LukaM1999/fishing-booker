@@ -43,7 +43,7 @@
         <md-card class="md-primary" md-theme="orange-card" md-with-hover>
           <md-ripple>
             <md-card-media md-ratio="4:3">
-              <img :src="getImgUrl(cottage.id)" style="height: 100%" alt="Cottage image"
+              <img :src="getImgUrl(cottage)" style="height: 100%" alt="Cottage image"
                    @click="cottageProfile(cottage)">
             </md-card-media>
             <md-card-area>
@@ -165,8 +165,8 @@ export default {
         this.cottages = response.data
       }
     },
-    getImgUrl(value) {
-      return `${backend}/c${value}.1.jpg`
+    getImgUrl(cottage) {
+      return `${backend}/${cottage.images?.split(';')[0]}`
     },
     cottageProfile(cottage) {
       localStorage.setItem('currentCottage', JSON.stringify(cottage))

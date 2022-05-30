@@ -61,7 +61,7 @@
         <md-card class="md-primary" md-theme="orange-card" md-with-hover>
           <md-ripple>
             <md-card-media md-ratio="4:3">
-              <img :src="getImgUrl(adventure.id)" style="height: 100%" alt="Adventure image"
+              <img :src="getImgUrl(adventure)" style="height: 100%" alt="Adventure image"
                    @click="adventureProfile(adventure)">
             </md-card-media>
             <md-card-area>
@@ -193,8 +193,8 @@ export default {
         this.adventures = response.data
       }
     },
-    getImgUrl(value) {
-      return `${backend}/a${value}.1.jpg`
+    getImgUrl(adventure) {
+      return `${backend}/${adventure.images?.split(';')[0]}`
     },
     adventureProfile(adventure) {
       localStorage.setItem('currentAdventure', JSON.stringify(adventure))

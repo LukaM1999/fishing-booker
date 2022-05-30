@@ -139,7 +139,7 @@
               <span v-for="(file, index) in dropFiles"
                     :key="index"
                     class="tag is-primary">
-                  {{ file.name }}
+                  {{ file.name || file.config.url.substring(file.config.url.lastIndexOf('/') + 1)}}
                   <button class="delete is-small"
                           type="button"
                           @click="deleteDropFile(index)">
@@ -183,12 +183,12 @@ export default {
       price: this.cottage.price,
       additionalServices: this.cottage.additionalServices,
       promoDescription: this.cottage.promoDescription,
-      images: this.cottage.images.split(';'),
+      images: this.cottage.images,
       dropFiles: []
     }
   },
   mounted() {
-    this.loadFiles(this.images)
+    this.loadFiles(this.images.substring(0, this.images.length-1).split(';'));
   },
   methods: {
     async loadFiles(images) {
@@ -214,16 +214,19 @@ export default {
         price: this.price,
         additionalServices: this.additionalServices,
         promoDescription: this.promoDescription,
+        images: this.images,
         ownerUsername: JSON.parse(localStorage.getItem('user')).username
       }
       const formData = new FormData()
 
-      console.log(this.dropFiles)
-
       for (let file of this.dropFiles) {
-        formData.append('files', file)
+        if (file.name)
+          formData.append('files', file)
       }
-      console.log(formData)
+
+      if(!formData.has('files')){
+        formData.append('files', new Blob([]))
+      }
 
       formData.append('cottage', new Blob([JSON.stringify(cottage)], {type: 'application/json'}))
 
@@ -239,6 +242,15 @@ export default {
 
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1)
+      this.images = this.images.split(';')
+      this.images.splice(index, 1)
+      this.images = this.images.join(';') + ';'
+      if(this.images[this.images.length-1] === ';' && this.images[this.images.length-2]===';'){
+        this.images = this.images.substring(0, this.images.length-1)
+      }
+      if(this.images.length < 5){
+        this.images = ''
+      }
     }
   }
 }

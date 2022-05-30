@@ -5,7 +5,7 @@
         <p class="title">{{ cottage.name }}</p>
         <b-carousel :autoplay="false" indicator-custom :indicator-inside="false" :overlay="gallery"
                     @click="switchGallery(false)">
-          <b-carousel-item v-for="(item, i) in items" :key="i" style="height:80%">
+          <b-carousel-item v-for="(item, i) in items.slice(0, items.length-1)" :key="i" style="height:80%">
             <a class="image ">
               <img :src="backend + '/'+item" alt="'cottage_img'">
             </a>
@@ -13,7 +13,7 @@
           <span v-if="gallery" @click="switchGallery(false)" class="modal-close is-large"/>
           <template #indicators="props">
             <figure class="al image" :draggable="false">
-              <img :draggable="false" :src="getImgUrl(props.i+1)" :title="props.i+1" alt="'cottage_img'">
+              <img :draggable="false" :src="getImgUrl(props.i)" :title="props.i" alt="'cottage_img'">
             </figure>
           </template>
         </b-carousel>
@@ -114,13 +114,13 @@
                   Start Date:
                 </p>
                 <p class="subtitle">
-                  <strong>{{ a.startTime.substring(0, 10) }}</strong>
+                  <strong>{{ a.startTime | formatDate }}</strong>
                 </p>
                 <p class="subtitle">
                   End Date:
                 </p>
                 <p class="subtitle">
-                  <strong>{{ a.endTime.substring(0, 10) }}</strong>
+                  <strong>{{ a.endTime | formatDate }}</strong>
                 </p>
               </div>
               <footer class="card-footer">
@@ -325,7 +325,7 @@ export default {
       this.$router.push('/')
     },
     getImgUrl(value) {
-      return `${backend}/c${this.cottage.id}.${value}.jpg`
+      return `${backend}/${this.cottage.images.split(';')[value]}`
     },
     switchGallery(value) {
       this.gallery = value
