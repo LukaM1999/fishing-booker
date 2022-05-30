@@ -51,6 +51,12 @@ public class RegisteredUser implements UserDetails {
     @OneToOne(cascade = CascadeType.ALL)
     private Role role;
 
+    @Column(columnDefinition="Decimal(3,2) default '0.00'")
+    private double averageRating;
+
+    @Column(columnDefinition = "Integer default 0")
+    private int timesRated;
+
     public Role getRole() {
         return role;
     }
@@ -144,6 +150,22 @@ public class RegisteredUser implements UserDetails {
         this.enabled = enabled;
     }
 
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
+    }
+
+    public int getTimesRated() {
+        return timesRated;
+    }
+
+    public void setTimesRated(int timesRated) {
+        this.timesRated = timesRated;
+    }
+
     public void setPassword(String password) {
         Timestamp now = new Timestamp(new Date().getTime());
         this.setLastPasswordResetDate(now);
@@ -167,6 +189,8 @@ public class RegisteredUser implements UserDetails {
         this.phone = phone;
         this.role = new Role(role);
         this.enabled = false;
+        this.averageRating = 0;
+        this.timesRated = 0;
     }
 
     public Timestamp getLastPasswordResetDate() {

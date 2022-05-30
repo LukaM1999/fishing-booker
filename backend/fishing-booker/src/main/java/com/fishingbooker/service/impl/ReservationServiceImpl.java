@@ -43,6 +43,9 @@ public class ReservationServiceImpl implements ReservationService {
     @Autowired
     private BoatRepository boatRepository;
 
+    @Autowired
+    private RegisteredUserRepository registeredUserRepository;
+
     private ZoneId zoneId = ZoneId.systemDefault();
 
     @Override
@@ -204,8 +207,34 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setReviewed(true);
         this.reservationRepository.save(reservation);
         this.reviewRepository.save(review);
-        double avgRating = this.reviewRepository.getAverageRatingByNameAndOwner(reservation.getName(), reservation.getOwnerUsername());
-        int timesRated = this.reviewRepository.getNumberOfReviewsByNameAndOwner(reservation.getName(), reservation.getOwnerUsername());
+    }
+
+    @Override
+    public List<Review> getReviews() {
+        List<Review> reviews = this.reviewRepository.findAll();
+        List<Review> reviewsToReturn = new ArrayList<>();
+        for(Review review : reviews) {
+            if (!review.isPublic())
+                reviewsToReturn.add(review);
+        }
+        return reviewsToReturn;
+    }
+
+    @Override
+    public void updateReview(Review review) {
+        Optional<Review> reviewToUpdate = this.reviewRepository.findById(review.getReservationId());
+        reviewToUpdate.orElseThrow().setApproved(review.isApproved());
+        reviewToUpdate.orElseThrow().setPublic(review.isPublic());
+        this.reviewRepository.save(reviewToUpdate.orElseThrow());
+        if(!review.isPublic()) return;
+        double avgRating = this.reviewRepository.getAverageRatingByNameAndOwner(review.getRentableName(), review.getOwnerUsername());
+        int timesRated = this.reviewRepository.getNumberOfReviewsByNameAndOwner(review.getRentableName(), review.getOwnerUsername());
+        double avgOwnerRating = this.reviewRepository.getOwnerAverageRating(review.getOwnerUsername());
+        int timesOwnerRated = this.reviewRepository.getNumberOfOwnerReviews(review.getOwnerUsername());
+        RegisteredUser owner = this.registeredUserRepository.findByUsername(review.getOwnerUsername());
+        owner.setAverageRating(avgOwnerRating);
+        owner.setTimesRated(timesOwnerRated);
+        this.registeredUserRepository.save(owner);
         switch (review.getReservationType()) {
             case ADVENTURE: {
                 Adventure adventure = this.adventureRepository.getAdventureByNameAndOwnerUsername(review.getRentableName(), review.getOwnerUsername());
@@ -232,25 +261,6 @@ public class ReservationServiceImpl implements ReservationService {
                 break;
             }
         }
-    }
-
-    @Override
-    public List<Review> getReviews() {
-        List<Review> reviews = this.reviewRepository.findAll();
-        List<Review> reviewsToReturn = new ArrayList<>();
-        for(Review review : reviews) {
-            if (!review.isPublic())
-                reviewsToReturn.add(review);
-        }
-        return reviewsToReturn;
-    }
-
-    @Override
-    public void updateReview(Review review) {
-        Optional<Review> reviewToUpdate = this.reviewRepository.findById(review.getReservationId());
-        reviewToUpdate.orElseThrow().setApproved(review.isApproved());
-        reviewToUpdate.orElseThrow().setPublic(review.isPublic());
-        this.reviewRepository.save(reviewToUpdate.orElseThrow());
     }
 
     @Override
