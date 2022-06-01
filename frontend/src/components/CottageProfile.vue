@@ -1,8 +1,7 @@
 <template>
   <div class="tile is-ancestor m-5">
-    <div class="tile is-4 is-vertical is-parent">
+    <div class="tile is-4 is-vertical is-parent sticky">
       <div class="tile is-child box">
-        <p class="title">{{ cottage.name }}</p>
         <b-carousel :autoplay="false" indicator-custom :indicator-inside="false" :overlay="gallery"
                     @click="switchGallery(false)">
           <b-carousel-item v-for="(item, i) in items.slice(0, items.length-1)" :key="i" style="height:80%">
@@ -19,53 +18,72 @@
         </b-carousel>
       </div>
       <div class="tile is-child box">
+        <p class="title"><strong>{{ cottage.name }}</strong></p>
+        <p class="subtitle mb-5">{{ cottage.address }}, {{ cottage.city }}, {{ cottage.country }}</p>
         <l-map
             :zoom="zoom"
             :center="center"
-            style="height: 500px; width: 100%"
+            style="height: 350px; width: 100%"
         >
           <l-tile-layer
               :url="url"
           />
           <l-marker :lat-lng="marker"/>
         </l-map>
-        <nav class="level is-info m-3 rounded">
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Capacity</p>
-              <p class="title">{{ cottage.capacity }}</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Rooms</p>
-              <p class="title">{{ cottage.rooms }}</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Beds per room</p>
-              <p class="title">{{ cottage.bedsPerRoom }}</p>
-            </div>
-          </div>
-        </nav>
-        <nav class="level is-info m-3 rounded">
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">per person/day</p>
-              <p class="title">{{ cottage.price }}$</p>
-            </div>
-          </div>
-        </nav>
       </div>
     </div>
     <div class="tile is-parent">
       <div class="tile is-child box is-dark">
-        <p class="title">Three</p>
+        <div class="my-5"> <p class="is-size-3">More about this cottage</p></div>
+        <p class="is-size-5">{{ cottage.promoDescription }}</p>
+        <div class="my-lg-5"> <p class="is-size-3"> Additional services </p> </div>
+        <div class="row justify-content-left">
+          <div class="col-4">
+            <div v-for="s in services" :key="s.name">
+              <span class="tag is-info is-large mb-5">{{ s.name }}  {{s.price}}€</span>
+            </div>
+          </div>
+        </div>
+        <p class="is-size-3 mt-5"> Actions for this cottage: </p>
+        <p class="subtitle mt-5" v-if="actions.length===0"> Unfortunately there are no special deals for this cottage</p>
+        <div class="columns mt-5 scrollable mb-5" v-if="actions.length !== 0">
+          <div class="col-3 ml-3" v-for="a in actions" v-bind:key="a.id">
+            <div class="card" style="background-color: #f5f8f3">
+              <div class="card-content">
+                <p class="subtitle">
+                  <strong> Start Date: {{ a.startTime | formatDate }}</strong>
+                </p>
+                <p class="subtitle">
+                  <strong> End Date: {{ a.endTime | formatDate }}</strong>
+                </p>
+                <p class="subtitle">
+                  <strong><strike>Old price {{(a.price * a.salePercent).toString().substring(0,2)}}€</strike></strong>
+                </p>
+                <p class="subtitle">
+                  <strong>New price {{a.price}}€ </strong>
+                </p>
+
+              </div>
+              <footer class="card-footer">
+                <p class="card-footer-item"  v-if="authority==='CUSTOMER'">
+                  <button class="button is-link" @click="reserveAction(a)">
+                    Reserve
+                  </button>
+                </p>
+              </footer>
+            </div>
+          </div>
+        </div>
+        <div class="mt-5">
+          <button class="button is-link my-5" v-if="authority==='COTTAGE_OWNER'" @click="createAction()">
+            Create an action for this cottage
+          </button>
+        </div>
         <button v-if="authority === 'CUSTOMER'" @click="subscribe()" class="button is-primary mb-5">
           {{subscriptionText}}
         </button>
-        <div class="row">
+        <div class="row mt-lg-5">
+          <div class="col"></div>
           <div class="col">
             <b-field v-show="authority==='COTTAGE_OWNER'" label="Add available days">
               <b-datepicker
@@ -87,51 +105,21 @@
               <button class="button ml-5 is-link" @click="addDayOff()">Submit</button>
             </b-field>
           </div>
+          <div class="col"></div>
+          <div class="col">
+            <b-field v-show="authority==='COTTAGE_OWNER'" label="Check more" class="ml-lg-5">
+              <button  class="button is-primary" @click="routeToStatistics()">Statistics</button>
+            </b-field>
+          </div>
+          <div class="col-1"></div>
         </div>
-        <div class="row mt-5" v-show="authority==='COTTAGE_OWNER'">
+        <div class="row my-5" v-show="authority==='COTTAGE_OWNER'">
           <div class="col"></div>
           <div class="col-8">
             <calendar :key="key">
             </calendar>
           </div>
           <div class="col"></div>
-          <div>
-        <button v-show="authority==='COTTAGE_OWNER'" class="button is-primary mb-5">Statistics</button>
-          </div>
-        <div class="mt-5">
-            <button class="button is-link" v-if="authority==='COTTAGE_OWNER'" @click="createAction()">
-                Create an action for this cottage
-            </button>
-          </div>
-        </div>
-        <p class="title mt-5"> Actions for this cottage: </p>
-        <p class="subtitle mt-5" v-if="actions.length===0"> Unfortunately there are no special deals for this cottage</p>
-        <div class="columns mt-5 scrollable" v-if="actions.length !== 0">
-          <div class="col-2 ml-3" v-for="a in actions" v-bind:key="a.id">
-            <div class="card">
-              <div class="card-content">
-                <p class="subtitle">
-                  Start Date:
-                </p>
-                <p class="subtitle">
-                  <strong>{{ a.startTime | formatDate }}</strong>
-                </p>
-                <p class="subtitle">
-                  End Date:
-                </p>
-                <p class="subtitle">
-                  <strong>{{ a.endTime | formatDate }}</strong>
-                </p>
-              </div>
-              <footer class="card-footer">
-                <p class="card-footer-item"  v-if="authority==='CUSTOMER'">
-                  <button class="button" @click="reserveAction(a)">
-                   Reserve
-                  </button>
-                </p>
-              </footer>
-            </div>
-          </div>
         </div>
       </div>
   </div>
@@ -170,8 +158,8 @@ export default {
       key: 0,
       selectedDate: null,
       subscriptionText: 'Subscribed',
-
       zoom: 13,
+      services: [],
       center: [47.41322, -1.219482],
       marker: latLng(47.41322,-1.219482),
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -187,6 +175,7 @@ export default {
     await this.getIsSubscribed()
     await this.getActions()
     await this.getGeoLocation()
+    this.getServices()
   },
   methods: {
     async getGeoLocation(){
@@ -307,6 +296,9 @@ export default {
     async createAction() {
       await this.$router.push({path: '/cottageOwner/action', params: {cottageId: this.cottage.id}})
     },
+    routeToStatistics() {
+      this.$router.push('/cottageOwner/statistics')
+    },
     formatDateMonth(date) {
       if (date.getMonth() + 1 < 10)
         return `0${date.getMonth() + 1}`
@@ -354,6 +346,14 @@ export default {
     formatDate(date){
       return moment(date).format('YYYY-MM-DD HH:mm')
     },
+    getServices(){
+      this.services = [];
+      this.services = this.cottage.additionalServices.split(';').flatMap(service => {
+        let s = service.split('=')
+        if (s[0] === '') return []
+        return {name: s[0], price: parseFloat(s[1])}
+      })
+    }
   }
 }
 </script>
@@ -369,5 +369,14 @@ export default {
 
 .carousel-item {
   display: block;
+}
+
+.sticky{
+  max-height: 600px;
+}
+
+::v-deep .vuecal--green-theme .vuecal__menu {
+  background-color: #84A98C;
+  color: #fff;
 }
 </style>

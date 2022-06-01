@@ -138,11 +138,19 @@
             <div class="tags">
               <span v-for="(file, index) in dropFiles"
                     :key="index"
-                    class="tag is-primary">
-                  {{ file.name || file.config.url.substring(file.config.url.lastIndexOf('/') + 1)}}
-                  <button class="delete is-small"
+                    class="is-primary">
+                  <span class="tag is-primary mt-3" v-if="file.name != null">{{file.name}}
+                    <button class="delete is-small"
+                            type="button"
+                            @click="deleteDropFile(index)">
+                    </button>
+                  </span>
+
+                  <img :src="file.config.url" style="height: 50px;" alt="slika" v-if="file.name == null">
+                  <button class="delete is-small mr-3"
                           type="button"
-                          @click="deleteDropFile(index)">
+                          @click="deleteDropFile(index)"
+                          v-if="file.name == null">
                   </button>
               </span>
             </div>
@@ -257,5 +265,27 @@ export default {
 </script>
 
 <style scoped>
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
 
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
 </style>

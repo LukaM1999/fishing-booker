@@ -1,21 +1,6 @@
 <template>
   <div>
     <section class="hero is-primary is-medium">
-      <!--      &lt;!&ndash; Hero head: will stick at the top &ndash;&gt;-->
-      <!--      <div class="hero-head">-->
-      <!--        <nav class="navbar">-->
-      <!--          <div class="container">-->
-      <!--            <div class="navbar-brand">-->
-      <!--              <a class="navbar-item">-->
-      <!--                <img-->
-      <!--                    src="logo1.png"-->
-      <!--                    alt="Logo"-->
-      <!--                />-->
-      <!--              </a>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </nav>-->
-      <!--      </div>-->
 
       <!-- Hero content: will be in the middle -->
       <div class="hero-body">
@@ -34,14 +19,23 @@
         <nav class="tabs">
           <div class="container">
             <ul>
-              <li @click="setActiveTab('cottages')" v-bind:class="{ 'is-active': isActive === 'cottages' }">
-                <router-link to="/cottages"> Cottages</router-link>
+              <li @click="setActiveTab('cottages')" v-bind:class="{ 'is-active': isActive === 'cottages' }" style="text-decoration: none;">
+                <router-link to="/cottages" style="text-decoration: none; color: inherit;">
+                  <div class="box is-info" v-if="isActive === 'cottages'"> Cottages </div>
+                  <div class="tag is-info" v-if="isActive !== 'cottages'" > Cottages </div>
+                </router-link>
               </li>
               <li @click="setActiveTab('boats')" v-bind:class="{ 'is-active': isActive === 'boats' }">
-                <router-link to="/boats"> Boats</router-link>
+                <router-link to="/boats">
+                  <div class="box is-info" v-if="isActive === 'boats'"> Boats </div>
+                  <div class="tag is-info" v-if="isActive !== 'boats'"> Boats </div>
+                </router-link>
               </li>
               <li @click="setActiveTab('instructors')" v-bind:class="{ 'is-active': isActive === 'instructors' }">
-                <router-link to="/adventures"> Adventures</router-link>
+                <router-link to="/adventures" style="text-decoration: none; color: inherit;">
+                  <div class="box is-info" v-if="isActive === 'instructors'"> Adventures </div>
+                  <div class="tag is-info" v-if="isActive !== 'instructors'"> Adventures </div>
+                </router-link>
               </li>
             </ul>
           </div>
@@ -50,26 +44,22 @@
     </section>
     <div class="tab-contents">
       <div>
-        <router-view></router-view>
+        <router-view style="margin-top:100px"></router-view>
       </div>
-
-      <!--      <div class="content" v-bind:class="{ 'is-active': isActive === 'cottages' }">-->
-      <!--        <cottages></cottages>-->
-      <!--      </div>-->
-      <!--      <div class="content" v-bind:class="{ 'is-active': isActive === 'boats' }">-->
-      <!--        <boats></boats>-->
-      <!--      </div>-->
-      <!--      <div class="content" v-bind:class="{ 'is-active': isActive === 'instructors' }">-->
-      <!--        <instructors></instructors>-->
-
     </div>
+    <div style="height: 100px"> </div>
+    <footer class="footer mt-6">
+      <div class="content has-text-centered">
+        <p>
+          <strong>Fishing Booker</strong> Full Stack <strong>Vue & Spring Boot></strong> demonstration by <a href="https://github.com/LukaM1999">Luka Miletić</a>,
+          <a href="https://github.com/KisicM">Mihajlo Kisić</a> and  <a href="https://github.com/piwneuh">Filip Pinjuh</a>.
+        </p>
+      </div>
+    </footer>
   </div>
 </template>
 
 <script>
-import Cottages from "@/components/Cottages";
-import Boats from "@/components/Boats";
-import Instructors from "@/components/Instructors";
 import Login from "@/components/Login";
 import Registration from "@/components/Registration";
 
@@ -95,7 +85,6 @@ export default {
         parent: this,
         component: Login,
         hasModalCard: true,
-        //customClass: 'custom-class custom-class-2',
         trapFocus: true
       })
     },
@@ -104,12 +93,14 @@ export default {
         parent: this,
         component: Registration,
         hasModalCard: true,
-        //customClass: 'custom-class custom-class-2',
         trapFocus: true
       })
     }
   }
 }
 </script>
-<style>
+<style lang="scss">
+.my-component-wrapper .tabs a {
+  border-bottom-style: none;
+}
 </style>

@@ -65,39 +65,34 @@
                            @click="updateCottageModal(cottage)">
                   <span class="fa fa-edit"></span>
                 </md-button>
-                <md-card-expand-trigger>
-                  <md-button class="md-icon-button">
-                    <span class="fa fa-arrow-circle-down fa-2x"></span>
-                  </md-button>
-                </md-card-expand-trigger>
               </md-card-actions>
-              <md-card-expand-content>
-                <md-card-content>
-                </md-card-content>
-              </md-card-expand-content>
             </md-card-expand>
           </md-ripple>
         </md-card>
       </div>
       <span v-show="authority==='COTTAGE_OWNER'" class="fa fa-plus-circle fa-3x" style="cursor: pointer" @click="createCottageModal"></span>
     </div>
-    <div class="mt-4" v-if="this.cottages">
-      <b-pagination
-          :total="total"
-          v-model="current"
-          :range-before="rangeBefore"
-          :range-after="rangeAfter"
-          :simple="isSimple"
-          :rounded="isRounded"
-          :order="order"
-          :per-page="perPage"
-          :icon-prev="prevIcon"
-          :icon-next="nextIcon"
-          aria-next-label="Next page"
-          aria-previous-label="Previous page"
-          aria-page-label="Page"
-          aria-current-label="Current page">
-      </b-pagination>
+    <div class="columns mt-5">
+      <div class="col"></div>
+      <div class="mt-4 col-3" v-if="this.cottages">
+        <b-pagination
+            :total="total"
+            v-model="current"
+            :range-before="rangeBefore"
+            :range-after="rangeAfter"
+            :simple="isSimple"
+            :rounded="isRounded"
+            :order="order"
+            :per-page="perPage"
+            :icon-prev="prevIcon"
+            :icon-next="nextIcon"
+            aria-next-label="Next page"
+            aria-previous-label="Previous page"
+            aria-page-label="Page"
+            aria-current-label="Current page">
+        </b-pagination>
+      </div>
+      <div class="col"></div>
     </div>
   </div>
 </template>

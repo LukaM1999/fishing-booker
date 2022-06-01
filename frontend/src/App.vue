@@ -27,6 +27,7 @@ export default {
   $info: #84a98c;
   $link: #84A98C;
   $box-background-color: whitesmoke;
+  $footer-background-color: #CAD2C5;
 
   // Lists and maps
   $custom-colors: null !default;

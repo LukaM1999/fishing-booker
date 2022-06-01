@@ -4,8 +4,10 @@
       <template #brand>
         <b-navbar-item tag="router-link" :to="{ path: '/cottageOwner/cottages' }">
           <img
-              src="https://raw.githubusercontent.com/buefy/buefy/dev/static/img/buefy-logo.png"
-              alt="Lightweight UI components for Vue.js based on Bulma"
+              src="../../../public/fishy.png"
+              alt="fishy ma boi"
+              class="logo ml-3"
+              style="max-height: 2.5rem"
           >
         </b-navbar-item>
       </template>
@@ -35,7 +37,7 @@
       </template>
     </b-navbar>
     <div>
-      <router-view></router-view>
+      <router-view style="margin-top: 75px"></router-view>
     </div>
   </div>
 </template>
@@ -59,4 +61,7 @@ export default {
 </script>
 
 <style scoped>
+.my-component-wrapper .tabs a {
+  border-bottom-style: none;
+}
 </style>

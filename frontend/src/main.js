@@ -27,10 +27,8 @@ import CottageUpdate from "@/components/cottage_owner/CottageUpdate";
 import AdventureRegistration from "@/components/instructor/AdventureRegistration"
 import Reservation from "@/components/customer/Reservation";
 import Adventures from "@/components/Adventures";
-import CustomReservation from "@/components/CustomReservation";
 import DeletionRequests from "@/components/admin/DeletionRequests";
 import History from "@/components/History";
-import Calendar from "@/components/Calendar";
 import InstructorSchedule from "@/components/instructor/InstructorSchedule";
 import Penalties from "@/components/customer/Penalties";
 import SaleSubscriptions from "@/components/customer/SaleSubscriptions";
@@ -44,6 +42,7 @@ import Loyalty from "@/components/admin/Loyalty";
 import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
+import Statistics from "@/components/Statistics";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -286,6 +285,11 @@ const routes = [
                 path: 'action',
                 name: 'action',
                 component: CottageAction
+            },
+            {
+              path: 'statistics',
+              name: 'statistics',
+              component: Statistics
             },
         ]
     }
