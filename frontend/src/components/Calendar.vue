@@ -37,7 +37,6 @@ export default {
     this.user = JSON.parse(localStorage.getItem('user'))
     this.getFreeTerms()
     this.getAllReservations()
-    console.log(this.rentableName)
   },
   components: {VueCal},
   methods: {

@@ -48,10 +48,10 @@
       </div>
     </div>
     <div style="height: 100px"> </div>
-    <footer class="footer mt-6">
+    <footer class="footer">
       <div class="content has-text-centered">
         <p>
-          <strong>Fishing Booker</strong> Full Stack <strong>Vue & Spring Boot></strong> demonstration by <a href="https://github.com/LukaM1999">Luka Miletić</a>,
+          <strong>Fishing Booker</strong> Full Stack <strong>Vue & Spring Boot</strong> demonstration by <a href="https://github.com/LukaM1999">Luka Miletić</a>,
           <a href="https://github.com/KisicM">Mihajlo Kisić</a> and  <a href="https://github.com/piwneuh">Filip Pinjuh</a>.
         </p>
       </div>

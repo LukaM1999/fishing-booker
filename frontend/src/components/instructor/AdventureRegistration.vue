@@ -208,6 +208,7 @@ export default {
         cancellationFee: this.cancellationFee,
         instructorBio: this.biography,
         fishingEquipment: this.fishingEquipment,
+        images:'',
         ownerUsername: JSON.parse(localStorage.getItem('user')).username
       }
       const formData = new FormData()

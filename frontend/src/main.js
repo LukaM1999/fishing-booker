@@ -43,6 +43,8 @@ import { LMap, LTileLayer, LMarker } from 'vue2-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 import Statistics from "@/components/Statistics";
+import AdventureProfile from "@/components/AdventureProfile";
+import AdventureAction from "@/components/instructor/AdventureAction";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -114,6 +116,11 @@ const routes = [
         component: CottageProfile,
     },
     {
+        path: '/adventureProfile',
+        name: 'adventureProfile',
+        component: AdventureProfile,
+    },
+    {
         path: '/customer',
         name: 'customerHomepage',
         component: CustomerHomepage,
@@ -137,6 +144,11 @@ const routes = [
                 path: 'browse/cottageProfile',
                 name: 'customerCottageProfile',
                 component: CottageProfile
+            },
+            {
+                path: 'browse/adventureProfile',
+                name: 'customerAdventureProfile',
+                component: AdventureProfile,
             },
             {
                 path: 'history',
@@ -202,6 +214,11 @@ const routes = [
                 component: Cottages
             },
             {
+                path: 'cottageProfile',
+                name: 'adminCottageProfile',
+                component: CottageProfile,
+            },
+            {
                 path: 'boats',
                 name: 'adminBoats',
                 component: Boats
@@ -210,6 +227,11 @@ const routes = [
                 path: 'adventures',
                 name: 'adminAdventures',
                 component: Adventures
+            },
+            {
+                path: 'adventureProfile',
+                name: 'adminAdventureProfile',
+                component: AdventureProfile,
             },
             {
                 path: 'profile',
@@ -248,6 +270,16 @@ const routes = [
                 path: 'adventures',
                 name: 'instructorAdventures',
                 component: Adventures
+            },
+            {
+                path: 'adventureProfile',
+                name: 'MyAdventureProfile',
+                component: AdventureProfile,
+            },
+            {
+                path: 'action',
+                name: 'adventureAction',
+                component: AdventureAction
             },
             {
                 path: 'history',

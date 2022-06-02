@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="update">
-    <div class="modal-card" >
+    <div class="modal-card" style="width: auto">
       <header class="modal-card-head">
         <p class="modal-card-title">Update an Adventure</p>
         <button
@@ -144,11 +144,19 @@
               <span v-for="(file, index) in dropFiles"
                     :key="index"
                     class="tag is-primary">
-                  {{ file.name }}
+                <span class="tag is-primary mt-3" v-if="file.name != null">{{file.name}}
                   <button class="delete is-small"
                           type="button"
                           @click="deleteDropFile(index)">
                   </button>
+                </span>
+
+                <img :src="file.config.url" style="height: 50px;" alt="slika" v-if="file.name == null">
+                <button class="delete is-small mr-3"
+                        type="button"
+                        @click="deleteDropFile(index)"
+                        v-if="file.name == null">
+                </button>
               </span>
             </div>
           </div>
@@ -189,24 +197,33 @@ export default {
       promoDescription: this.adventure.promoDescription,
       fishingEquipment: this.adventure.fishingEquipment,
       dropFiles: [],
-      images: this.adventure.images.split(';'),
+      images: this.adventure.images,
 
     }
   },
   mounted() {
-    this.loadFiles(this.images)
+    this.loadFiles(this.images.substring(0, this.images.length-1).split(';'));
   },
   methods: {
     async loadFiles(images) {
       for (let num in images) {
         const response = await this.axios.get(backend + `/${images[num]}`)
         if (response.data) {
-          this.dropFiles.push(response.data)
+          this.dropFiles.push(response)
         }
       }
     },
     deleteDropFile(index) {
       this.dropFiles.splice(index, 1)
+      this.images = this.images.split(';')
+      this.images.splice(index, 1)
+      this.images = this.images.join(';') + ';'
+      if(this.images[this.images.length-1] === ';' && this.images[this.images.length-2]===';'){
+        this.images = this.images.substring(0, this.images.length-1)
+      }
+      if(this.images.length < 5){
+        this.images = ''
+      }
     },
     async update(){
       const adventure = {
@@ -223,12 +240,20 @@ export default {
         cancellationFee: this.cancellationFee,
         instructorBio: this.biography,
         fishingEquipment: this.fishingEquipment,
+        images: this.images,
         ownerUsername: JSON.parse(localStorage.getItem('user')).username
       }
       const formData = new FormData()
+
       for (let file of this.dropFiles) {
-        formData.append('files', file)
+        if (file.name)
+          formData.append('files', file)
       }
+
+      if(!formData.has('files')){
+        formData.append('files', new Blob([]))
+      }
+
       formData.append('adventure', new Blob([JSON.stringify(adventure)], {type: 'application/json'}))
 
       const response = await this.axios.post(backend + '/adventure/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
@@ -245,5 +270,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

@@ -13,20 +13,6 @@
           <label for="cottageLocation">Location</label>
         </div>
       </div>
-      <!--      <div class="col-md-2 d-flex justify-content-center">-->
-      <!--        <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="dropdownMenu1"-->
-      <!--                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-      <!--          Select types-->
-      <!--        </button>-->
-      <!--        <ul class="dropdown-menu checkbox-menu allow-focus keep-open" aria-labelledby="dropdownMenu1">-->
-      <!--          <li v-for="(type, i) in allTypes">-->
-      <!--            <label>-->
-      <!--              <input type="checkbox" v-model="typeCheckboxes[i]">-->
-      <!--              {{ type }}-->
-      <!--            </label>-->
-      <!--          </li>-->
-      <!--        </ul>-->
-      <!--      </div>-->
       <div class="col-md-1">
         <div class="form-floating">
           <input type="number" class="form-control" id="cottageRating" v-model.number="ratingSearch" max="5"
@@ -50,10 +36,6 @@
           <i :class="[ascending ? 'fa fa-sort-up' : 'fa fa-sort-down']"></i>
         </button>
       </div>
-      <!--        <div class="col-md-1 align-self-center">-->
-      <!--          <input type="checkbox" class="form-check-input" id="onlyOpen" v-model="onlyOpen">-->
-      <!--          <label for="onlyOpen" style="color:white;">Only open</label>-->
-      <!--        </div>-->
     </div>
     <div class="md-layout md-alignment-center" v-if="this.adventures">
       <div class="md-layout-item md-large-size-30 md-xlarge-size-30"
@@ -69,62 +51,54 @@
                 <p class="md-title">{{ adventure.name }}</p>
                 <p class="md-subhead">{{ adventure.address }}, {{ adventure.city }}, {{ adventure.country }}</p>
                 <p class="md-subhead">{{ adventure.promoDescription }}</p>
+                <b-rate v-model="adventure.averageRating" show-score
+                        :max="5" disabled :custom-text="` (${adventure.timesRated})`"></b-rate>
               </md-card-header>
             </md-card-area>
             <md-card-expand>
               <md-card-actions md-alignment="right">
                 <md-button v-show="authority==='INSTRUCTOR'||authority==='ADMIN'" class="md-icon-button"
                            @click="confirmDialog(adventure)">
-                  <span class="fa fa-trash"></span>
+                  <span class="fa fa-trash-alt"></span>
                 </md-button>
                 <md-button v-show="authority==='INSTRUCTOR'" class="md-icon-button"
                            @click="updateAdventureModal(adventure)">
                   <span class="fa fa-edit"></span>
                 </md-button>
-                <md-card-expand-trigger>
-                  <md-button class="md-icon-button">
-                    <span class="fa fa-arrow-circle-down fa-2x"></span>
-                  </md-button>
-                </md-card-expand-trigger>
               </md-card-actions>
-              <md-card-expand-content>
-                <md-card-content>
-                  <!--                  <p class="md-subhead">For a maximum of {{ boat.capacity }} people</p>-->
-                  <!--                  <p class="md-subhead">{{ boat.boatType }} type</p>-->
-                  <!--                  <p class="md-subhead">Length of {{ boat.length.toFixed(2) }} meters</p>-->
-                  <!--                  <p class="md-subhead">Has {{ boat.motors }} motors, {{ boat.power.toFixed(0) }} horsepower</p>-->
-                  <!--                  <p class="md-subhead">Maximum speed of {{ boat.maxSpeed.toFixed(2) }} km/h</p>-->
-                  <!--                  <p class="md-subhead is-inline">-->
-                  <!--                    Has <span v-if="boat.gps">GPS, </span>-->
-                  <!--                    <span v-if="boat.radar">radar, </span>-->
-                  <!--                    <span v-if="boat.vhfRadio">VHF radio, </span>-->
-                  <!--                    <span v-if="boat.fishfinder">fishfinder</span>-->
-                  <!--                  </p>-->
-                </md-card-content>
-              </md-card-expand-content>
             </md-card-expand>
           </md-ripple>
         </md-card>
       </div>
-      <span v-show="authority==='INSTRUCTOR'" class="fa fa-plus-circle fa-3x" style="cursor: pointer" @click="createAdventureModal"></span>
+      <div>
+        <md-button v-show="authority==='INSTRUCTOR'" class="md-icon-button"
+                   @click="createAdventureModal">
+          <span class="fa fa-edit fa-2x"> </span>
+
+        </md-button>
+      </div>
     </div>
-    <div class="mt-4" v-if="this.adventures">
-      <b-pagination
-          :total="total"
-          v-model="current"
-          :range-before="rangeBefore"
-          :range-after="rangeAfter"
-          :simple="isSimple"
-          :rounded="isRounded"
-          :order="order"
-          :per-page="perPage"
-          :icon-prev="prevIcon"
-          :icon-next="nextIcon"
-          aria-next-label="Next page"
-          aria-previous-label="Previous page"
-          aria-page-label="Page"
-          aria-current-label="Current page">
-      </b-pagination>
+    <div class="columns mt-5">
+      <div class="col"></div>
+      <div class="mt-4 col-3" v-if="this.adventures">
+        <b-pagination
+            :total="total"
+            v-model="current"
+            :range-before="rangeBefore"
+            :range-after="rangeAfter"
+            :simple="isSimple"
+            :rounded="isRounded"
+            :order="order"
+            :per-page="perPage"
+            :icon-prev="prevIcon"
+            :icon-next="nextIcon"
+            aria-next-label="Next page"
+            aria-previous-label="Previous page"
+            aria-page-label="Page"
+            aria-current-label="Current page">
+        </b-pagination>
+      </div>
+      <div class="col"></div>
     </div>
   </div>
 </template>
@@ -198,7 +172,7 @@ export default {
     },
     adventureProfile(adventure) {
       localStorage.setItem('currentAdventure', JSON.stringify(adventure))
-      this.$router.push('/adventureProfile')
+      this.$router.push('adventureProfile')
     },
     pushAdventure(adventure) {
       this.adventures.push(adventure)

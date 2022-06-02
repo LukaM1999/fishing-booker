@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -21,15 +22,27 @@ public class AdventureServiceImpl implements AdventureService {
     @Override
     public Adventure registerAdventure(Adventure adventure, MultipartFile[] files) throws IOException {
         Adventure savedAdventure = adventureRepository.save(adventure);
-        String images = "";
-        int i = 0;
-        for (MultipartFile image : files) {
-            i += 1;
-            String fileName = "a" + savedAdventure.getId() + "." + i + ".jpg";
-            images += fileName + ';';
-            FileUploadUtil.saveFile(FileUploadUtil.getImageFolder(""), fileName, image);
+        String images = savedAdventure.getImages();
+        int i;
+        if(images.length() == 0){
+            i = 0;
         }
-        savedAdventure.setImages(images.substring(0, images.length() - 1));
+        else {
+            String[] strings = images.split(";");
+            String lastImg = strings[strings.length - 1];
+            String[] niz = lastImg.split("\\.");
+            String number = niz[1];
+            i = Integer.parseInt(number);
+        }
+        if (!Objects.equals(files[0].getOriginalFilename(), "blob")) {
+            for (MultipartFile image : files) {
+                i += 1;
+                String fileName = "a" + savedAdventure.getId() + "." + i + ".jpg";
+                images += fileName + ';';
+                FileUploadUtil.saveFile(FileUploadUtil.getImageFolder(""), fileName, image);
+            }
+            savedAdventure.setImages(images);
+        }
         return adventureRepository.save(savedAdventure);
     }
 
