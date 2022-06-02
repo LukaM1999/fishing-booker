@@ -24,6 +24,9 @@
         <b-navbar-item href="/cottageOwner/action">
           Make a sale
         </b-navbar-item>
+        <b-navbar-item href="/cottageOwner/statistics">
+          Statistics
+        </b-navbar-item>
       </template>
 
       <template #end>

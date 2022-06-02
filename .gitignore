@@ -34,3 +34,4 @@ build/
 
 .properties
 backend/fishing-booker/src/main/resources/application.properties
+backend/fishing-booker/src/main/java/com/fishingbooker/util/FileUploadUtil.java

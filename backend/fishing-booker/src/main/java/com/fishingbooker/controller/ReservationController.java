@@ -9,7 +9,6 @@ import com.fishingbooker.dto.ReserveActionDTO;
 import com.fishingbooker.dto.statistics.FinanceDTO;
 import com.fishingbooker.dto.statistics.ReservationNumDTO;
 import com.fishingbooker.dto.statistics.TimeDTO;
-import com.fishingbooker.dto.statistics.ReservationNumDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.RentableRepository;
 import com.fishingbooker.repository.ReservationRepository;

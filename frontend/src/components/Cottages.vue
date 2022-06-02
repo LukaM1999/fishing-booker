@@ -70,7 +70,9 @@
           </md-ripple>
         </md-card>
       </div>
-      <span v-show="authority==='COTTAGE_OWNER'" class="fa fa-plus-circle fa-3x" style="cursor: pointer" @click="createCottageModal"></span>
+      <button class="button is-primary" v-show="authority==='COTTAGE_OWNER'" @click="createCottageModal">
+        <strong> + </strong>
+      </button>
     </div>
     <div class="columns mt-5">
       <div class="col"></div>

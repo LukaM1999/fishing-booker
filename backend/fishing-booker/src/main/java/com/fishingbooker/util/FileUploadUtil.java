@@ -24,6 +24,6 @@ public class FileUploadUtil {
     }
 
     public static String getImageFolder(String entity){
-        return System.getProperty("user.dir") + "\\fishing-booker\\target\\classes\\public\\images\\" + entity;
+        return System.getProperty("user.dir") + "\\target\\classes\\public\\images\\" + entity;
     }
 }
