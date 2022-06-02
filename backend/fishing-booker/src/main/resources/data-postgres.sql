@@ -68,7 +68,7 @@ insert into reservation(id, type, name, owner_username, customer_username, start
 values (nextval('reservation_id_seq'), 'ADVENTURE', 'Silver Mirror Tour', 'Fishdude', 'imbiamba', '2022-05-08 08:00', '2022-05-08 09:00', 'Some services', 1, false, false, 10000, false, false, 0);
 
 insert into reservation(id, type, name, owner_username, customer_username, start_time, end_time, additional_services, guests, is_cancelled, is_deal, price, is_reviewed, complaint_exists, sale_percent)
-values (nextval('reservation_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', null, '2022-06-15', '2022-06-17', '', 1, false, true, 36, false, false, 10);
+values (nextval('reservation_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', null, '2022-05-15', '2022-05-17', '', 1, false, true, 36, false, false, 10);
 
 insert into penalty(id, customer_username, issued_at) values (nextval('penalty_id_seq'), 'imbiamba', '2022-04-08 10:00');
 insert into penalty(id, customer_username, issued_at) values (nextval('penalty_id_seq'), 'imbiamba', '2022-04-15 15:00');

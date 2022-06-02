@@ -107,7 +107,7 @@ export default {
         cancelled: false,
         deal: true,
         salePercent: this.salePercent,
-        price: this.selectedRentable.price * this.salePercent / 100,
+        price: this.selectedRentable.price * (100-this.salePercent) / 100,
         rating: this.selectedRentable.rating,
         complaintExists: false
       }

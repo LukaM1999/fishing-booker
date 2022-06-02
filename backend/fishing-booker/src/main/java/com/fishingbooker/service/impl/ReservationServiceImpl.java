@@ -3,6 +3,8 @@ package com.fishingbooker.service.impl;
 import com.fishingbooker.dto.CustomerReservationDTO;
 import com.fishingbooker.dto.EventDTO;
 import com.fishingbooker.dto.FreeTermDTO;
+import com.fishingbooker.dto.statistics.FinanceDTO;
+import com.fishingbooker.dto.statistics.ReservationNumDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.*;
 import com.fishingbooker.service.PointsService;
@@ -12,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 
 import static com.fishingbooker.model.ReservationType.ADVENTURE;
@@ -151,6 +152,15 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Reservation createAction(Long rentableId, Reservation reservation) {
+        CustomerReservationDTO reservationDTO = new CustomerReservationDTO(reservation.getType(), reservation.getStartTime(), reservation.getEndTime(), reservation.getGuests());
+        Rentable rentable = rentableRepository.getRentableById(rentableId);
+        if(rentable == null || !new HashSet<>(getFreeRentables(reservationDTO)).contains(rentable)) return null;
+        reservationRepository.save(reservation);
+        return reservation;
+    }
+
+    @Override
     public List<Reservation> getFinishedReservations(ReservationType type, String username, boolean isCustomer) {
         if (isCustomer) return reservationRepository.getFinishedCustomerReservations(type, username);
         return reservationRepository.getFinishedOwnerReservations(username);
@@ -175,6 +185,70 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setPrice(reservation.getPrice() - reservation.getPrice() * checkForCustomerSale(reservation)/100);
         updatePoints(reservation);
         reservationRepository.save(reservation);
+    }
+
+    @Override
+    public List<ReservationNumDTO> getNumberOfReservations(String username) {
+        List<ReservationNumDTO> list = new ArrayList<>();
+        List<Rentable> rentables = new ArrayList<>();
+        RegisteredUser user = registeredUserRepository.getUserByUsername(username);
+
+        switch(user.getRole().getAuthority()){
+            case "COTTAGE_OWNER":
+                rentables = cottageRepository.getRentablesByOwnerUsername(username);
+                break;
+            case "BOAT_OWNER":
+                rentables = boatRepository.getRentablesByOwnerUsername(username);
+                break;
+            case "INSTRUCTOR":
+                rentables = adventureRepository.getRentablesByOwnerUsername(username);
+                break;
+            case "ADMIN":
+                rentables = rentableRepository.findAll();
+                break;
+        }
+        for(Rentable r : rentables){
+            list.add(new ReservationNumDTO(r.getName(), reservationRepository.getNumOfReservationsByName(r.getName(), LocalDateTime .now().minusWeeks(1)),
+                    reservationRepository.getNumOfReservationsByName(r.getName(), LocalDateTime .now().minusMonths(1)),
+                    reservationRepository.getNumOfReservationsByName(r.getName(), LocalDateTime .now().minusYears(1))));
+        }
+        return list;
+    }
+
+    @Override
+    public List<FinanceDTO> getFinances(String username, LocalDateTime start, LocalDateTime end) {
+        List<FinanceDTO> finances = new ArrayList<>();
+        RegisteredUser user = registeredUserRepository.getUserByUsername(username);
+        List<Reservation> reservations = new ArrayList<>();
+        if (user.getRole().getAuthority().equals("ADMIN")){
+            reservations = reservationRepository.findAll();
+        }
+        else {
+            reservations = reservationRepository.getReservationsByOwnerUsername(username);
+        }
+        for(Reservation r : reservations){
+            if(r.getStartTime().isAfter(start) && r.getStartTime().isBefore(end)){
+                finances.add(new FinanceDTO(r.getName(), calculatePrice(r.getPrice(), user.getRole().getAuthority())));
+            }
+        }
+        //finances sum earning with same name
+        for(int i = 0; i < finances.size(); i++){
+            for(int j = i + 1; j < finances.size(); j++){
+                if(finances.get(i).getRentableName().equals(finances.get(j).getRentableName())){
+                    finances.get(i).setEarning(finances.get(i).getEarning() + finances.get(j).getEarning());
+                    finances.remove(j);
+                    j--;
+                }
+            }
+        }
+        return finances;
+    }
+
+    private double calculatePrice(double price, String role){
+        List<Points> points = pointsService.getPoints();
+        if(role.equals("ADMIN"))
+            return price * points.get(0).getSystemTax()/100;
+        return price - price * points.get(0).getSystemTax()/100;
     }
 
     private boolean hasSequence(FreeTerm freeTerm, FreeTerm term) {

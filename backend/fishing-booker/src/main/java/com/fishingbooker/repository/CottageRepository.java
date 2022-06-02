@@ -1,6 +1,7 @@
 package com.fishingbooker.repository;
 
 import com.fishingbooker.model.Cottage;
+import com.fishingbooker.model.Rentable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -14,4 +15,6 @@ public interface CottageRepository extends JpaRepository<Cottage, Long> {
     void deleteById(Long entityId);
 
     Cottage getCottageByNameAndOwnerUsername(String name, String ownerUsername);
+
+    List<Rentable> getRentablesByOwnerUsername(String username);
 }

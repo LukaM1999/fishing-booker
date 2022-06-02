@@ -2,6 +2,7 @@
   <div class="tile is-ancestor m-5">
     <div class="tile is-4 is-vertical is-parent sticky">
       <div class="tile is-child box">
+        <p class="title"><strong>{{ cottage.name }}</strong></p>
         <b-carousel :autoplay="false" indicator-custom :indicator-inside="false" :overlay="gallery"
                     @click="switchGallery(false)">
           <b-carousel-item v-for="(item, i) in items.slice(0, items.length-1)" :key="i" style="height:80%">
@@ -18,8 +19,54 @@
         </b-carousel>
       </div>
       <div class="tile is-child box">
-        <p class="title"><strong>{{ cottage.name }}</strong></p>
-        <p class="subtitle mb-5">{{ cottage.address }}, {{ cottage.city }}, {{ cottage.country }}</p>
+        <nav class="level is-info rounded">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Capacity</p>
+              <p class="title">{{ cottage.capacity }}</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Rooms</p>
+              <p class="title">{{ cottage.rooms }}</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Beds per room</p>
+              <p class="title">{{ cottage.bedsPerRoom }}</p>
+            </div>
+          </div>
+        </nav>
+        <nav class="level is-info mt-5  rounded">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">cancellation fee %</p>
+              <p class="title">{{ cottage.cancellationFee }}$</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">per person/day</p>
+              <p class="title">{{ cottage.price }}$</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Cottage rating</p>
+              <p class="title">{{ cottage.averageRating }}/5</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Owner rating</p>
+              <p class="title">{{ cottage.owner.averageRating }}/5</p>
+            </div>
+          </div>
+        </nav>
+      </div>
+      <div class="tile is-child box">
         <l-map
             :zoom="zoom"
             :center="center"
@@ -30,12 +77,15 @@
           />
           <l-marker :lat-lng="marker"/>
         </l-map>
+        <p class="subtitle mt-5">{{ cottage.address }}, {{ cottage.city }}, {{ cottage.country }}</p>
       </div>
     </div>
     <div class="tile is-parent">
       <div class="tile is-child box is-dark">
+
         <div class="my-5"> <p class="is-size-3">More about this cottage</p></div>
         <p class="is-size-5">{{ cottage.promoDescription }}</p>
+        <p class="is-size-5 mt-3">{{ cottage.rules }}</p>
         <div class="my-lg-5"> <p class="is-size-3"> Additional services </p> </div>
         <div class="row justify-content-left">
           <div class="col-4">

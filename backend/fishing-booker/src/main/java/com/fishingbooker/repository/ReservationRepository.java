@@ -1,11 +1,13 @@
 package com.fishingbooker.repository;
 
+import com.fishingbooker.dto.statistics.ReservationNumDTO;
 import com.fishingbooker.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
@@ -59,4 +61,13 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     List<Reservation> getActions(@Param("name") String name, @Param("ownerUsername") String ownerUsername);
 
     Reservation getReservationById(Long id);
+
+    List<Reservation> getReservationsByOwnerUsername(String username);
+
+    @Query("select count(r) from Reservation r where " +
+            "r.name = :name " +
+            "and r.endTime <= current_timestamp " +
+            "and r.startTime >= :date")
+    Integer getNumOfReservationsByName(@Param("name")String name,@Param("date") LocalDateTime date);
+
 }

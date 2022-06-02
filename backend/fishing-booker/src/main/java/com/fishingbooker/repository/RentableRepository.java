@@ -16,7 +16,6 @@ public interface RentableRepository extends JpaRepository<Rentable, Long> {
             "where boat.ownerUsername = :owner and boat.name = :name ")
     Rentable getBoatByNameAndOwner(@Param("name") String name, @Param("owner") String owner);
 
-
     @Query("select adventure from Adventure adventure " +
             "where adventure.ownerUsername = :owner ")
     List<Rentable> getAdventuresByOwner(@Param("owner") String owner);

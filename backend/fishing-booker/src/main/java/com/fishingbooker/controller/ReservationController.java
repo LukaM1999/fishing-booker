@@ -6,6 +6,9 @@ import com.fishingbooker.dto.EventDTO;
 import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.dto.ReservationHistoryDTO;
 import com.fishingbooker.dto.ReserveActionDTO;
+import com.fishingbooker.dto.statistics.FinanceDTO;
+import com.fishingbooker.dto.statistics.ReservationNumDTO;
+import com.fishingbooker.dto.statistics.TimeDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.RentableRepository;
 import com.fishingbooker.repository.ReservationRepository;
@@ -53,7 +56,7 @@ public class ReservationController {
         freeTerm.setEntityName(reservation.getName());
 
         reservationService.createFreeTerm(freeTerm);
-        return reservationService.reserveRentable(rentableId, reservation);
+        return reservationService.createAction(rentableId, reservation);
     }
 
     @PostMapping("/getActions")
@@ -77,6 +80,16 @@ public class ReservationController {
     @PreAuthorize("!hasAuthority('ADMIN')")
     public List<Reservation> getReservations(@RequestBody ReservationHistoryDTO historyDto){
         return reservationService.getReservations(historyDto.getType(), historyDto.getUsername(), historyDto.getIsCustomer());
+    }
+
+    @GetMapping("/getNumberOfReservations/{username}")
+    public List<ReservationNumDTO> getNumberOfReservations(@PathVariable String username){
+        return reservationService.getNumberOfReservations(username);
+    }
+
+    @PostMapping("/finances")
+    public List<FinanceDTO> getFinances(@RequestBody TimeDTO timeDTO){
+        return reservationService.getFinances(timeDTO.getUsername(), timeDTO.getStartTime(), timeDTO.getEndTime());
     }
 
     @PostMapping("/getFreeTerms")

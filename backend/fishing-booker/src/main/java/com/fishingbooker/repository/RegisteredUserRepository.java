@@ -20,4 +20,6 @@ public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, 
                     "INNER JOIN u.role r " +
                     "where r.id = u.role.id ")*/
     List<RegisteredUser> findAll();
+
+    RegisteredUser getUserByUsername(String username);
 }
