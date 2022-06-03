@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row text-center mt-3">
+    <div class="row text-center">
       <div class="col">
         <p style="font-size: xx-large;"><strong>Schedule</strong></p>
       </div>
@@ -129,6 +129,11 @@ export default {
 .page {
   display: flex;
   justify-content: space-around;
+}
+
+::v-deep .vuecal--green-theme .vuecal__menu {
+  background-color: #84A98C;
+  color: #fff;
 }
 
 </style>

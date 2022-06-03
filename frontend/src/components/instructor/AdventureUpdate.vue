@@ -143,7 +143,7 @@
             <div class="tags">
               <span v-for="(file, index) in dropFiles"
                     :key="index"
-                    class="tag is-primary">
+                    class="is-primary">
                 <span class="tag is-primary mt-3" v-if="file.name != null">{{file.name}}
                   <button class="delete is-small"
                           type="button"

@@ -1,50 +1,46 @@
 <template>
   <div>
-    <nav class="navbar is-primary">
-      <div class="navbar-brand">
-        <a class="navbar-item">
-          <img :src="'../logo1.png'" alt="logo">
-        </a>
-        <div class="navbar-burger" data-bs-target="navbarExampleTransparentExample">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
+    <b-navbar class="is-primary">
+      <template #brand>
+        <b-navbar-item tag="router-link" :to="{ path: '/instructor/adventures' }">
+          <img
+              src="../../../public/fishy.png"
+              alt="fishy ma boi"
+              class="logo ml-3"
+              style="max-height: 2.5rem"
+          >
+        </b-navbar-item>
+      </template>
+      <template #start>
+        <b-navbar-item href="/instructor/schedule">
+          Schedule
+        </b-navbar-item>
+        <b-navbar-item href="/instructor/adventures">
+          My Adventures
+        </b-navbar-item>
+        <b-navbar-item href="/instructor/profile">
+          Profile information
+        </b-navbar-item>
+        <b-navbar-item href="/instructor/history">
+          History
+        </b-navbar-item>
+        <b-navbar-item href="/instructor/finance">
+          Finance
+        </b-navbar-item>
+      </template>
 
-      <div id="navbarExampleTransparentExample" class="navbar-menu">
-        <div class="navbar-start">
-          <router-link to="/instructor/schedule" class="navbar-item">
-            Schedule
-          </router-link>
-          <router-link to="/instructor/adventures" class="navbar-item">
-            My Adventures
-          </router-link>
-          <router-link to="/instructor/history" class="navbar-item">
-            Adventure reservation history
-          </router-link>
-          <router-link to="" class="navbar-item">
-            Business Report and Income
-          </router-link>
-        </div>
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
-            <div class="navbar-dropdown is-right is-boxed">
-              <router-link to="/instructor/profile" class="navbar-item">
-                Profile information
-              </router-link>
-              <hr class="navbar-divider">
-              <a @click="logOut" class="navbar-item">
-                Log out
-              </a>
-            </div>
+      <template #end>
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <a class="button is-link" @click="logOut">
+              Log Out
+            </a>
           </div>
-        </div>
-      </div>
-    </nav>
+        </b-navbar-item>
+      </template>
+    </b-navbar>
     <div>
-      <router-view></router-view>
+      <router-view style="margin-top: 75px"></router-view>
     </div>
   </div>
 </template>
@@ -74,46 +70,7 @@ export default {
 </script>
 
 <style scoped>
-.is-primary {
-  background-image: linear-gradient(to right, #99A799, #ADC2A9) !important;
+.my-component-wrapper .tabs a {
+  border-bottom-style: none;
 }
-
-nav {
-  padding: 0px !important;
-}
-
-.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-a.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:active {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-.navbar-divider {
-  background-color: gray;
-}
-
 </style>

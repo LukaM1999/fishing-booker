@@ -111,34 +111,12 @@
         </button>
         <div class="row mt-lg-5">
           <div class="col"></div>
-          <div class="col">
-            <b-field v-show="authority==='INSTRUCTOR'" label="Add available days">
-              <b-datepicker
-                  placeholder="Click to select..."
-                  v-model="dates"
-                  range
-                  :min-date="minDate">
-              </b-datepicker>
-              <button class="button ml-5 is-link" @click="createFreeTerm()">Submit</button>
-            </b-field>
-          </div>
-          <div class="col">
-            <b-field v-show="authority==='INSTRUCTOR'" label="Add day off">
-              <b-datepicker
-                  placeholder="Click to select..."
-                  v-model="selectedDate"
-                  :min-date="minDate">
-              </b-datepicker>
-              <button class="button ml-5 is-link" @click="addDayOff()">Submit</button>
-            </b-field>
-          </div>
-          <div class="col"></div>
-          <div class="col">
+          <div class="col-8 d-flex justify-content-center">
             <b-field v-show="authority==='INSTRUCTOR'" label="Check more" class="ml-lg-5">
               <button  class="button is-primary" @click="routeToStatistics()">Statistics</button>
             </b-field>
           </div>
-          <div class="col-1"></div>
+          <div class="col"></div>
         </div>
         <div class="row my-5" v-show="authority==='INSTRUCTOR'">
           <div class="col"></div>
@@ -252,29 +230,6 @@ export default {
       this.subscriptionText = 'Unsubscribe'
       this.$toasted.success('Subscribed successfully!')
     },
-    async createFreeTerm() {
-      let sYear = this.dates[0].getFullYear()
-      let sMonth = this.formatDateMonth(new Date(this.dates[0]));
-      let sDay = this.formatDateDay(new Date(this.dates[0]));
-      let eYear = this.dates[this.dates.length - 1].getFullYear()
-      let eMonth = this.formatDateMonth(new Date(this.dates.slice(-1)[0]));
-      let eDay = this.formatDateDay(new Date(this.dates.slice(-1)[0]));
-
-      const freeTerm = {
-        type: this.type,
-        entityName: this.cottage.name,
-        ownerUsername: this.user.username,
-        startTime: sYear + '-' + sMonth + '-' + sDay + ' 00:00',
-        endTime: eYear + '-' + eMonth + '-' + eDay + ' 00:00'
-      }
-      const response = await this.axios.post(backend + '/reservation/createFreeTerm', freeTerm)
-      if (response.data) {
-        this.$toasted.success('Free Term successfully created!')
-        this.key = this.key + 1
-      } else {
-        this.$toasted.error('Error while creating free term.')
-      }
-    },
     async getActions() {
       const response = await this.axios.post(backend + '/reservation/getActions', {
         name: this.cottage.name,
@@ -322,7 +277,7 @@ export default {
       await this.$router.push({path: '/instructor/action', params: {cottageId: this.cottage.id}})
     },
     routeToStatistics() {
-      this.$router.push('/cottageOwner/statistics')
+      this.$router.push('/instructor/finance')
     },
     formatDateMonth(date) {
       if (date.getMonth() + 1 < 10)
@@ -351,22 +306,6 @@ export default {
       } else {
         return document.documentElement.classList.remove('is-clipped')
       }
-    },
-    async addDayOff(){
-      const dayOff = {
-        start: this.formatDate(this.selectedDate),
-        end: this.formatDate(this.selectedDate),
-        username: this.user.username,
-        rentableName: this.cottage.name,
-        type: this.user.role.authority === "INSTRUCTOR" ? 2 : 0,
-      }
-      const response = await axios.post(backend + '/reservation/createDayOff', dayOff)
-      if(response.data != null){
-        this.$toasted.success('Day off successfully created!')
-        this.key = this.key + 1
-      }
-      else
-        this.$toasted.error('Something went wrong!')
     },
     formatDate(date){
       return moment(date).format('YYYY-MM-DD HH:mm')
