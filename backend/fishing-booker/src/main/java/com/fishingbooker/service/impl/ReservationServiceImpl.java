@@ -228,7 +228,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         for(Reservation r : reservations){
             if(r.getStartTime().isAfter(start) && r.getStartTime().isBefore(end)){
-                finances.add(new FinanceDTO(r.getName(), calculatePrice(r.getPrice(), user.getRole().getAuthority())));
+                finances.add(new FinanceDTO(r.getName(), calculatePrice(r.getPrice(), user.getRole().getAuthority(), r)));
             }
         }
         //finances sum earning with same name
@@ -244,11 +244,19 @@ public class ReservationServiceImpl implements ReservationService {
         return finances;
     }
 
-    private double calculatePrice(double price, String role){
+    private double calculatePrice(double price, String role, Reservation reservation){
         List<Points> points = pointsService.getPoints();
         if(role.equals("ADMIN"))
             return price * points.get(0).getSystemTax()/100;
-        return price - price * points.get(0).getSystemTax()/100;
+        return price - price * (points.get(0).getSystemTax() - checkForOwnerBonus(reservation))/100;
+    }
+
+    public int checkForOwnerBonus(Reservation reservation){
+        UserPoints ownerPoints = pointsService.getUserPoints(reservation.getOwnerUsername());
+        List<Points> points = pointsService.getPoints();
+        if(ownerPoints.getPoints() >= points.get(0).getSilver() && ownerPoints.getPoints() < points.get(0).getGold()) return 3;
+        if(ownerPoints.getPoints() >= points.get(0).getGold()) return 5;
+        return 0;
     }
 
     private boolean hasSequence(FreeTerm freeTerm, FreeTerm term) {

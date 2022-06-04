@@ -133,10 +133,10 @@
                    :key=rentable.id
                    @click="setSelectedRentable(rentable)"
                    :class="{ 'is-active': selectedRentable && selectedRentable.id === rentable.id }">
-                <md-card class="md-primary" md-theme="orange-card" md-with-hover>
+                <md-card class="md-primary ml-3 mr-3" md-theme="orange-card" md-with-hover>
                   <md-ripple>
                     <md-card-media md-ratio="4:3">
-                      <img :src="rentable.images ? '/' + rentable.images[0].toLowerCase() + rentable.id + '.1.jpg' : ''"
+                      <img :src="rentable.images ? backend + '/' + rentable.images[0].toLowerCase() + rentable.id + '.1.jpg' : ''"
                            style="height: 100%"
                            alt="Rentable image">
                     </md-card-media>
@@ -147,19 +147,6 @@
                         <p class="md-subhead">{{ rentable.promoDescription }}</p>
                       </md-card-header>
                     </md-card-area>
-                    <md-card-expand>
-                      <md-card-actions md-alignment="right">
-                        <md-card-expand-trigger>
-                          <md-button class="md-icon-button">
-                            <span class="fa fa-arrow-circle-down fa-2x"></span>
-                          </md-button>
-                        </md-card-expand-trigger>
-                      </md-card-actions>
-                      <md-card-expand-content>
-                        <md-card-content>
-                        </md-card-content>
-                      </md-card-expand-content>
-                    </md-card-expand>
                   </md-ripple>
                 </md-card>
               </div>
@@ -238,19 +225,6 @@
                           <p class="md-subhead">{{ selectedRentable.promoDescription }}</p>
                         </md-card-header>
                       </md-card-area>
-                      <md-card-expand>
-                        <md-card-actions md-alignment="right">
-                          <md-card-expand-trigger>
-                            <md-button class="md-icon-button">
-                              <span class="fa fa-arrow-circle-down fa-2x"></span>
-                            </md-button>
-                          </md-card-expand-trigger>
-                        </md-card-actions>
-                        <md-card-expand-content>
-                          <md-card-content>
-                          </md-card-content>
-                        </md-card-expand-content>
-                      </md-card-expand>
                     </md-ripple>
                   </md-card>
                 </div>
@@ -499,10 +473,38 @@ export default {
       }
 
       const response = await axios.post(backend + `/reservation/reserveRentable/${this.selectedRentable.id}`, reservation)
+          .catch(error => {
+            this.$toasted.error('Reservation was unsuccessful')
+            throw error
+          })
       if (response.data) {
         //this.$router.push('/customer/upcomingReservations')
         this.$parent.close()
         this.$toasted.success('Reservation confirmed successfully!')
+        const response = await this.axios.get(backend + `/user/${this.customerUsername}`)
+        if (response.data) {
+          const email = {
+            service_id: 'service_approve',
+            template_id: 'template_approved',
+            user_id: 'user_62WYz6KIasgbXlUB5EEGw',
+            template_params: {
+              'to_name': reservation.customerUsername,
+              'to_email': response.data.email,
+              'subject': 'Reservation confirmed',
+              'message': `<p>Your reservation for <strong>${reservation.name}</strong> has been confirmed.</p>
+          <p><u>Start time</u>: ${reservation.startTime}</p>
+          <p><u>End time</u>: ${reservation.endTime}</p>
+          <p><u>Number of guests</u>: ${reservation.guests}</p>
+          <p><u>Additional services</u>: ${reservation.additionalServices}</p>
+          <br>
+          <p><u><strong>TOTAL PRICE</strong></u>: ${reservation.price} EUR</p>`
+            }
+          };
+          await axios.post('https://api.emailjs.com/api/v1.0/email/send', email).catch(error => {
+            this.$toasted.error('Reservation email could not be sent')
+            throw error
+          })
+        }
       } else {
         this.$toasted.error('Reservation was unsuccessful')
         this.activeStep = 0

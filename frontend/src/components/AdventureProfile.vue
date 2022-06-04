@@ -39,6 +39,20 @@
             </div>
           </div>
         </nav>
+        <nav class="level is-info rounded">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Adventure rating</p>
+              <p class="title">{{ cottage.averageRating }}/5</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Instructor rating</p>
+              <p class="title">{{ cottage.instructor.averageRating }}/5</p>
+            </div>
+          </div>
+        </nav>
       </div>
       <div class="tile is-child box">
         <l-map
@@ -277,7 +291,7 @@ export default {
       await this.$router.push({path: '/instructor/action', params: {cottageId: this.cottage.id}})
     },
     routeToStatistics() {
-      this.$router.push('/instructor/finance')
+      this.$router.push('/instructor/statistics')
     },
     formatDateMonth(date) {
       if (date.getMonth() + 1 < 10)

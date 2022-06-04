@@ -1,7 +1,9 @@
 package com.fishingbooker.service.impl;
 
 import com.fishingbooker.model.Adventure;
+import com.fishingbooker.model.Reservation;
 import com.fishingbooker.repository.AdventureRepository;
+import com.fishingbooker.repository.ReservationRepository;
 import com.fishingbooker.service.AdventureService;
 import com.fishingbooker.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,6 +21,9 @@ public class AdventureServiceImpl implements AdventureService {
 
     @Autowired
     private AdventureRepository adventureRepository;
+
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Override
     public Adventure registerAdventure(Adventure adventure, MultipartFile[] files) throws IOException {
@@ -66,6 +72,12 @@ public class AdventureServiceImpl implements AdventureService {
         Optional<Adventure> optional = adventureRepository.findById(adventureId);
         Adventure adventure = optional.orElse(null);
         if(adventure == null) return false;
+        List<Reservation> reservations = reservationRepository.findAll();
+        for(Reservation reservation : reservations){
+            if(reservation.getName().equals(adventure.getName()) && reservation.getEndTime().isAfter(LocalDateTime.now())){
+                return false;
+            }
+        }
         adventureRepository.deleteById(adventureId);
         return true;
     }

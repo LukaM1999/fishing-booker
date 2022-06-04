@@ -1,80 +1,68 @@
 <template>
   <div>
-    <nav class="navbar is-primary">
-      <div class="navbar-brand">
-        <a class="navbar-item">
-          <img :src="'../logo1.png'" alt="logo">
-        </a>
-        <div class="navbar-burger" data-bs-target="navbarExampleTransparentExample">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
+    <b-navbar class="is-primary">
+      <template #brand>
+        <b-navbar-item tag="router-link" :to="{ path: '/admin/statistics' }">
+          <img
+              src="../../../public/fishy.png"
+              alt="fishy ma boi"
+              class="logo ml-3"
+              style="max-height: 2.5rem"
+          >
+        </b-navbar-item>
+      </template>
+      <template #start>
+        <b-navbar-dropdown label="Browse">
+          <b-navbar-item href="/admin/cottages">
+            Cottages
+          </b-navbar-item>
+          <b-navbar-item href="/admin/boats">
+            Boats
+          </b-navbar-item>
+          <b-navbar-item href="/admin/adventures">
+            Adventures
+          </b-navbar-item>
+        </b-navbar-dropdown>
+        <b-navbar-item href="/admin/users">
+          Users
+        </b-navbar-item>
+        <b-navbar-dropdown label="Manage">
+          <b-navbar-item href="/admin/approve">
+            New users
+          </b-navbar-item>
+          <b-navbar-item href="/admin/reviews">
+            Reviews
+          </b-navbar-item>
+          <b-navbar-item href="/admin/complaints">
+            Complaints
+          </b-navbar-item>
+          <b-navbar-item href="/admin/requests">
+            Requests
+          </b-navbar-item>
+        </b-navbar-dropdown>
+        <b-navbar-item href="/admin/profile">
+          Profile information
+        </b-navbar-item>
+        <b-navbar-item @click="registerAdminModal">
+          Register admin
+        </b-navbar-item>
+        <b-navbar-item href="/admin/statistics">
+          Statistics
+        </b-navbar-item>
+      </template>
 
-      <div id="navbarExampleTransparentExample" class="navbar-menu">
-        <div class="navbar-start">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              Browse
+      <template #end>
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <a class="button is-link" @click="logOut">
+              Log Out
             </a>
-            <div class="navbar-dropdown is-boxed">
-              <router-link to="/admin/cottages" class="navbar-item">
-                Cottages
-              </router-link>
-              <router-link to="/admin/boats" class="navbar-item">
-                Boats
-              </router-link>
-              <router-link to="/admin/adventures" class="navbar-item">
-                Adventures
-              </router-link>
-            </div>
           </div>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              Approve
-            </a>
-            <div class="navbar-dropdown is-boxed">
-              <router-link to="/admin/approve" class="navbar-item">
-                New users
-              </router-link>
-              <router-link to="/admin/reviews" class="navbar-item">
-                Reviews
-              </router-link>
-              <router-link to="/admin/complaints" class="navbar-item">
-                Complaints
-              </router-link>
-              <router-link to="/admin/requests" class="navbar-item">
-                Requests
-              </router-link>
-            </div>
-          </div>
-          <router-link to="/admin/business" class="navbar-item">
-            Business
-          </router-link>
-          <a @click="registerAdminModal" class="navbar-item">
-            Register admin
-          </a>
-        </div>
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
-
-            <div class="navbar-dropdown is-right is-boxed">
-              <router-link to="/admin/profile" class="navbar-item">
-                Profile information
-              </router-link>
-              <hr class="navbar-divider">
-              <a @click="logOut" class="navbar-item">
-                Log out
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+        </b-navbar-item>
+      </template>
+    </b-navbar>
     <div>
-      <router-view></router-view>
+      <router-view style="margin-top: 75px"></router-view>
     </div>
   </div>
 
@@ -132,46 +120,7 @@ export default {
 </script>
 
 <style scoped>
-.is-primary {
-  background-image: linear-gradient(to right, #99A799, #ADC2A9) !important;
+.my-component-wrapper .tabs a {
+  border-bottom-style: none;
 }
-
-nav {
-  padding: 0px !important;
-}
-
-.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-a.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:active {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-.navbar-divider {
-  background-color: gray;
-}
-
 </style>

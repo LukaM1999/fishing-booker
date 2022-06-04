@@ -198,6 +198,8 @@ export default {
         this.cottages = this.cottages.filter(c => c.id !== this.delete)
         this.$toasted.success('Cottage successfully deleted!')
         this.total -= 1
+      } else {
+        this.$toasted.error('Cottage could not be deleted at this time.')
       }
     },
     updateCottageModal(cottage) {

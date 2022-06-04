@@ -44,6 +44,7 @@ import { Icon } from 'leaflet';
 import Statistics from "@/components/Statistics";
 import AdventureProfile from "@/components/AdventureProfile";
 import AdventureAction from "@/components/instructor/AdventureAction";
+import Users from "@/components/admin/Users";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -247,6 +248,11 @@ const routes = [
                 path: 'statistics',
                 name: 'statistics',
                 component: Statistics
+            },
+            {
+                path: 'users',
+                name: 'users',
+                component: Users
             },
         ]
     },

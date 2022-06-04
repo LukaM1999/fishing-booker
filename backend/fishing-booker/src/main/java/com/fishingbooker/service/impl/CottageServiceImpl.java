@@ -1,7 +1,9 @@
 package com.fishingbooker.service.impl;
 
 import com.fishingbooker.model.Cottage;
+import com.fishingbooker.model.Reservation;
 import com.fishingbooker.repository.CottageRepository;
+import com.fishingbooker.repository.ReservationRepository;
 import com.fishingbooker.service.CottageService;
 import com.fishingbooker.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,6 +21,8 @@ public class CottageServiceImpl implements CottageService{
 
     @Autowired
     private CottageRepository cottageRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
     @Override
     public Optional<Cottage> findById(Long id) {
@@ -66,6 +71,12 @@ public class CottageServiceImpl implements CottageService{
         Optional<Cottage> optional = cottageRepository.findById(cottageId);
         Cottage cottage = optional.orElse(null);
         if(cottage == null) return false;
+        List<Reservation> reservations = reservationRepository.findAll();
+        for(Reservation reservation : reservations){
+            if(reservation.getName().equals(cottage.getName()) && reservation.getEndTime().isAfter(LocalDateTime.now())){
+                return false;
+            }
+        }
         cottageRepository.deleteById(cottageId);
         return true;
     }

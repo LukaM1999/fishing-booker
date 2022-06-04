@@ -70,13 +70,9 @@
           </md-ripple>
         </md-card>
       </div>
-      <div>
-        <md-button v-show="authority==='INSTRUCTOR'" class="md-icon-button"
-                   @click="createAdventureModal">
-          <span class="fa fa-edit fa-2x"> </span>
-
-        </md-button>
-      </div>
+      <button class="button is-primary" v-show="authority==='INSTRUCTOR'" @click="createAdventureModal">
+        <strong> + </strong>
+      </button>
     </div>
     <div class="columns mt-5">
       <div class="col"></div>
@@ -203,6 +199,8 @@ export default {
         this.adventures = this.adventures.filter(c => c.id !== this.delete)
         this.$toasted.success('Adventure successfully deleted!')
         this.total -= 1
+      } else {
+        this.$toasted.error('Adventure could not be deleted at this time.')
       }
     },
     updateAdventureModal(adventure) {

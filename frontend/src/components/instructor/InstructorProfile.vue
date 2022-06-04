@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="openPasswordConfirmation">
+    <form>
       <div class="row mb-3 justify-content-center">
         <div class="col-md-3">
           <div class="form-floating">
@@ -78,14 +78,14 @@
       </div>
       <div class="row mb-5 justify-content-center">
         <div class="col-md d-flex justify-content-end">
-          <button type="submit" class="btn btn-lg btn-primary">
+          <b-button type="is-primary" @click="openPasswordConfirmation">
             Save
-          </button>
+          </b-button>
         </div>
         <div class="col-md d-flex justify-content-start">
-          <button type="button" @click="openDeletionRequest" class="btn btn-lg btn-danger">
+          <b-button type="is-danger" @click="openDeletionRequest">
             Delete profile
-          </button>
+          </b-button>
         </div>
       </div>
     </form>

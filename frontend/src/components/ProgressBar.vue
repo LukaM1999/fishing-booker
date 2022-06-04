@@ -1,7 +1,9 @@
 <template>
   <div class="row">
     <div class="col text-center">
-      <h2 style="font-size: large">Membership:
+      <h2 style="font-size: x-large">Travel more and save more!
+      </h2>
+      <h2 class="mt-3" style="font-size: large">Membership:
         <strong v-if="points >= silver && points < gold" style="color: limegreen;">Emerald</strong>
         <strong v-else-if="points >=  gold" style="color:goldenrod;">Gold</strong>
         <strong v-else style="color: darkred">Ruby</strong>
@@ -12,6 +14,18 @@
           show-value
           size="is-large"
       ></b-progress>
+      <h2 v-if="user.role.authority === 'CUSTOMER'" class="mt-3" style="font-size: large">Membership bonus:
+        <strong v-if="points >= silver && points < gold" style="color: limegreen;">10%</strong>
+        <strong v-else-if="points >=  gold" style="color:goldenrod;">20%</strong>
+        <strong v-else style="color: darkred">0%</strong>
+        off on any reservation you make.
+      </h2>
+      <h2 v-else class="mt-3" style="font-size: large">Membership bonus:
+        <strong v-if="points >= silver && points < gold" style="color: limegreen;">3%</strong>
+        <strong v-else-if="points >=  gold" style="color:goldenrod;">5%</strong>
+        <strong v-else style="color: darkred">0%</strong>
+        income bonus after every reservation.
+      </h2>
     </div>
   </div>
 

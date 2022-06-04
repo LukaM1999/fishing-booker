@@ -24,8 +24,8 @@
         <b-navbar-item href="/instructor/history">
           History
         </b-navbar-item>
-        <b-navbar-item href="/instructor/finance">
-          Finance
+        <b-navbar-item href="/instructor/statistics">
+          Statistics
         </b-navbar-item>
       </template>
 
@@ -49,6 +49,8 @@
 
 export default {
   name: "InstructorHomepage",
+  components: {},
+
   data() {
     return {
       user: null

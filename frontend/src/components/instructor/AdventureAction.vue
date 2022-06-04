@@ -114,6 +114,7 @@ export default {
       const response = await axios.post(backend + `/reservation/createAction/${this.selectedRentable.id}`, reservation)
       if (response.data) {
         this.$toasted.success('Sale made successfully!')
+        this.$router.push('/instructor/schedule')
       } else {
         this.$toasted.error('Sale creation was unsuccessful')
       }
