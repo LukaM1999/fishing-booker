@@ -19,6 +19,20 @@
         </b-carousel>
       </div>
       <div class="tile is-child box">
+        <nav class="level is-info mt-5  rounded">
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">per person/day</p>
+              <p class="title">{{ cottage.price }}$</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">cancellation fee %</p>
+              <p class="title">{{ cottage.cancellationFee }}$</p>
+            </div>
+          </div>
+        </nav>
         <nav class="level is-info rounded">
           <div class="level-item has-text-centered">
             <div>
@@ -40,18 +54,6 @@
           </div>
         </nav>
         <nav class="level is-info mt-5  rounded">
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">cancellation fee %</p>
-              <p class="title">{{ cottage.cancellationFee }}$</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">per person/day</p>
-              <p class="title">{{ cottage.price }}$</p>
-            </div>
-          </div>
           <div class="level-item has-text-centered">
             <div>
               <p class="heading">Cottage rating</p>
@@ -85,7 +87,7 @@
 
         <div class="my-5"> <p class="is-size-3">More about this cottage</p></div>
         <p class="is-size-5">{{ cottage.promoDescription }}</p>
-        <p class="is-size-5 mt-3">{{ cottage.rules }}</p>
+        <p class="is-size-5 mt-3">Rules: {{ cottage.rules }}</p>
         <div class="my-lg-5"> <p class="is-size-3"> Additional services </p> </div>
         <div class="row justify-content-left">
           <div class="col-4">

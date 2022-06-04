@@ -70,7 +70,7 @@
           </md-ripple>
         </md-card>
       </div>
-      <button class="button is-primary" v-show="authority==='COTTAGE_OWNER'" @click="createCottageModal">
+      <button class="button is-primary ml-5" v-show="authority==='COTTAGE_OWNER'" @click="createCottageModal">
         <strong> + </strong>
       </button>
     </div>

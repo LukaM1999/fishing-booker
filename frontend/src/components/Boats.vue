@@ -97,7 +97,7 @@
           </md-ripple>
         </md-card>
       </div>
-      <button class="button is-primary" v-show="authority==='BOAT_OWNER'" @click="createBoatModal">
+      <button class="button is-primary ml-5" v-show="authority==='BOAT_OWNER'" @click="createBoatModal">
         <strong> + </strong>
       </button>
     </div>
