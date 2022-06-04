@@ -121,6 +121,11 @@ const routes = [
         component: CottageProfile,
     },
     {
+        path: '/boatProfile',
+        name: 'boatProfile',
+        component: BoatProfile,
+    },
+    {
         path: '/adventureProfile',
         name: 'adventureProfile',
         component: AdventureProfile,

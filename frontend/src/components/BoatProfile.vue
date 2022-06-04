@@ -22,6 +22,12 @@
         <nav class="level is-info rounded">
           <div class="level-item has-text-centered">
             <div>
+              <p class="heading">per person/day</p>
+              <p class="title">{{ boat.price }}$</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
               <p class="heading">Capacity</p>
               <p class="title">{{ boat.capacity }}</p>
             </div>
@@ -32,26 +38,28 @@
               <p class="title">{{ boat.length }} m</p>
             </div>
           </div>
+        </nav>
+        <nav class="level is-info mt-5  rounded">
           <div class="level-item has-text-centered">
             <div>
               <p class="heading">Motors</p>
               <p class="title">{{ boat.motors }}</p>
             </div>
           </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Max Speed</p>
+              <p class="title">{{ boat.maxSpeed }}</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Power</p>
+              <p class="title">{{ boat.power }}</p>
+            </div>
+          </div>
         </nav>
         <nav class="level is-info mt-5  rounded">
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">cancellation fee %</p>
-              <p class="title">{{ boat.cancellationFee }}$</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">per person/day</p>
-              <p class="title">{{ boat.price }}$</p>
-            </div>
-          </div>
           <div class="level-item has-text-centered">
             <div>
               <p class="heading">Boat rating</p>
@@ -85,7 +93,12 @@
 
         <div class="my-5"> <p class="is-size-3">More about this boat</p></div>
         <p class="is-size-5">{{ boat.promoDescription }}</p>
-        <p class="is-size-5 mt-3">{{ boat.rules }}</p>
+        <p class="is-size-5 mt-3">Rules: {{ boat.rules }}</p>
+        <p class="is-size-5 mt-3">Fishing Equipment: {{ boat.fishingEquipment }}</p>
+        <span class="tag is-primary is-medium my-5" v-if="boat.fishFinder">Fish finder✔</span>
+        <span class="tag is-primary is-medium my-5 ml-5" v-if="boat.gps">GPS✔</span>
+        <span class="tag is-primary is-medium my-5 ml-5" v-if="boat.radar">Radar✔</span>
+        <span class="tag is-primary is-medium my-5 ml-5" v-if="boat.vhfRadio">VHFRadio✔</span>
         <div class="my-lg-5"> <p class="is-size-3"> Additional services </p> </div>
         <div class="row justify-content-left">
           <div class="col-4">
