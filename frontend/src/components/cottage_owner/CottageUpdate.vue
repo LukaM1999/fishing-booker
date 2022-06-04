@@ -240,9 +240,9 @@ export default {
 
       const response = await this.axios.post(backend + '/cottage/register', formData, {headers: {"Content-Type": "multipart/form-data"}})
       if (response) {
-        this.$toasted.success('Cottage successfully registered!')
+        this.$toasted.success('Cottage successfully updated!')
       } else {
-        this.$toasted.error('Error while registering cottage.')
+        this.$toasted.error('Error while updating boat.')
       }
       this.$parent.close()
       this.$emit('updated')

@@ -26,7 +26,6 @@ public class BoatController {
     }
 
     @GetMapping("/all")
-    //@PreAuthorize("hasAuthority('BOAT_OWNER')")
     public List<Boat> getAll(){
         return this.boatService.findAll();
     }
@@ -36,4 +35,12 @@ public class BoatController {
     public Boat registerBoat(@RequestParam("boat") MultipartFile boat, @RequestParam("files") MultipartFile[] files) throws IOException {
         return boatService.registerBoat(new ObjectMapper().readValue(boat.getBytes(), Boat.class), files);
     }
+
+    @GetMapping(value = "/owner")
+    @PreAuthorize("hasAuthority('BOAT_OWNER')")
+    public List<Boat> getAllByOwnerUsername(@RequestParam String username){ return this.boatService.findAllByOwnerUsername(username);}
+
+    @DeleteMapping( "/delete/{boatId}")
+    @PreAuthorize("hasAnyAuthority('BOAT_OWNER', 'ADMIN')")
+    public boolean deleteBoat(@PathVariable Long boatId){ return this.boatService.deleteBoat(boatId); }
 }

@@ -249,6 +249,7 @@ export default {
       price: 1,
       additionalServices: '',
       promoDescription: '',
+      images: '',
       dropFiles: []
     }
   },
@@ -276,7 +277,8 @@ export default {
         price: this.price,
         additionalServices: this.additionalServices,
         promoDescription: this.promoDescription,
-        ownerUsername: Store.user?.username
+        images: this.images,
+        ownerUsername: JSON.parse(localStorage.getItem('user')).username,
       }
       const formData = new FormData()
       for (let file of this.dropFiles) {
@@ -291,6 +293,7 @@ export default {
         this.$toasted.error('Error while registering boat.')
       }
       this.$parent.close()
+      this.$emit('added', response.data)
     },
 
     deleteDropFile(index) {

@@ -17,4 +17,6 @@ public interface SaleSubscriptionRepository extends JpaRepository<SaleSubscripti
     @Transactional
     @Modifying
     void deleteSaleSubscriptionByEntityNameAndOwnerUsernameAndCustomerUsername(String entityName, String ownerUsername, String customerUsername);
+
+    List<SaleSubscription> findByEntityName(String entityName);
 }

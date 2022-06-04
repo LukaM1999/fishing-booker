@@ -184,6 +184,7 @@ export default {
       price: 1,
       additionalServices: '',
       promoDescription: '',
+      images: '',
       dropFiles: []
     }
   },
@@ -203,6 +204,7 @@ export default {
         price: this.price,
         additionalServices: this.additionalServices,
         promoDescription: this.promoDescription,
+        images: this.images,
         ownerUsername: JSON.parse(localStorage.getItem('user')).username
       }
       const formData = new FormData()

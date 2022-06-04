@@ -3,7 +3,7 @@ insert into registered_user(username, password, name, surname, email, address, c
 insert into cottage_owner(username, letter_of_intent) values ('Piwneuh','Nesto');
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'CUSTOMER');                                                               --jabuka123
-insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('imbiamba', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Luka', 'Miletic', 'imbiamba@gmail.com', 'Kraljevica Marka 21', 'Novi Sad', 'Serbia', '4443332', 2, true);
+insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('imbiamba', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Luka', 'Miletic', 'online.fishing.booker@gmail.com', 'Kraljevica Marka 21', 'Novi Sad', 'Serbia', '4443332', 2, true);
 insert into customer(username, verification_token) values ('imbiamba',null);
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'ADMIN');                                                                 --jabuka123
@@ -14,8 +14,8 @@ insert into role(id, role_name) values (nextval('role_id_seq'), 'BOAT_OWNER');  
 insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Popaye', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 4, true);
 insert into boat_owner(username, letter_of_intent) values ('Popaye','Nesto');
 
-insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment, owner_username)
-values (nextval('rentable_id_seq'), '380 Realm Boston Whaler', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever', 16, 'Be polite.', 50, 'wifi=15;', 5, 'Boston Whaler', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment', 'Popaye');
+insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment, owner_username, images)
+values (nextval('rentable_id_seq'), 'Monohull Bavaria Cruiser', 'Serbia', 'Subotica', 'Aleksandrovi Salasi 10', 'Best boat ever!', 16, 'Be polite.', 50, 'wifi=15;boots=10', 5, 'Boston Whaler', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment', 'Popaye', 'b1.1.jpg;b1.2.jpg;b1.3.jpg;');
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'INSTRUCTOR');                                                              --jabuka123
 insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Fishdude', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Fish', 'Dude', 'fishdude@gmail.com', 'Bulevar oslobodjenja 22', 'Novi Sad', 'Serbia', '453678', 5, true);
@@ -45,7 +45,7 @@ insert into adventure(id, name, country, city, address, promo_description, capac
 values (nextval('rentable_id_seq'), 'Tikvara - catfish fishing', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'Lets find dark place on Tikvaras beach', 1, 'Only women', 50, 'snacks=15;', 0, 'I have 70 hobbies', 'A big hook', 'Fishdude', 'a11.1.jpg;a11.2.jpg;');
 
 insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment)
-values (nextval('rentable_id_seq'), '380 Realm Boston Whaler', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever', 16, 'Be polite.', 30, 'boots=10;', 5, 'Boston Whaler', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment');
+values (nextval('rentable_id_seq'), 'Monohull Bavaria Cruiser', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever!', 16, 'Be polite.', 30, 'boots=10;', 5, 'Yacht', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment');
 insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment)
 values (nextval('rentable_id_seq'), '380 Realm Boston Whaler', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever', 16, 'Be polite.', 40, 'boots=10;', 5, 'Boston Whaler', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment');
 insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment)

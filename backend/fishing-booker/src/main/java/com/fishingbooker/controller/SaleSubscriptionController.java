@@ -27,6 +27,13 @@ public class SaleSubscriptionController {
         return saleSubscriptionService.getOwnerSubscriptions(ownerUsername);
     }
 
+    @GetMapping("/entity/{entityName}")
+    @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER','BOAT_OWNER','INSTRUCTOR')")
+    public List<SaleSubscription> getSubscriptions(@PathVariable String entityName) {
+        return saleSubscriptionService.getSubscriptions(entityName);
+    }
+
+
     @GetMapping("/isSubscribed")
     @PreAuthorize("hasAuthority('CUSTOMER')")
     public boolean isSubscribed(@RequestParam String entityName, @RequestParam String ownerUsername, @RequestParam String customerUsername) {

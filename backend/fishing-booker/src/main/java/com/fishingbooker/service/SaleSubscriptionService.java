@@ -13,4 +13,6 @@ public interface SaleSubscriptionService {
     boolean isSubscribed(String entityName, String ownerUsername, String customerUsername);
 
     void unsubscribe(String entityName, String ownerUsername, String customerUsername);
+
+    List<SaleSubscription> getSubscriptions(String entityName);
 }

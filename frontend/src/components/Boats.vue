@@ -21,20 +21,6 @@
           </b-taginput>
         </b-field>
       </div>
-      <!--      <div class="col-md-2 d-flex justify-content-center">-->
-      <!--        <button class="btn btn-lg btn-primary dropdown-toggle" type="button" id="dropdownMenu1"-->
-      <!--                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-      <!--          Select types-->
-      <!--        </button>-->
-      <!--        <ul class="dropdown-menu checkbox-menu allow-focus keep-open" aria-labelledby="dropdownMenu1">-->
-      <!--          <li v-for="(type, i) in allTypes">-->
-      <!--            <label>-->
-      <!--              <input type="checkbox" v-model="typeCheckboxes[i]">-->
-      <!--              {{ type }}-->
-      <!--            </label>-->
-      <!--          </li>-->
-      <!--        </ul>-->
-      <!--      </div>-->
       <div class="col-md-1">
         <div class="form-floating">
           <input type="number" class="form-control" id="boatLength" v-model.number="lengthSearch" max="500"
@@ -75,10 +61,6 @@
           <i :class="[ascending ? 'fa fa-sort-up' : 'fa fa-sort-down']"></i>
         </button>
       </div>
-      <!--        <div class="col-md-1 align-self-center">-->
-      <!--          <input type="checkbox" class="form-check-input" id="onlyOpen" v-model="onlyOpen">-->
-      <!--          <label for="onlyOpen" style="color:white;">Only open</label>-->
-      <!--        </div>-->
     </div>
     <div class="md-layout md-alignment-center" v-if="this.boats">
       <div class="md-layout-item md-large-size-30 md-xlarge-size-30"
@@ -86,7 +68,8 @@
         <md-card class="md-primary" md-theme="orange-card" md-with-hover>
           <md-ripple>
             <md-card-media md-ratio="4:3">
-              <img src="" alt="Skyscraper">
+              <img :src="getImgUrl(boat)" alt="Boat image"
+                   @click="boatProfile(boat)">
             </md-card-media>
             <md-card-area>
               <md-card-header>
@@ -99,50 +82,46 @@
             </md-card-area>
             <md-card-expand>
               <md-card-actions md-alignment="right">
-                <md-card-expand-trigger>
-                  <md-button class="md-icon-button">
-                    <span class="fa fa-arrow-circle-down fa-2x"></span>
+                <md-card-actions md-alignment="right">
+                  <md-button v-show="authority==='BOAT_OWNER'||authority==='ADMIN'" class="md-icon-button"
+                             @click="confirmDialog(boat)">
+                    <span class="fa fa-trash-alt"></span>
                   </md-button>
-                </md-card-expand-trigger>
+                  <md-button v-show="authority==='BOAT_OWNER'" class="md-icon-button"
+                             @click="updateBoatModal(boat)">
+                    <span class="fa fa-edit"></span>
+                  </md-button>
+                </md-card-actions>
               </md-card-actions>
-
-              <md-card-expand-content>
-                <md-card-content>
-                  <p class="md-subhead">For a maximum of {{ boat.capacity }} people</p>
-                  <p class="md-subhead">{{ boat.boatType }} type</p>
-                  <p class="md-subhead">Length of {{ boat.length.toFixed(2) }} meters</p>
-                  <p class="md-subhead">Has {{ boat.motors }} motors, {{ boat.power.toFixed(0) }} horsepower</p>
-                  <p class="md-subhead">Maximum speed of {{ boat.maxSpeed.toFixed(2) }} km/h</p>
-                  <p class="md-subhead is-inline">
-                    Has <span v-if="boat.gps">GPS, </span>
-                    <span v-if="boat.radar">radar, </span>
-                    <span v-if="boat.vhfRadio">VHF radio, </span>
-                    <span v-if="boat.fishfinder">fishfinder</span>
-                  </p>
-                </md-card-content>
-              </md-card-expand-content>
             </md-card-expand>
           </md-ripple>
         </md-card>
       </div>
+      <button class="button is-primary" v-show="authority==='BOAT_OWNER'" @click="createBoatModal">
+        <strong> + </strong>
+      </button>
     </div>
-    <div class="mt-4" v-if="boats">
-      <b-pagination
-          :total="total"
-          v-model="current"
-          :range-before="rangeBefore"
-          :range-after="rangeAfter"
-          :simple="isSimple"
-          :rounded="isRounded"
-          :order="order"
-          :per-page="perPage"
-          :icon-prev="prevIcon"
-          :icon-next="nextIcon"
-          aria-next-label="Next page"
-          aria-previous-label="Previous page"
-          aria-page-label="Page"
-          aria-current-label="Current page">
-      </b-pagination>
+    <div class="columns mt-5">
+      <div class="col"></div>
+        <div class="mt-4 col-3" v-if="boats">
+          <b-pagination
+              :total="total"
+              v-model="current"
+              :range-before="rangeBefore"
+              :range-after="rangeAfter"
+              :simple="isSimple"
+              :rounded="isRounded"
+              :order="order"
+              :per-page="perPage"
+              :icon-prev="prevIcon"
+              :icon-next="nextIcon"
+              aria-next-label="Next page"
+              aria-previous-label="Previous page"
+              aria-page-label="Page"
+              aria-current-label="Current page">
+          </b-pagination>
+        </div>
+      <div class="col"></div>
     </div>
   </div>
 </template>
@@ -156,6 +135,8 @@ import "vue-material/dist/vue-material.min.css"
 import "bootstrap/dist/css/bootstrap-grid.min.css"
 import "@fortawesome/fontawesome-free/css/all.min.css"
 import {backend} from "@/env";
+import BoatRegistration from "@/components/boat_owner/BoatRegistration";
+import BoatUpdate from "@/components/boat_owner/BoatUpdate";
 
 Vue.use(MdCard)
 Vue.use(MdRipple)
@@ -186,28 +167,16 @@ export default {
       ratingSearch: '',
       equipment: [],
       filteredEquipment: ['GPS', 'Radar', 'VHF radio', 'Fishfinder'],
+      authority: '',
+      user: null
     }
   },
   async mounted() {
-    await this.getBoats()
+    this.user = JSON.parse(localStorage.getItem('user'))
+    this.authority = this.user?.role.authority;
+    (this.authority === 'BOAT_OWNER') ? await this.getOwnerBoats() : await this.getBoats()
     this.total = this.boats.length
     this.$nextTick(() => window.scrollTo(0,document.body.scrollHeight))
-    // const cards = document.getElementsByClassName('md-card')
-    // for (const card of cards) {
-    //   card.classList.remove('md-expand-active')
-    // }
-    // const expandContents = document.getElementsByClassName('md-card-expand-content')
-    // for (const expandContent of expandContents) {
-    //   expandContent.style.marginTop = '-232px'
-    //   expandContent.style.opacity = 0
-    // }
-    // this.$nextTick(() => {
-    //   const expands = document.getElementsByClassName('fa-arrow-circle-down')
-    //   for (const expand of expands) {
-    //     expand.click()
-    //   }
-    // })
-
   },
   methods: {
     async getBoats() {
@@ -215,6 +184,65 @@ export default {
       if (response) {
         this.boats = response.data
       }
+    },
+    async getOwnerBoats(){
+      const response = await axios.get(backend + '/boat/owner?username=' + this.user?.username)
+      if (response) {
+        this.boats = response.data
+      }
+    },
+    getImgUrl(boat) {
+      return `${backend}/${boat.images?.split(';')[0]}`
+    },
+    boatProfile(boat) {
+      localStorage.setItem('currentBoat', JSON.stringify(boat))
+      this.$router.push('boatProfile')
+    },
+    pushBoat(boat) {
+      this.boats.push(boat)
+      this.total += 1
+    },
+    createBoatModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: BoatRegistration,
+        hasModalCard: true,
+        trapFocus: true,
+        events: {
+          'added': this.pushBoat
+        }
+      })
+    },
+    async confirmDialog(boat) {
+      this.delete = boat.id
+      const {result, dialog} = await this.$buefy.dialog.confirm({
+        message: 'Are you sure you want to delete? It cannot be undone.',
+        closeOnConfirm: true,
+        onConfirm: await this.deleteBoat
+      });
+    },
+    async deleteBoat() {
+      const response = await axios.delete(backend + `/boat/delete/${this.delete}`)
+      if (response.data) {
+        this.boats = this.boats.filter(b => b.id !== this.delete)
+        this.$toasted.success('Boat successfully deleted!')
+        this.total -= 1
+      }
+    },
+    updateBoatModal(boat) {
+      this.$buefy.modal.open({
+        parent: this,
+        component: BoatUpdate,
+        hasModalCard: true,
+        trapFocus: true,
+        props: {boat},
+        events: {
+          'updated': this.updateCottage
+        }
+      })
+    },
+    updateCottage() {
+      location.reload()
     },
     setSortOrder() {
       this.ascending = !this.ascending
@@ -236,15 +264,6 @@ export default {
       let formatAddress = (function (value) {
         return value.address + ", " + value.city + ", " + value.country
       })
-      // const types = this.allTypes.filter((type, index) => this.typeCheckboxes[index] === true)
-      // const filteredBoats = []
-      // for (let i = 0; i < types.length; i++) {
-      //   filteredBoats.push(...tempBoats.filter((b) => {
-      //     return b.type.toLowerCase().includes(types[i].toLowerCase())
-      //   }))
-      // }
-      //
-      // if (filteredBoats.length > 0) tempBoats = filteredBoats
       if (this.equipment) {
         const hasGps = this.equipment.includes('GPS')
         const hasRadar = this.equipment.includes('Radar')
@@ -338,8 +357,6 @@ export default {
           return b.maxSpeed - a.maxSpeed
         }
       })
-
-      //if (this.onlyOpen) tempBoats = tempBoats.filter((b) => { return b.status == 'OPEN' })
 
       return tempBoats
     }

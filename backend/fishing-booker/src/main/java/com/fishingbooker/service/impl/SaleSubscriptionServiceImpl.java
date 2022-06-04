@@ -45,4 +45,9 @@ public class SaleSubscriptionServiceImpl implements SaleSubscriptionService {
         saleSubscriptionRepository.deleteSaleSubscriptionByEntityNameAndOwnerUsernameAndCustomerUsername(
                 entityName, ownerUsername, customerUsername);
     }
+
+    @Override
+    public List<SaleSubscription> getSubscriptions(String entityName) {
+       return saleSubscriptionRepository.findByEntityName(entityName);
+    }
 }

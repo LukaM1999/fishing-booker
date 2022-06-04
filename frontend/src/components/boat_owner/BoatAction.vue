@@ -1,15 +1,15 @@
 <template>
   <div class="box m-5">
-  <b-field label="Choose your cottage">
-    <b-select placeholder="Select your cottage" v-model="selectedRentable" @input="getServices()">
-      <option
-          v-for="cottage in cottages"
-          :value="cottage"
-          :key="cottage.id">
-          {{cottage.name}}
-      </option>
-    </b-select>
-  </b-field>
+    <b-field label="Choose your boat">
+      <b-select placeholder="Select your boat" v-model="selectedRentable" @input="getServices()">
+        <option
+            v-for="boat in boats"
+            :value="boat"
+            :key="boat.id">
+          {{boat.name}}
+        </option>
+      </b-select>
+    </b-field>
     <b-field label="Choose action period">
       <b-datepicker
           placeholder="Click to select..."
@@ -40,18 +40,18 @@
 </template>
 
 <script>
+import moment from "moment";
 import axios from "axios";
 import {backend} from "@/env";
-import moment from "moment";
 
 export default {
-  name: "CottageAction",
+  name: "BoatAction",
   data(){
     return {
-      cottages: [],
-      selectedRentable: JSON.parse(localStorage.getItem('currentCottage')),
+      boats: [],
+      selectedRentable: JSON.parse(localStorage.getItem('currentBoat')),
       user:JSON.parse(localStorage.getItem('user')),
-      type: 'COTTAGE',
+      type: 'BOAT',
       dates: [],
       services: [],
       columns: [
@@ -70,11 +70,12 @@ export default {
       endTime: new Date(),
       minDate: new Date(),
       price: 0,
-      salePercent: 0
+      salePercent: 0,
+      subscribers: []
     }
   },
   mounted(){
-    this.getOwnerCottages();
+    this.getOwnerBoats();
     this.getServices();
     this.minDate = moment().add(1, 'days').toDate()
     this.minDate.setHours(0)
@@ -82,10 +83,10 @@ export default {
 
   },
   methods:{
-    async getOwnerCottages() {
-      const response = await axios.get(backend + '/cottage/owner?username=' + this.user?.username)
+    async getOwnerBoats() {
+      const response = await axios.get(backend + '/boat/owner?username=' + this.user?.username)
       if (response.data) {
-        this.cottages = response.data
+        this.boats = response.data
       }
     },
     async createAction() {
@@ -114,10 +115,10 @@ export default {
 
       const response = await axios.post(backend + `/reservation/createAction/${this.selectedRentable.id}`, reservation)
       if (response.data) {
-        this.$toasted.success('Sale made successfully!')
+        this.$toasted.success('Action created successfully!')
         await this.sendMail(reservation)
       } else {
-        this.$toasted.error('Sale creation was unsuccessful')
+        this.$toasted.error('Action creation was unsuccessful')
       }
     },
     getServices(){

@@ -45,6 +45,10 @@ import Statistics from "@/components/Statistics";
 import AdventureProfile from "@/components/AdventureProfile";
 import AdventureAction from "@/components/instructor/AdventureAction";
 import Users from "@/components/admin/Users";
+import BoatOwnerHomepage from "@/components/boat_owner/BoatOwnerHomepage";
+import BoatOwnerProfile from "@/components/boat_owner/BoatOwnerProfile";
+import BoatAction from "@/components/boat_owner/BoatAction";
+import BoatProfile from "@/components/BoatProfile";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -338,6 +342,43 @@ const routes = [
               path: 'statistics',
               name: 'statistics',
               component: Statistics
+            },
+        ]
+    },
+    {
+        path: '/boatOwner',
+        name: 'boatOwnerHomepage',
+        component: BoatOwnerHomepage,
+        children: [
+            {
+                path: 'boats',
+                name: 'boats',
+                component: Boats,
+            },
+            {
+                path: 'profile',
+                name: 'boatOwnerProfile',
+                component: BoatOwnerProfile
+            },
+            {
+                path: 'history',
+                name: 'boatHistory',
+                component: History
+            },
+            {
+                path: 'boatProfile',
+                name: 'boatProfile',
+                component: BoatProfile
+            },
+            {
+                path: 'action',
+                name: 'action',
+                component: BoatAction
+            },
+            {
+                path: 'statistics',
+                name: 'statistics',
+                component: Statistics
             },
         ]
     }

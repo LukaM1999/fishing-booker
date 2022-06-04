@@ -14,4 +14,8 @@ public interface BoatService {
     public List<Boat> findAll();
 
     Boat registerBoat(Boat readValue, MultipartFile[] files) throws IOException;
+
+    List<Boat> findAllByOwnerUsername(String username);
+
+    boolean deleteBoat(Long boatId);
 }

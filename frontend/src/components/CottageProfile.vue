@@ -270,7 +270,7 @@ export default {
         return
       }
       await axios.post(`${backend}/saleSubscription`, {entityName: this.cottage.name
-      ,ownerUsername: this.cottage.ownerUsername, customerUsername: this.user.username}).catch(e => {
+      ,ownerUsername: this.cottage.ownerUsername, customerUsername: this.user.username, email: this.user.email}).catch(e => {
         this.$toasted.error('Failed to subscribe')
         throw e
       })

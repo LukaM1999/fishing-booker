@@ -11,4 +11,6 @@ public interface BoatRepository extends JpaRepository<Boat, Long> {
     Boat getBoatByNameAndOwnerUsername(String name, String owner);
 
     List<Rentable> getRentablesByOwnerUsername(String username);
+
+    List<Boat> findAllByOwnerUsername(String username);
 }

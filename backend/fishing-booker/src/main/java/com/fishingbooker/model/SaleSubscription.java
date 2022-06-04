@@ -20,12 +20,16 @@ public class SaleSubscription {
     @Column
     private String customerUsername;
 
+    @Column
+    private String email;
+
     public SaleSubscription() { }
 
-    public SaleSubscription(String entityName, String ownerUsername, String customerUsername) {
+    public SaleSubscription(String entityName, String ownerUsername, String customerUsername, String email) {
         this.entityName = entityName;
         this.ownerUsername = ownerUsername;
         this.customerUsername = customerUsername;
+        this.email = email;
     }
 
     public Long getId() {
@@ -58,5 +62,13 @@ public class SaleSubscription {
 
     public void setCustomerUsername(String customerUsername) {
         this.customerUsername = customerUsername;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
