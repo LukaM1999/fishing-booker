@@ -3,7 +3,7 @@
     <div class="col-3">
       <div class="row">
         <div class="col">
-          <h1 class="text-center">Penalties</h1>
+          <h1 class="text-center title">Penalties</h1>
         </div>
       </div>
         <div class="row mt-5">

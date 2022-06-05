@@ -103,6 +103,21 @@ const routes = [
                 name: 'adventures',
                 component: Adventures
             },
+            {
+                path: '/cottageProfile',
+                name: 'cottageProfile',
+                component: CottageProfile,
+            },
+            {
+                path: '/boatProfile',
+                name: 'boatProfile',
+                component: BoatProfile,
+            },
+            {
+                path: '/adventureProfile',
+                name: 'adventureProfile',
+                component: AdventureProfile,
+            },
         ]
     },
     {
@@ -133,6 +148,9 @@ const routes = [
     {
         path: '/customer',
         name: 'customerHomepage',
+        redirect: {
+            path: '/customer/browse/cottages'
+        },
         component: CustomerHomepage,
         children: [
             {
@@ -159,6 +177,11 @@ const routes = [
                 path: 'browse/adventureProfile',
                 name: 'customerAdventureProfile',
                 component: AdventureProfile,
+            },
+            {
+                path: 'browse/boatProfile',
+                name: 'customerBoatProfile',
+                component: BoatProfile
             },
             {
                 path: 'history',

@@ -1,73 +1,57 @@
 <template>
   <div>
-    <nav class="navbar is-primary">
-      <div class="navbar-brand">
-        <a class="navbar-item">
-          <img :src="'../logo1.png'" alt="logo">
-        </a>
-        <div class="navbar-burger" data-bs-target="navbarExampleTransparentExample">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
+    <b-navbar class="is-primary">
+      <template #brand>
+        <b-navbar-item tag="router-link" :to="{ path: '/customer' }">
+          <img
+              src="../../../public/fishy.png"
+              alt="fishy ma boi"
+              class="logo ml-3"
+              style="max-height: 2.5rem"
+          >
+        </b-navbar-item>
+      </template>
+      <template #start>
+        <b-navbar-dropdown label="Browse">
+          <b-navbar-item href="/customer/browse/cottages">
+            Cottages
+          </b-navbar-item>
+          <b-navbar-item href="/customer/browse/boats">
+            Boats
+          </b-navbar-item>
+          <b-navbar-item href="/customer/browse/adventures">
+            Adventures
+          </b-navbar-item>
+        </b-navbar-dropdown>
+        <b-navbar-item href="/customer/profile">
+          Profile Information
+        </b-navbar-item>
+        <b-navbar-item href="/customer/history">
+          History
+        </b-navbar-item>
+        <b-navbar-item href="/customer/penalties">
+          Penalties
+        </b-navbar-item>
+        <b-navbar-item href="/customer/saleSubscriptions">
+          Sales Subscriptions
+        </b-navbar-item>
+        <b-navbar-item href="/customer/reservation">
+          Make a Reservation!
+        </b-navbar-item>
+      </template>
 
-      <div id="navbarExampleTransparentExample" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item">
-            Home
-          </a>
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              Browse
+      <template #end>
+        <b-navbar-item tag="div">
+          <div class="buttons">
+            <a class="button is-link" @click="logOut">
+              Log Out
             </a>
-            <div class="navbar-dropdown is-boxed">
-              <router-link to="/customer/browse/cottages" class="navbar-item">
-                Cottages
-              </router-link>
-              <router-link to="/customer/browse/boats" class="navbar-item">
-                Boats
-              </router-link>
-              <router-link to="/customer/browse/instructors" class="navbar-item">
-                Adventures
-              </router-link>
-            </div>
           </div>
-          <router-link to="/customer/history" class="navbar-item">
-            Reservation history
-          </router-link>
-          <a class="navbar-item">
-            Send complaint
-          </a>
-          <router-link to="/customer/reservation" class="navbar-item">
-            Reservation
-          </router-link>
-          <router-link to="/customer/penalties" class="navbar-item">
-            Penalties
-          </router-link>
-          <router-link to="/customer/saleSubscriptions" class="navbar-item">
-            Sale subscriptions
-          </router-link>
-        </div>
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link is-arrowless fa fa-user-alt fa-3x"></a>
-
-            <div class="navbar-dropdown is-right is-boxed">
-              <router-link to="/customer/profile" class="navbar-item">
-                Profile information
-              </router-link>
-              <hr class="navbar-divider">
-              <a @click="logOut" class="navbar-item">
-                Log out
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+        </b-navbar-item>
+      </template>
+    </b-navbar>
     <div>
-      <router-view></router-view>
+      <router-view style="margin-top: 75px"></router-view>
     </div>
   </div>
 </template>
@@ -91,46 +75,7 @@ export default {
 </script>
 
 <style scoped>
-.is-primary {
-  background-image: linear-gradient(to right, #99A799, #ADC2A9) !important;
+.my-component-wrapper .tabs a {
+  border-bottom-style: none;
 }
-
-nav {
-  padding: 0px !important;
-}
-
-.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white !important;
-  opacity: 1;
-}
-
-a.navbar-item:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:hover {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-a.navbar-link:active {
-  color: #8E806A !important;
-  background-color: white;
-  opacity: 1;
-}
-
-.navbar-divider {
-  background-color: gray;
-}
-
 </style>

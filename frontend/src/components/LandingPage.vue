@@ -44,11 +44,11 @@
     </section>
     <div class="tab-contents">
       <div>
-        <router-view style="margin-top:100px"></router-view>
+        <router-view style="margin-top:6rem"></router-view>
       </div>
     </div>
-    <div style="height: 100px"> </div>
-    <footer class="footer">
+    <div :class="[$route.path.includes('Profile') ? 'big': 'smool']"> </div>
+    <footer class="footer" style="">
       <div class="content has-text-centered">
         <p>
           <strong>Fishing Booker</strong> Full Stack <strong>Vue & Spring Boot</strong> demonstration by <a href="https://github.com/LukaM1999">Luka Miletić</a>,
@@ -103,4 +103,12 @@ export default {
 .my-component-wrapper .tabs a {
   border-bottom-style: none;
 }
+
+.big{
+  height: 50rem;
+}
+
+.smool{
+  height: 6rem;
+  }
 </style>
