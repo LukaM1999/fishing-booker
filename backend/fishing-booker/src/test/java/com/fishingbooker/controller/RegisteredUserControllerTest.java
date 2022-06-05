@@ -3,6 +3,7 @@ package com.fishingbooker.controller;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fishingbooker.dto.RegistrationDTO;
 import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
 import com.fishingbooker.model.Role;
@@ -38,9 +39,14 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.util.NestedServletException;
 
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertTrue;
@@ -52,6 +58,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfigurer.sharedHttpSession;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -81,7 +88,7 @@ public class RegisteredUserControllerTest {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).apply(sharedHttpSession()).build();
         try {
             SecurityContext ctx = SecurityContextHolder.createEmptyContext();
             SecurityContextHolder.setContext(ctx);
@@ -147,5 +154,61 @@ public class RegisteredUserControllerTest {
                 .andExpect(jsonPath("$.username").value("imbiamba"))
                 .andExpect(jsonPath("$.deletionReason").value("I don't want to be here anymore"))
                 .andExpect(jsonPath("$.email").value("email.test.fishing@gmail.com"));
+    }
+
+    //@Test
+    public void registerPessimisticLock() throws Throwable {
+        RegistrationDTO request = new RegistrationDTO();
+        request.setUsername("bad_imbi");
+        request.setPassword("imbiamba");
+        request.setEmail("email.test.fishing@gmail.com");
+        request.setName("Gus");
+        request.setSurname("Johnson");
+        request.setRole("CUSTOMER");
+
+        String json = TestUtil.json(request);
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<?> future1 = executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 1");// izmenjen ucitan objekat
+                //try { Thread.sleep(100); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                try {
+                    mockMvc.perform(post("/auth/signup")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(json))
+                            .andExpect(status().isCreated());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 2");
+                //try { Thread.sleep(100); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                try {
+                    mockMvc.perform(post("/auth/signup")
+                                    .contentType(MediaType.APPLICATION_JSON)
+                                    .content(json))
+                            .andExpect(status().isInternalServerError());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        try {
+            future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
+        } catch (ExecutionException e) {
+            System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
+            throw e.getCause();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executor.shutdown();
     }
 }

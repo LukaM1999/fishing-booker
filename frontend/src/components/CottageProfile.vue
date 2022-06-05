@@ -318,6 +318,19 @@ export default {
       }
     },
     async reserveAction(action){
+      /*
+      await axios.all([
+        axios.patch(backend + '/reservation/reserveAction', {
+          id: action.id,
+          customerUsername: this.user.username
+        }),
+        axios.patch(backend + '/reservation/reserveAction', {
+          id: action.id,
+          customerUsername: "imbiamba1"
+        }),
+      ])
+       */
+
       await this.axios.patch(backend + '/reservation/reserveAction', {
         id: action.id,
         customerUsername: this.user.username

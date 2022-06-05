@@ -20,6 +20,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -45,14 +47,11 @@ public class AuthController {
     @Autowired
     private CustomerServiceImpl customerService;
 
-    @Autowired
-    private PointsService pointsService;
-
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
     @PostMapping("/login")
     public ResponseEntity<JwtDTO> createAuthenticationToken(
-            @RequestBody LoginDTO loginDto, HttpServletResponse response) {
+            @RequestBody LoginDTO loginDto) {
 
         // Ukoliko kredencijali nisu ispravni, logovanje nece biti uspesno, desice se
         // AuthenticationException
@@ -76,45 +75,8 @@ public class AuthController {
 
     // Endpoint za registraciju novog korisnika
     @PostMapping("/signup")
-    public ResponseEntity<Object> addUser(@RequestBody RegistrationDTO registrationDTO, UriComponentsBuilder ucBuilder) {
-
-        UserDetails existUser = this.userService.loadUserByUsername(registrationDTO.getUsername());
-
-        if (existUser != null) {
-            throw new NullPointerException("Username already exists: " + registrationDTO.getUsername());
-        }
-
-        Object user;
-        switch (registrationDTO.getRole()) {
-            case "CUSTOMER": {
-                registrationDTO.setVerificationToken(UUID.randomUUID().toString());
-                user = this.userService.save(new Customer(registrationDTO));
-                break;
-            }
-            case "COTTAGE_OWNER": {
-                user = this.userService.save(new CottageOwner(registrationDTO));
-                break;
-            }
-            case "INSTRUCTOR": {
-                user = this.userService.save(new Instructor(registrationDTO));
-                break;
-            }
-            case "BOAT_OWNER": {
-                user = this.userService.save(new BoatOwner(registrationDTO));
-                break;
-            }
-            case "ADMIN": {
-                user = this.userService.save(new Admin(registrationDTO));
-                this.userService.approveUser(registrationDTO.getUsername());
-                break;
-            }
-            default:
-                throw new IllegalArgumentException("Unrecognized user role!");
-
-        }
-        //CottageOwner owner = (CottageOwner) this.userService.save(new CottageOwner(registrationDTO));
-        //RegisteredUser user = this.userService.save(registeredUser);
-        pointsService.createUserPoints(new UserPoints(registrationDTO.getUsername(), 0));
+    public ResponseEntity<Object> addUser(@RequestBody RegistrationDTO registrationDTO) {
+        RegisteredUser user = userService.register(registrationDTO);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 

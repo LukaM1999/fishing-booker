@@ -3,9 +3,13 @@ package com.fishingbooker.repository;
 import com.fishingbooker.dto.statistics.ReservationNumDTO;
 import com.fishingbooker.model.*;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.QueryHints;
 import org.springframework.data.repository.query.Param;
 
+import javax.persistence.LockModeType;
+import javax.persistence.QueryHint;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +22,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             ":endTime between r.startTime and r.endTime)")
     Reservation getOccupied(@Param("name") String name, @Param("owner") String owner,
                             @Param("startTime")LocalDateTime startTime, @Param("endTime") LocalDateTime endTime);
+
 
     @Query("select r from Reservation r where " +
             "r.type = 'ADVENTURE' and r.ownerUsername = :owner " +
@@ -60,6 +65,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "and r.customerUsername is null")
     List<Reservation> getActions(@Param("name") String name, @Param("ownerUsername") String ownerUsername);
 
+    @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     Reservation getReservationById(Long id);
 
     List<Reservation> getReservationsByOwnerUsername(String username);
@@ -69,5 +75,4 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "and r.endTime <= current_timestamp " +
             "and r.startTime >= :date")
     Integer getNumOfReservationsByName(@Param("name")String name,@Param("date") LocalDateTime date);
-
 }

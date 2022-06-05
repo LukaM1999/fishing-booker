@@ -1,14 +1,21 @@
 package com.fishingbooker.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.fishingbooker.dto.ApproveUserDTO;
 import com.fishingbooker.dto.LoginDTO;
-import com.fishingbooker.model.ProfileDeletionRequest;
-import com.fishingbooker.model.RegisteredUser;
+import com.fishingbooker.dto.RegistrationDTO;
+import com.fishingbooker.model.*;
 import com.fishingbooker.repository.*;
+import com.fishingbooker.service.PointsService;
 import org.apache.commons.lang3.ArrayUtils;
+import org.hibernate.PessimisticLockException;
+import org.hibernate.exception.GenericJDBCException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +29,8 @@ import org.springframework.stereotype.Service;
 
 
 import com.fishingbooker.service.RegisteredUserService;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class RegisteredUserServiceImpl implements RegisteredUserService, UserDetailsService {
@@ -41,6 +50,11 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
     @Autowired
     private AuthenticationManager authenticationManager;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private PointsService pointsService;
+
     public RegisteredUser findById(Long id) throws AccessDeniedException {
         return userRepository.findById(id).orElseGet(null);
     }
@@ -53,17 +67,77 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         return deletionRequestRepository.findAll();
     }
 
+    private static void setTimeoutSync(Runnable runnable, int delay) {
+        try {
+            Thread.sleep(delay);
+            runnable.run();
+        }
+        catch (Exception e){
+            System.err.println(e);
+        }
+    }
+
+    @Transactional
+    @Override
+    public RegisteredUser register(RegistrationDTO registrationDTO) {
+        try {
+
+            UserDetails existUser = loadUserByUsernameLocked(registrationDTO.getUsername());
+
+            if (existUser != null) {
+                return null;
+            }
+
+
+            RegisteredUser user;
+            switch (registrationDTO.getRole()) {
+                case "CUSTOMER": {
+                    registrationDTO.setVerificationToken(UUID.randomUUID().toString());
+                    user = save(new Customer(registrationDTO));
+                    break;
+                }
+                case "COTTAGE_OWNER": {
+                    user = save(new CottageOwner(registrationDTO));
+                    break;
+                }
+                case "INSTRUCTOR": {
+                    user = save(new Instructor(registrationDTO));
+                    break;
+                }
+                case "BOAT_OWNER": {
+                    user = save(new BoatOwner(registrationDTO));
+                    break;
+                }
+                case "ADMIN": {
+                    user = save(new Admin(registrationDTO));
+                    approveUser(registrationDTO.getUsername());
+                    break;
+                }
+                default:
+                    throw new IllegalArgumentException("Unrecognized user role!");
+
+            }
+            pointsService.createUserPoints(new UserPoints(registrationDTO.getUsername(), 0));
+            return user;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public RegisteredUser findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     @Override
+    @Transactional
     public RegisteredUser save(RegisteredUser user) {
-        // pre nego sto postavimo lozinku u atribut hesiramo je kako bi se u bazi nalazila hesirana lozinka
-        // treba voditi racuna da se koristi isi password encoder bean koji je postavljen u AUthenticationManager-u kako bi koristili isti algoritam
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return this.userRepository.save(user);
+        try {
+            return userRepository.save(user);
+        } catch (Exception e) {
+            System.out.println("Pessimistic lock exception: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
@@ -98,9 +172,15 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         return oldProfile;
     }
 
+    @Transactional
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return userRepository.findByUsername(s);
+    public UserDetails loadUserByUsernameLocked(String s) throws UsernameNotFoundException {
+        try {
+            return userRepository.findByUsernameLocked(s);
+        } catch (Exception e) {
+            System.out.println("Pessimistic lock exception: " + e.getMessage());
+            return null;
+        }
     }
 
     @Override
@@ -164,5 +244,10 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         if(request == null) return false;
         deletionRequestRepository.delete(request);
         return true;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        return userRepository.findByUsername(s);
     }
 }

@@ -5,11 +5,7 @@ import com.fishingbooker.dto.EventDTO;
 import com.fishingbooker.dto.FreeTermDTO;
 import com.fishingbooker.dto.statistics.FinanceDTO;
 import com.fishingbooker.dto.statistics.ReservationNumDTO;
-import com.fishingbooker.model.FreeTerm;
-import com.fishingbooker.model.Rentable;
-import com.fishingbooker.model.Reservation;
-import com.fishingbooker.model.ReservationType;
-import com.fishingbooker.model.Review;
+import com.fishingbooker.model.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,4 +44,6 @@ public interface ReservationService {
     List<ReservationNumDTO> getNumberOfReservations(String username);
 
     List<FinanceDTO> getFinances(String username, LocalDateTime startTime, LocalDateTime endTime);
+
+    Cottage getCottageById(Long cottageId);
 }

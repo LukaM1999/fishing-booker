@@ -41,17 +41,16 @@ public class PenaltyServiceTest {
         verifyNoMoreInteractions(penaltyRepositoryMock);
     }
 
-//    @Test
-//    public void findPenaltiesByCustomerUsernameTest() {
-//
-//        when(penaltyRepositoryMock.findPenaltiesByCustomerUsername("imbiamba")).thenReturn(Arrays.asList(new Penalty(1L, "imbiamba", LocalDateTime.now())));
-//        List<Penalty> penalties = penaltyService.findPenaltiesByCustomerUsername("imbiamba");
-//        assertEquals(1, penalties.size());
-//        assertEquals(Optional.of(1L), Optional.of(penalties.get(0).getId()));
-//        assertEquals("imbiamba", penalties.get(0).getCustomerUsername());
-//
-//        verify(penaltyRepositoryMock, times(1)).deletePenaltiesBeforeFirstOfMonth(any());
-//        verify(penaltyRepositoryMock, times(1)).findPenaltiesByCustomerUsername("imbiamba");
-//        verifyNoMoreInteractions(penaltyRepositoryMock);
-//    }
+    @Test
+    public void findPenaltiesByCustomerUsernameTest() {
+
+        when(penaltyRepositoryMock.findPenaltiesByCustomerUsername("imbiamba")).thenReturn(Arrays.asList(new Penalty("imbiamba")));
+        List<Penalty> penalties = penaltyService.findPenaltiesByCustomerUsername("imbiamba");
+        assertEquals(1, penalties.size());
+        assertEquals("imbiamba", penalties.get(0).getCustomerUsername());
+
+        verify(penaltyRepositoryMock, times(1)).deletePenaltiesBeforeFirstOfMonth(any());
+        verify(penaltyRepositoryMock, times(1)).findPenaltiesByCustomerUsername("imbiamba");
+        verifyNoMoreInteractions(penaltyRepositoryMock);
+    }
 }

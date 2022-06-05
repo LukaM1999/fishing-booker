@@ -7,14 +7,19 @@ import com.fishingbooker.dto.statistics.FinanceDTO;
 import com.fishingbooker.dto.statistics.ReservationNumDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.*;
+import com.fishingbooker.service.PenaltyService;
 import com.fishingbooker.service.PointsService;
 import com.fishingbooker.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.fishingbooker.model.ReservationType.ADVENTURE;
 
@@ -36,7 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
     private ReviewRepository reviewRepository;
 
     @Autowired
-    private PenaltyRepository penaltyRepository;
+    private PenaltyService penaltyService;
 
     @Autowired
     private AdventureRepository adventureRepository;
@@ -51,6 +56,8 @@ public class ReservationServiceImpl implements ReservationService {
     private RegisteredUserRepository registeredUserRepository;
 
     private ZoneId zoneId = ZoneId.systemDefault();
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public List<Rentable> getFreeRentables(CustomerReservationDTO reservationDTO) {
@@ -117,25 +124,43 @@ public class ReservationServiceImpl implements ReservationService {
         return freeTerm;
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public Reservation reserveRentable(Long rentableId, Reservation reservation) {
-        if(penaltyRepository.countPenaltiesByCustomerUsername(reservation.getCustomerUsername()) >= 3)
-            return null;
-        CustomerReservationDTO reservationDTO = new CustomerReservationDTO(reservation.getType(), reservation.getStartTime(), reservation.getEndTime(), reservation.getGuests());
-        Rentable rentable = rentableRepository.getRentableById(rentableId);
-        if(rentable == null || !new HashSet<>(getFreeRentables(reservationDTO)).contains(rentable)) return null;
-        reservation.setSalePercent(checkForCustomerSale(reservation));
-        reservation.setPrice(reservation.getPrice() - reservation.getPrice() * reservation.getSalePercent()/100);
-        reservationRepository.save(reservation);
-        updatePoints(reservation);
-        return reservation;
+        try {
+            if(penaltyService.countPenaltiesByCustomerUsername(reservation.getCustomerUsername()) >= 3)
+                return null;
+            CustomerReservationDTO reservationDTO = new CustomerReservationDTO(reservation.getType(), reservation.getStartTime(), reservation.getEndTime(), reservation.getGuests());
+            Rentable rentable = null;
+            switch (reservation.getType()) {
+                case COTTAGE: {
+                    rentable = rentableRepository.getCottageLock(rentableId);
+                    break;
+                }
+                case BOAT: {
+                    rentable = rentableRepository.getBoatLock(rentableId);
+                    break;
+                }
+                case ADVENTURE: {
+                    rentable = rentableRepository.getAdventureLock(rentableId);
+                    break;
+                }
+            }
+            if(rentable == null || !new HashSet<>(getFreeRentables(reservationDTO)).contains(rentable)) return null;
+            reservation.setPrice(reservation.getPrice() - reservation.getPrice() * checkForCustomerSale(reservation)/100);
+            reservationRepository.save(reservation);
+            updatePoints(reservation);
+            return reservation;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void updatePoints(Reservation reservation){
         UserPoints customerPoints = pointsService.getUserPoints(reservation.getCustomerUsername());
         UserPoints ownerPoints = pointsService.getUserPoints(reservation.getOwnerUsername());
         List<Points> points = pointsService.getPoints();
-
+        if(customerPoints == null || ownerPoints == null) return;
         customerPoints.setPoints(customerPoints.getPoints() + points.get(0).getCustomerPoints());
         ownerPoints.setPoints(ownerPoints.getPoints() + points.get(0).getOwnerPoints());
 
@@ -146,6 +171,7 @@ public class ReservationServiceImpl implements ReservationService {
     public int checkForCustomerSale(Reservation reservation){
         UserPoints customerPoints = pointsService.getUserPoints(reservation.getCustomerUsername());
         List<Points> points = pointsService.getPoints();
+        if(points.size() == 0) return 0;
         if(customerPoints.getPoints() >= points.get(0).getSilver() && customerPoints.getPoints() < points.get(0).getGold()) return 10;
         if(customerPoints.getPoints() >= points.get(0).getGold()) return 20;
         return 0;
@@ -178,13 +204,18 @@ public class ReservationServiceImpl implements ReservationService {
         return reservationRepository.getActions(name, ownerUsername);
     }
 
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public void reserveAction(Long id, String customerUsername){
-        Reservation reservation = reservationRepository.getReservationById(id);
-        reservation.setCustomerUsername(customerUsername);
-        reservation.setPrice(reservation.getPrice() - reservation.getPrice() * checkForCustomerSale(reservation)/100);
-        updatePoints(reservation);
-        reservationRepository.save(reservation);
+        try {
+            Reservation reservation = reservationRepository.getReservationById(id);
+            reservation.setCustomerUsername(customerUsername);
+            reservation.setPrice(reservation.getPrice() - reservation.getPrice() * checkForCustomerSale(reservation)/100);
+            updatePoints(reservation);
+            reservationRepository.save(reservation);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -213,6 +244,18 @@ public class ReservationServiceImpl implements ReservationService {
                     reservationRepository.getNumOfReservationsByName(r.getName(), LocalDateTime .now().minusYears(1))));
         }
         return list;
+    }
+
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
+    public Cottage getCottageById(Long id){
+        try {
+            logger.info("Getting cottage with id: " + id);
+            Cottage cottage = rentableRepository.getCottageLock(id);
+            logger.info("Cottage with id: " + id + " got");
+            return cottage;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

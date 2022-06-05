@@ -10,14 +10,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -42,6 +47,13 @@ public class ReservationServiceTest {
     @InjectMocks
     private ReservationServiceImpl reservationService;
 
+    @Autowired
+    @InjectMocks
+    private ReservationServiceImpl reservationServiceSpy;
+
+    @Mock
+    private PenaltyService penaltyServiceMock;
+
     @Mock
     private Reservation reservationMock;
 
@@ -50,6 +62,12 @@ public class ReservationServiceTest {
 
     @Mock
     private FreeTerm freeTermMock;
+
+    @Mock
+    private PointsService pointsServiceMock;
+
+    @Mock
+    private UserPoints userPointsMock;
 
     @Test
     public void getCustomerReservationsTest() {
@@ -82,6 +100,8 @@ public class ReservationServiceTest {
         cottage.setPrice(30);
 
 
+        when(rentableRepositoryMock.getCottageLock(1L)).thenReturn(cottage);
+        when(penaltyServiceMock.countPenaltiesByCustomerUsername("imbiamba")).thenReturn(1);
         when(penaltyRepositoryMock.countPenaltiesByCustomerUsername("imbiamba")).thenReturn(1);
         when(rentableRepositoryMock.getRentableById(1L)).thenReturn(cottage);
         when(freeTermRepositoryMock.getFreeTermsByType(ReservationType.COTTAGE)).thenReturn(List.of(freeTermMock));
@@ -103,8 +123,7 @@ public class ReservationServiceTest {
         assertEquals(reservation.getStartTime(), created.getStartTime());
         assertEquals(reservation.getEndTime(), created.getEndTime());
 
-        verify(penaltyRepositoryMock, times(1)).countPenaltiesByCustomerUsername("imbiamba");
-        verify(rentableRepositoryMock, times(1)).getRentableById(1L);
+        verify(rentableRepositoryMock, times(1)).getCottageLock(1L);
         verify(freeTermRepositoryMock, times(1)).getFreeTermsByType(ReservationType.COTTAGE);
         verify(rentableRepositoryMock, times(1)).getCottageByNameAndOwner("Prvenstvo Srbije", "Piwneuh");
         verify(reservationRepositoryMock, atLeastOnce()).getOccupied("Prvenstvo Srbije", "Piwneuh",
@@ -114,6 +133,124 @@ public class ReservationServiceTest {
         verifyNoMoreInteractions(rentableRepositoryMock);
         verifyNoMoreInteractions(freeTermRepositoryMock);
         verifyNoMoreInteractions(reservationRepositoryMock);
+    }
+
+    //@Test(expected = ObjectOptimisticLockingFailureException.class)
+    public void reserveActionOptimisticLockTest() throws Throwable {
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<?> future1 = executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 1");// izmenjen ucitan objekat
+                //try { Thread.sleep(3000); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                reservationServiceSpy.reserveAction(1L, "imbiamba"); // bacice ObjectOptimisticLockingFailureException
+
+            }
+        });
+        executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 2");
+                //try { Thread.sleep(100); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                reservationServiceSpy.reserveAction(1L, "imbiamba");
+            }
+        });
+        try {
+            future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
+        } catch (ExecutionException e) {
+            System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
+            throw e.getCause();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executor.shutdown();
+    }
+
+    //@Test
+    public void reserveRentablePessimisticLockTest() throws Throwable {
+
+        Reservation reservation = new Reservation();
+        reservation.setCustomerUsername("imbiamba");
+        reservation.setOwnerUsername("Piwneuh");
+        reservation.setName("Silver Mirror");
+        reservation.setType(ReservationType.COTTAGE);
+        reservation.setStartTime(LocalDateTime.parse("2022-08-23T00:00:00"));
+        reservation.setEndTime(LocalDateTime.parse("2022-08-25T00:00:00"));
+        reservation.setPrice(90);
+        reservation.setGuests(1);
+        reservation.setAdditionalServices("");
+
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<?> future1 = executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 1");
+                //try { Thread.sleep(3000); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                Reservation reserved = reservationServiceSpy.reserveRentable(2L, reservation);
+                assertEquals(reservation.getName(), reserved.getName());
+                assertEquals(reservation.getType(), reserved.getType());
+                assertEquals(reservation.getStartTime(), reserved.getStartTime());
+                assertEquals(reservation.getEndTime(), reserved.getEndTime());
+
+            }
+        });
+        executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 2");
+                try { Thread.sleep(6, 500000); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                Reservation notReserved = reservationServiceSpy.reserveRentable(2L, reservation);
+                assertNull(notReserved);
+            }
+        });
+        try {
+            future1.get();
+        } catch (ExecutionException e) {
+            System.out.println("Exception from thread " + e.getCause().getClass());
+            throw e.getCause();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executor.shutdown();
+    }
+
+    //@Test
+    public void getCottagePessimisticLockTest() throws Throwable {
+        ExecutorService executor = Executors.newFixedThreadPool(2);
+        Future<?> future1 = executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 1");
+                //try { Thread.sleep(3000); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                Rentable cottage = reservationServiceSpy.getCottageById(2L);
+                assertEquals("Silver Mirror", cottage.getName());
+            }
+        });
+        executor.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                System.out.println("Startovan Thread 2");
+                try { Thread.sleep(80, 100); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
+                Rentable cottage = reservationServiceSpy.getCottageById(2L);
+                assertNull(cottage);
+            }
+        });
+        try {
+            future1.get();
+        } catch (ExecutionException e) {
+            System.out.println("Exception from thread " + e.getCause().getClass());
+            throw e.getCause();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executor.shutdown();
     }
 
 }

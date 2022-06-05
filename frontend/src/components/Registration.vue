@@ -164,6 +164,17 @@ export default {
         role: this.role,
         letterOfIntent: this.letterOfIntent
       }
+
+      /*
+      const userCopy = JSON.parse(JSON.stringify(user));
+      userCopy.name = "someName"
+
+      await axios.all([
+        axios.post(backend + '/auth/signup', user),
+        axios.post(backend + '/auth/signup', userCopy)
+      ])
+       */
+
       const response = await this.axios.post(backend + '/auth/signup', user)
       if (response.data) {
         if (response.data.role.authority === 'CUSTOMER') {

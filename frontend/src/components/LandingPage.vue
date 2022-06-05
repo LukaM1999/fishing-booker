@@ -62,6 +62,8 @@
 <script>
 import Login from "@/components/Login";
 import Registration from "@/components/Registration";
+import axios from "axios";
+import {backend} from "@/env";
 
 export default {
   name: "LandingPage",
@@ -70,13 +72,20 @@ export default {
       isActive: 'cottages'
     }
   },
-  mounted() {
+  async mounted() {
+    //this.getCottage();
     this.$router.push('/cottages').catch(err => {
     });
     localStorage.removeItem('user');
     localStorage.removeItem('jwt');
   },
   methods: {
+    getCottage() {
+      axios.all([
+        axios.get(`${backend}/reservation/3`),
+        axios.get(`${backend}/reservation/3`),
+      ])
+    },
     setActiveTab(tab) {
       this.isActive = tab
     },

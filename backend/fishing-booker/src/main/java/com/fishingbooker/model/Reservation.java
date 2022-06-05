@@ -8,15 +8,20 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-public class Reservation {
+public class Reservation implements Serializable {
 
     @Id
     @SequenceGenerator(name = "reservation_id_gen", sequenceName = "reservation_id_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_id_gen")
     private Long id;
+
+    @Version
+    @Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+    private Long version = 0L;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -223,5 +228,13 @@ public class Reservation {
 
     public void setReviewed(boolean reviewed) {
         isReviewed = reviewed;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

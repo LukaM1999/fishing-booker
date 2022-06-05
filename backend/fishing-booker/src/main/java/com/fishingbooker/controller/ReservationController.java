@@ -131,4 +131,9 @@ public class ReservationController {
         this.reservationService.cancelReservation(reservationId);
     }
 
+    @GetMapping("/{cottageId}")
+    public Cottage getCottage(@PathVariable Long cottageId) {
+        return this.reservationService.getCottageById(cottageId);
+    }
+
 }
