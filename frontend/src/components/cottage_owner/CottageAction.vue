@@ -116,6 +116,7 @@ export default {
       if (response.data) {
         this.$toasted.success('Sale made successfully!')
         await this.sendMail(reservation)
+        this.$router.push('/cottageOwner/cottageProfile')
       } else {
         this.$toasted.error('Sale creation was unsuccessful')
       }

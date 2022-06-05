@@ -98,7 +98,7 @@
         </div>
         <p class="is-size-3 mt-5"> Actions for this cottage: </p>
         <p class="subtitle mt-5" v-if="actions.length===0"> Unfortunately there are no special deals for this cottage</p>
-        <div class="columns mt-5 scrollable mb-5" v-if="actions.length !== 0">
+        <div class="columns mt-5 scrollable mb-5 mr-1" v-if="actions.length !== 0" style="overflow-x: scroll">
           <div class="col-3 ml-3" v-for="a in actions" v-bind:key="a.id">
             <div class="card" style="background-color: #f5f8f3">
               <div class="card-content">
@@ -388,8 +388,7 @@ export default {
         type: this.user.role.authority === "INSTRUCTOR" ? 2 : 0,
       }
       const response = await axios.post(backend + '/reservation/createDayOff', dayOff)
-      if(response.data != null){
-        this.$toasted.success('Day off successfully created!')
+      if(response.data){
         this.key = this.key + 1
       }
       else

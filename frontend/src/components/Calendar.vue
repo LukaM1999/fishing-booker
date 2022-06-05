@@ -87,7 +87,7 @@ export default {
           const event = {
           start: `${array[i].startTime}`,
           end: `${array[i].endTime}`,
-          title: 'Reserved',
+          title: !array[i].deal ?  'Reserved' : 'Deal',
           content: content,
           class: !array[i].deal ? 'leisure' : 'deal',
           deletable: false,

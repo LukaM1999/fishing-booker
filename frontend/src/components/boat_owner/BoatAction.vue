@@ -117,6 +117,7 @@ export default {
       if (response.data) {
         this.$toasted.success('Action created successfully!')
         await this.sendMail(reservation)
+        this.$router.push('/boatOwner/boatProfile')
       } else {
         this.$toasted.error('Action creation was unsuccessful')
       }

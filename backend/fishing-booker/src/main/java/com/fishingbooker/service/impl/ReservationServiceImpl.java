@@ -393,7 +393,7 @@ public class ReservationServiceImpl implements ReservationService {
         if(reservations.size() != 0){
             for(Reservation reservation : reservations){
                 if(dto.getStart().getDayOfYear() >= reservation.getStartTime().getDayOfYear()
-                        && dto.getStart().getDayOfYear() <= reservation.getEndTime().getDayOfYear()){
+                        && dto.getStart().getDayOfYear() < reservation.getEndTime().getDayOfYear()){
                     return new ArrayList<FreeTerm>();
                 }
             }
