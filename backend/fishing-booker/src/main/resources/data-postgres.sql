@@ -42,7 +42,7 @@ insert into cottage(id, name, country, city, address, promo_description, capacit
 values (nextval('rentable_id_seq'), 'Moon Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 50, 'wifi=5;', 0, 3, 2);
 
 insert into adventure(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, instructor_bio, fishing_equipment, owner_username, images)
-values (nextval('rentable_id_seq'), 'Tikvara - catfish fishing', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'Lets find dark place on Tikvaras beach', 1, 'Only women', 50, 'snacks=15;', 0, 'I have 70 hobbies', 'A big hook', 'Fishdude', 'a11.1.jpg;a11.2.jpg;');
+values (nextval('rentable_id_seq'), 'Tikvara - catfish fishing', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'Lets find catfish on Tikvaras beach', 1, 'Yay', 50, 'snacks=15;', 0, 'I have a lot of exp', 'Fishnet', 'Fishdude', 'a11.1.jpg;a11.2.jpg;');
 
 insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment)
 values (nextval('rentable_id_seq'), 'Monohull Bavaria Cruiser', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever!', 16, 'Be polite.', 30, 'boots=10;', 5, 'Yacht', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment');

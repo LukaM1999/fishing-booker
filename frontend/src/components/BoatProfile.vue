@@ -303,6 +303,12 @@ export default {
         startTime: sYear + '-' + sMonth + '-' + sDay + ' 00:00',
         endTime: eYear + '-' + eMonth + '-' + eDay + ' 00:00'
       }
+
+      if(freeTerm.startTime === freeTerm.endTime){
+        let newDay = parseInt(eDay) + 1
+        freeTerm.endTime = eYear + '-' + eMonth + '-' + newDay + ' 00:00'
+      }
+
       const response = await this.axios.post(backend + '/reservation/createFreeTerm', freeTerm)
       if (response.data) {
         this.$toasted.success('Free Term successfully created!')
@@ -398,7 +404,6 @@ export default {
       }
       const response = await axios.post(backend + '/reservation/createDayOff', dayOff)
       if(response.data != null){
-        this.$toasted.success('Day off successfully created!')
         this.key = this.key + 1
       }
       else

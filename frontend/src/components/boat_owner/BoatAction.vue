@@ -113,6 +113,11 @@ export default {
         complaintExists: false
       }
 
+      if(reservation.startTime === reservation.endTime){
+        let newDay = parseInt(eDay) + 1
+        reservation.endTime = eYear + '-' + eMonth + '-' + newDay + ' 00:00'
+      }
+
       const response = await axios.post(backend + `/reservation/createAction/${this.selectedRentable.id}`, reservation)
       if (response.data) {
         this.$toasted.success('Action created successfully!')
