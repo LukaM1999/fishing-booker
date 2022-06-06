@@ -6,7 +6,10 @@ import com.fishingbooker.repository.CottageRepository;
 import com.fishingbooker.repository.ReservationRepository;
 import com.fishingbooker.service.CottageService;
 import com.fishingbooker.util.FileUploadUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +24,8 @@ import java.util.Optional;
 @Service
 public class CottageServiceImpl implements CottageService{
 
+    private final Logger LOG = LoggerFactory.getLogger(CottageServiceImpl.class);
+
     @Autowired
     private CottageRepository cottageRepository;
     @Autowired
@@ -28,11 +33,13 @@ public class CottageServiceImpl implements CottageService{
 
     @Override
     public Optional<Cottage> findById(Long id) {
+        LOG.info("Found cottage with id: {}", id);
         return cottageRepository.findById(id);
     }
 
     @Override
     public List<Cottage> findAll() {
+        LOG.info("Found all cottages");
         return cottageRepository.findAll();
     }
 

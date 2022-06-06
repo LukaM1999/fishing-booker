@@ -15,6 +15,7 @@ import org.hibernate.exception.GenericJDBCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -124,7 +125,9 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
     }
 
     @Override
+    @Cacheable(value = "user")
     public RegisteredUser findByUsername(String username) {
+        logger.info("findByUsername: " + username);
         return userRepository.findByUsername(username);
     }
 
