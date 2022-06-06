@@ -9,6 +9,10 @@ public class Review {
     @Column
     private Long reservationId;
 
+    @Version
+    @Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+    private Long version = 0L;
+
     @Column
     private String comment;
 
@@ -116,5 +120,13 @@ public class Review {
 
     public void setReservationType(ReservationType reservationType) {
         this.reservationType = reservationType;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

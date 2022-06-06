@@ -373,12 +373,18 @@ public class ReservationServiceImpl implements ReservationService {
         return reviewsToReturn;
     }
 
+    @Transactional
     @Override
     public void updateReview(Review review) {
-        Optional<Review> reviewToUpdate = this.reviewRepository.findById(review.getReservationId());
-        reviewToUpdate.orElseThrow().setApproved(review.isApproved());
-        reviewToUpdate.orElseThrow().setPublic(review.isPublic());
-        this.reviewRepository.save(reviewToUpdate.orElseThrow());
+        try {
+            Review reviewToUpdate = this.reviewRepository.findByIdLocked(review.getReservationId());
+            if(reviewToUpdate == null) return;
+            reviewToUpdate.setApproved(review.isApproved());
+            reviewToUpdate.setPublic(review.isPublic());
+            this.reviewRepository.save(reviewToUpdate);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         if(!review.isPublic()) return;
         double avgRating = this.reviewRepository.getAverageRatingByNameAndOwner(review.getRentableName(), review.getOwnerUsername());
         int timesRated = this.reviewRepository.getNumberOfReviewsByNameAndOwner(review.getRentableName(), review.getOwnerUsername());

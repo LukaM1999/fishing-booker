@@ -90,7 +90,8 @@ export default {
         });
   },
   methods: {
-    approve(review) {
+    async approve(review) {
+      //await this.testApprove(review)
       this.axios.put(backend + '/reservation/updateReview', {
         reservationId: review.reservationId,
         rentableName: review.rentableName,
@@ -108,6 +109,32 @@ export default {
       }).catch(error => {
         this.$toasted.error("Error while approving review");
       });
+    },
+    async testApprove(review){
+      await axios.all([
+          axios.put(backend + '/reservation/updateReview', {
+            reservationId: review.reservationId,
+            rentableName: review.rentableName,
+            ownerUsername: review.ownerUsername,
+            reservationType: review.reservationType,
+            comment: review.comment,
+            rentableRating: review.rentableRating,
+            ownerRating: review.ownerRating,
+            public: true,
+            approved: true
+          }),
+        axios.put(backend + '/reservation/updateReview', {
+          reservationId: review.reservationId,
+          rentableName: review.rentableName,
+          ownerUsername: review.ownerUsername,
+          reservationType: review.reservationType,
+          comment: review.comment,
+          rentableRating: review.rentableRating,
+          ownerRating: review.ownerRating,
+          public: true,
+          approved: true
+        }),
+      ])
     },
     decline(review){
       this.axios.put(backend + '/reservation/updateReview', {

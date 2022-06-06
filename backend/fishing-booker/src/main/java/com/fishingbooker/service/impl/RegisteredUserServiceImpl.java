@@ -208,15 +208,22 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         return true;
     }
 
+    @Transactional
     @Override
     public boolean deleteUser(String username) {
-        RegisteredUser user = userRepository.findByUsername(username);
-        ProfileDeletionRequest request = deletionRequestRepository.findByUsername(username);
-        if (request != null)
-            deletionRequestRepository.delete(request);
-        if(user == null) return false;
-        userRepository.delete(user);
-        return true;
+        try {
+            logger.info("Deleting user: " + username);
+            RegisteredUser user = userRepository.findByUsernameLocked(username);
+            logger.info("User found: " + user.getUsername());
+            ProfileDeletionRequest request = deletionRequestRepository.findByUsername(username);
+            if (request != null)
+                deletionRequestRepository.delete(request);
+            if(user == null) return false;
+            userRepository.delete(user);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -238,12 +245,17 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
         return true;
     }
 
+    @Transactional
     @Override
     public boolean deleteRequest(String username) {
-        ProfileDeletionRequest request = deletionRequestRepository.findByUsername(username);
-        if(request == null) return false;
-        deletionRequestRepository.delete(request);
-        return true;
+        try {
+            ProfileDeletionRequest request = deletionRequestRepository.findByUsername(username);
+            if(request == null) return false;
+            deletionRequestRepository.delete(request);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

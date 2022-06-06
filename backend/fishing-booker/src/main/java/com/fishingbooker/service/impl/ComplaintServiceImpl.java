@@ -7,6 +7,7 @@ import com.fishingbooker.service.ComplaintService;
 import com.fishingbooker.service.PenaltyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,15 +50,20 @@ public class ComplaintServiceImpl implements ComplaintService {
         return complaintRepository.findAllByReservationId(id);
     }
 
+    @Transactional
     @Override
     public Complaint updateComplaint(Complaint complaint) {
-        Optional<Complaint> updatedComplaint = complaintRepository.findById(complaint.getId());
-        updatedComplaint.ifPresent(value -> {
-            value.setReviewed(true);
-            if(value.isForPenalty())
+        try {
+            Complaint updatedComplaint = complaintRepository.findByIdLocked(complaint.getId());
+            if(updatedComplaint == null) return null;
+            updatedComplaint.setReviewed(true);
+            if(updatedComplaint.isForPenalty())
                 penaltyService.createPenalty(new Penalty(complaint.getSubjectUsername()));
-        });
-        return complaintRepository.save(updatedComplaint.orElseThrow());
+
+            return complaintRepository.save(updatedComplaint);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

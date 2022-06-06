@@ -91,6 +91,7 @@ export default {
   },
   methods: {
     async approve(complaint) {
+      //await this.testApprove(complaint)
       const response = await this.axios.put(backend + '/complaint/update', {
         id: complaint.id,
         reservationId: complaint.reservationId,
@@ -107,6 +108,30 @@ export default {
       }).catch(error => {
         this.$toasted.error("Error while approving complaint");
       });
+    },
+    async testApprove(complaint){
+      await axios.all([
+        axios.put(backend + '/complaint/update', {
+          id: complaint.id,
+          reservationId: complaint.reservationId,
+          issuerUsername: complaint.issuerUsername,
+          subjectUsername: complaint.subjectUsername,
+          complaint: complaint.complaint,
+          reviewed: true,
+          fromCustomer: complaint.fromCustomer,
+          forPenalty: complaint.forPenalty
+        }),
+        axios.put(backend + '/complaint/update', {
+          id: complaint.id,
+          reservationId: complaint.reservationId,
+          issuerUsername: complaint.issuerUsername,
+          subjectUsername: complaint.subjectUsername,
+          complaint: complaint.complaint,
+          reviewed: true,
+          fromCustomer: complaint.fromCustomer,
+          forPenalty: complaint.forPenalty
+        }),
+      ])
     },
     async decline(complaint){
       const response = await this.axios.put(backend + '/complaint/update', {

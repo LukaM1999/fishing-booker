@@ -85,6 +85,7 @@ export default {
         this.$toasted.error('Error while sending answer')
     },
     async updateComplaint(complaint){
+      //await this.testApprove(complaint)
       const response = await this.axios.put(backend + '/complaint/update', {
         id: complaint.id,
         reservationId: complaint.reservationId,
@@ -99,6 +100,30 @@ export default {
       }).catch(error => {
         this.$toasted.error("Error while updating complaint");
       });
+    },
+    async testApprove(complaint){
+      await axios.all([
+        axios.put(backend + '/complaint/update', {
+          id: complaint.id,
+          reservationId: complaint.reservationId,
+          issuerUsername: complaint.issuerUsername,
+          subjectUsername: complaint.subjectUsername,
+          complaint: complaint.complaint,
+          reviewed: true,
+          fromCustomer: complaint.fromCustomer,
+          forPenalty: complaint.forPenalty
+        }),
+        axios.put(backend + '/complaint/update', {
+          id: complaint.id,
+          reservationId: complaint.reservationId,
+          issuerUsername: complaint.issuerUsername,
+          subjectUsername: complaint.subjectUsername,
+          complaint: complaint.complaint,
+          reviewed: true,
+          fromCustomer: complaint.fromCustomer,
+          forPenalty: complaint.forPenalty
+        }),
+      ])
     },
 
   }

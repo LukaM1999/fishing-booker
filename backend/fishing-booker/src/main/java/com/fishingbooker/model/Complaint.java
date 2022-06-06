@@ -10,6 +10,11 @@ public class Complaint {
     @SequenceGenerator(name = "complaint_id_gen", sequenceName = "complaint_id_seq", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "complaint_id_gen")
     private Long id;
+
+    @Version
+    @Column(name = "optlock", columnDefinition = "integer DEFAULT 0", nullable = false)
+    private Long version = 0L;
+
     @Column
     private Long reservationId;
 
@@ -106,5 +111,13 @@ public class Complaint {
 
     public void setSubjectUsername(String subjectUsername) {
         this.subjectUsername = subjectUsername;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
     }
 }

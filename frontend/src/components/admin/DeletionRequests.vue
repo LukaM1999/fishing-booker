@@ -86,6 +86,7 @@ export default {
   },
   methods: {
     async approve(user) {
+      //await this.testDelete(user)
       const response = await this.axios.delete(backend + `/user/delete/${user.username}`)
       if (response.data) {
         this.removeUser(user)
@@ -104,6 +105,12 @@ export default {
         await axios.post('https://api.emailjs.com/api/v1.0/email/send', email);
       } else
         this.$toasted.error('Approving request failed')
+    },
+    async testDelete(user){
+      await axios.all([
+        axios.delete(backend + `/user/delete/${user.username}`),
+        axios.delete(backend + `/user/delete/${user.username}`)
+      ])
     },
     openDeclineModal(user) {
       this.$buefy.modal.open({
