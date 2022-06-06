@@ -81,7 +81,6 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
     @Override
     public RegisteredUser register(RegistrationDTO registrationDTO) {
         try {
-
             UserDetails existUser = loadUserByUsernameLocked(registrationDTO.getUsername());
 
             if (existUser != null) {

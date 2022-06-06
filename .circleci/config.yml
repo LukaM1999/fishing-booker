@@ -51,10 +51,10 @@ workflows:
                 branches:
                   only:
                     - develop
-      - heroku/deploy-via-git:
-          filters:
-                branches:
-                  only:
-                    - develop
-          requires:
-            - build-and-test
+      # - heroku/deploy-via-git:
+      #     filters:
+      #           branches:
+      #             only:
+      #               - develop
+      #     requires:
+      #       - build-and-test

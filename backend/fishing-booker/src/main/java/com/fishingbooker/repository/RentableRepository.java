@@ -42,12 +42,12 @@ public interface RentableRepository extends JpaRepository<Rentable, Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select boat from Boat boat " +
             "where boat.id = :id")
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
     Boat getBoatLock(Long id);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select adventure from Adventure adventure " +
             "where adventure.id = :id")
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "10000")})
+    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value = "0")})
     Adventure getAdventureLock(Long id);
 }

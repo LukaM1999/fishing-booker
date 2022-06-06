@@ -1,41 +1,61 @@
 <template>
   <div>
     <div class="row mt-5 justify-content-center">
-      <div class="col-md-2">
-        <div class="form-floating">
-          <input type="text" class="form-control" id="cottageName" v-model="nameSearch">
-          <label for="cottageName">Cottage name</label>
+      <div class="row justify-content-center">
+        <div class="col-md-2">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="cottageName" v-model="nameSearch">
+            <label for="cottageName">Cottage name</label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="cottageLocation" v-model="locationSearch">
+            <label for="cottageLocation">Location</label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="cottageRating" v-model.number="ratingSearch" max="5"
+                   min="0">
+            <label for="cottageRating">Rating</label>
+          </div>
         </div>
       </div>
-      <div class="col-md-2">
-        <div class="form-floating">
-          <input type="text" class="form-control" id="cottageLocation" v-model="locationSearch">
-          <label for="cottageLocation">Location</label>
+      <div class="row mt-5 justify-content-center">
+        <div class="col-md-1">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="cottageRooms" v-model.number="roomsSearch" max="20"
+                   min="0">
+            <label for="cottageRooms">Rooms</label>
+          </div>
         </div>
-      </div>
-      <div class="col-md-1">
-        <div class="form-floating">
-          <input type="number" class="form-control" id="cottageRating" v-model.number="ratingSearch" max="5"
-                 min="0">
-          <label for="cottageRating">Rating</label>
+        <div class="col-md-1">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="cottageBeds" v-model.number="bedsSearch" max="20"
+                   min="0">
+            <label for="cottageBeds">Beds</label>
+          </div>
         </div>
-      </div>
-      <div class="col-md-1" style="width: 8.7%">
-        <div class="form-floating">
-          <select v-model="sortBy" class="form-select" id="cottageSort">
-            <option value="">None</option>
-            <option value="Name">Name</option>
-            <option value="Location" selected>Location</option>
-            <option value="Rating">Rating</option>
-          </select>
-          <label for="cottageSort">Sort by</label>
+        <div class="col-md-1" style="width: 8.7%">
+          <div class="form-floating">
+            <select v-model="sortBy" class="form-select" id="cottageSort">
+              <option value="">None</option>
+              <option value="Name">Name</option>
+              <option value="Location" selected>Location</option>
+              <option value="Rating">Rating</option>
+              <option value="Rooms">Rooms</option>
+              <option value="Beds">Beds</option>
+            </select>
+            <label for="cottageSort">Sort by</label>
+          </div>
         </div>
-      </div>
-      <div class="col-md-1 align-self-center d-flex justify-content-center">
-        <button class="button is-primary" @click="setSortOrder">
-          <i :class="[ascending ? 'fa fa-sort-up' : 'fa fa-sort-down']"></i>
-        </button>
-      </div>
+        <div class="col-md-1 align-self-center d-flex justify-content-center">
+          <button class="button is-primary" @click="setSortOrder">
+            <i :class="[ascending ? 'fa fa-sort-up' : 'fa fa-sort-down']"></i>
+          </button>
+        </div>
+    </div>
     </div>
     <div class="md-layout md-alignment-center" v-if="this.cottages">
       <div class="md-layout-item md-large-size-30 md-xlarge-size-30"
@@ -65,7 +85,18 @@
                            @click="updateCottageModal(cottage)">
                   <span class="fa fa-edit"></span>
                 </md-button>
+                <md-card-expand-trigger>
+                  <md-button class="md-icon-button">
+                    <i class="fa fa-2x fa-arrow-circle-down"></i>
+                  </md-button>
+                </md-card-expand-trigger>
               </md-card-actions>
+              <md-card-expand-content>
+                <md-card-content>
+                  <p class="md-subhead"><strong>Rooms: </strong>{{ cottage.rooms }}</p>
+                  <p class="md-subhead"><strong>Beds per room: </strong>{{ cottage.bedsPerRoom }}</p>
+                </md-card-content>
+              </md-card-expand-content>
             </md-card-expand>
           </md-ripple>
         </md-card>
@@ -138,6 +169,8 @@ export default {
       ascending: true,
       sortBy: '',
       ratingSearch: '',
+      roomsSearch: '',
+      bedsSearch: '',
       authority: '',
       user: null,
     }
@@ -263,11 +296,23 @@ export default {
         })
       }
 
-      // if (this.ratingSearch !== '') {
-      //   tempCottages = tempCottages.filter((r) => {
-      //     return Math.round(r.rating) === Math.round(this.ratingSearch)
-      //   })
-      // }
+      if (this.ratingSearch !== '') {
+        tempCottages = tempCottages.filter((r) => {
+          return Math.round(r.averageRating) === Math.round(this.ratingSearch)
+        })
+      }
+
+      if (this.roomsSearch !== '') {
+        tempCottages = tempCottages.filter((r) => {
+          return Math.round(r.rooms) === Math.round(this.roomsSearch)
+        })
+      }
+
+      if (this.bedsSearch !== '') {
+        tempCottages = tempCottages.filter((r) => {
+          return Math.round(r.bedsPerRoom) === Math.round(this.bedsSearch)
+        })
+      }
 
       tempCottages = tempCottages.sort((a, b) => {
         if (this.sortBy === 'Name') {
@@ -282,14 +327,17 @@ export default {
           if (formatAddress(a) > formatAddress(b)) result = 1
           if (this.ascending) return result
           return result * -1
+        } else if (this.sortBy === 'Rating') {
+          if (this.ascending) return a.averageRating - b.averageRating
+          return b.averageRating - a.averageRating
+        } else if (this.sortBy === 'Rooms') {
+          if (this.ascending) return a.rooms - b.rooms
+          return b.rooms - a.rooms
+        } else if (this.sortBy === 'Beds') {
+          if (this.ascending) return a.bedsPerRoom - b.bedsPerRoom
+          return b.bedsPerRoom - a.bedsPerRoom
         }
-        // else if (this.sortBy === 'Rating') {
-        //   if (this.ascending) return a.rating - b.rating
-        //   return b.rating - a.rating
-        // }
       })
-
-      //if (this.onlyOpen) tempCottages = tempCottages.filter((r) => { return r.status == 'OPEN' })
 
       return tempCottages
     }

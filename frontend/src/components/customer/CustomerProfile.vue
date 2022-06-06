@@ -78,18 +78,18 @@
       </div>
       <div class="row mb-5 justify-content-center">
         <div class="col-md d-flex justify-content-end">
-          <button type="submit" class="btn btn-lg btn-primary">
+          <b-button type="is-primary" class="btn btn-lg btn-primary">
             Save
-          </button>
+          </b-button>
         </div>
         <div class="col-md d-flex justify-content-start">
-          <button type="button" @click="openDeletionRequest" class="btn btn-lg btn-danger">
+          <b-button type="is-danger" @click="openDeletionRequest" class="btn btn-lg btn-danger">
             Delete profile
-          </button>
+          </b-button>
         </div>
       </div>
     </form>
-    <div class="row d-flex">
+    <div class="row mb-4 mt-4 d-flex">
       <div class="col"></div>
       <div class="col justify-content-center">
         <ProgressBar></ProgressBar>
@@ -113,8 +113,6 @@ export default {
     return {
       oldProfile: null,
       profile: Object.assign({}, JSON.parse(localStorage.getItem('user'))),
-      //progress: 0,
-      //progressColor: '#FF5733',
     }
   },
   mounted() {

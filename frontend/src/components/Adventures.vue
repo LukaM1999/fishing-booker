@@ -65,7 +65,17 @@
                            @click="updateAdventureModal(adventure)">
                   <span class="fa fa-edit"></span>
                 </md-button>
+                <md-card-expand-trigger>
+                  <md-button class="md-icon-button">
+                    <i class="fa fa-2x fa-arrow-circle-down"></i>
+                  </md-button>
+                </md-card-expand-trigger>
               </md-card-actions>
+              <md-card-expand-content>
+                <md-card-content>
+                  <p class="md-subhead">{{ adventure.instructorBio }}</p>
+                </md-card-content>
+              </md-card-expand-content>
             </md-card-expand>
           </md-ripple>
         </md-card>

@@ -1,65 +1,100 @@
 <template>
   <div>
     <div class="row mt-5 justify-content-center">
-      <div class="col-md-2">
-        <div class="form-floating">
-          <input type="text" class="form-control" id="boatName" v-model="nameSearch">
-          <label for="boatName">Boat name</label>
+      <div class="row justify-content-center">
+        <div class="col-md-2">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="boatName" v-model="nameSearch">
+            <label for="boatName">Boat name</label>
+          </div>
+        </div>
+        <div class="col-md-2">
+          <div class="form-floating">
+            <input type="text" class="form-control" id="cottageLocation" v-model="locationSearch">
+            <label for="cottageLocation">Location</label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="boatRating" v-model.number="ratingSearch" max="5"
+                   min="0">
+            <label for="boatRating">Rating</label>
+          </div>
+        </div>
+        <div class="col-md-2 align-self-center">
+          <b-field label="Navigation equipment"
+                   label-position="inside"
+                   custom-class="my-label">
+            <b-taginput v-model="equipment"
+                        autocomplete
+                        open-on-focus
+                        icon="label"
+                        :data="filteredEquipment"
+                        placeholder="Select equipment"
+                        @typing="getFilteredEquipment">
+            </b-taginput>
+          </b-field>
+        </div>
+        <div class="col-md-1">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="boatLength" v-model.number="lengthSearch" max="500"
+                   min="1">
+            <label for="boatLength">Length [m]</label>
+          </div>
         </div>
       </div>
-      <div class="col-md-2 align-self-center">
-        <b-field label="Navigation equipment"
-                 label-position="inside"
-                 custom-class="my-label">
-          <b-taginput v-model="equipment"
-                      autocomplete
-                      open-on-focus
-                      icon="label"
-                      :data="filteredEquipment"
-                      placeholder="Select equipment"
-                      @typing="getFilteredEquipment">
-          </b-taginput>
-        </b-field>
-      </div>
-      <div class="col-md-1">
-        <div class="form-floating">
-          <input type="number" class="form-control" id="boatLength" v-model.number="lengthSearch" max="500"
-                 min="1">
-          <label for="boatLength">Length [m]</label>
+      <div class="row mt-5 justify-content-center">
+        <div class="col-md-2">
+          <div class="form-floating">
+            <select v-model="typeSearch" class="form-select" id="boatType">
+              <option value="">None</option>
+              <option v-for="type in types" :value="type" :key="type">{{type}}</option>
+            </select>
+            <label for="boatType">Type</label>
+          </div>
         </div>
-      </div>
-      <div class="col-md-1">
-        <div class="form-floating">
-          <input type="number" class="form-control" id="boatMotors" v-model.number="motorSearch" max="10"
-                 min="1">
-          <label for="boatMotors">Motors</label>
+        <div class="col-md-1">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="boatMotors" v-model.number="motorSearch" max="10"
+                   min="1">
+            <label for="boatMotors">Motors</label>
+          </div>
         </div>
-      </div>
-      <div class="col-md-1">
-        <div class="form-floating">
-          <input type="number" class="form-control" id="boatPower" v-model.number="powerSearch" max="2500"
-                 min="1" step="100">
-          <label for="boatPower">Power [HP]</label>
+        <div class="col-md-1">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="boatPower" v-model.number="powerSearch" max="2500"
+                   min="1" step="100">
+            <label for="boatPower">Power [HP]</label>
+          </div>
         </div>
-      </div>
-      <div class="col-md-1" style="width: 8.7%">
-        <div class="form-floating">
-          <select v-model="sortBy" class="form-select" id="boatSort">
-            <option value="">None</option>
-            <option value="Name">Name</option>
-            <option value="Location" selected>Location</option>
-            <option value="Length">Length</option>
-            <option value="Motors">Motors</option>
-            <option value="Power">Power</option>
-            <option value="Speed">Speed</option>
-          </select>
-          <label for="boatSort">Sort by</label>
+        <div class="col-md-1" style="width: 12%">
+          <div class="form-floating">
+            <input type="number" class="form-control" id="boatSpeed" v-model.number="speedSearch" max="550"
+                   min="1" step="100">
+            <label for="boatSpeed">Max speed [km/h]</label>
+          </div>
         </div>
-      </div>
-      <div class="col-md-1 align-self-center d-flex justify-content-center">
-        <button class="btn btn-primary" @click="setSortOrder">
-          <i :class="[ascending ? 'fa fa-sort-up' : 'fa fa-sort-down']"></i>
-        </button>
+        <div class="col-md-1" style="width: 8.7%">
+          <div class="form-floating">
+            <select v-model="sortBy" class="form-select" id="boatSort">
+              <option value="">None</option>
+              <option value="Name">Name</option>
+              <option value="Location" selected>Location</option>
+              <option value="Rating">Rating</option>
+              <option value="Type">Type</option>
+              <option value="Length">Length</option>
+              <option value="Motors">Motors</option>
+              <option value="Power">Power</option>
+              <option value="Speed">Speed</option>
+            </select>
+            <label for="boatSort">Sort by</label>
+          </div>
+        </div>
+        <div class="col-md-1 align-self-center d-flex justify-content-center">
+          <button class="btn btn-primary" @click="setSortOrder">
+            <i :class="[ascending ? 'fa fa-sort-up' : 'fa fa-sort-down']"></i>
+          </button>
+        </div>
       </div>
     </div>
     <div class="md-layout md-alignment-center" v-if="this.boats">
@@ -82,18 +117,46 @@
             </md-card-area>
             <md-card-expand>
               <md-card-actions md-alignment="right">
-                <md-card-actions md-alignment="right">
-                  <md-button v-show="authority==='BOAT_OWNER'||authority==='ADMIN'" class="md-icon-button"
-                             @click="confirmDialog(boat)">
-                    <span class="fa fa-trash-alt"></span>
+                <md-button v-show="authority==='BOAT_OWNER'||authority==='ADMIN'" class="md-icon-button"
+                           @click="confirmDialog(boat)">
+                  <span class="fa fa-trash-alt"></span>
+                </md-button>
+                <md-button v-show="authority==='BOAT_OWNER'" class="md-icon-button"
+                           @click="updateBoatModal(boat)">
+                  <span class="fa fa-edit"></span>
+                </md-button>
+                <md-card-expand-trigger>
+                  <md-button class="md-icon-button">
+                    <i class="fa fa-2x fa-arrow-circle-down"></i>
                   </md-button>
-                  <md-button v-show="authority==='BOAT_OWNER'" class="md-icon-button"
-                             @click="updateBoatModal(boat)">
-                    <span class="fa fa-edit"></span>
-                  </md-button>
-                </md-card-actions>
+                </md-card-expand-trigger>
               </md-card-actions>
+              <md-card-expand-content>
+                <md-card-content>
+                  <p class="md-subhead"><strong>Type: </strong>{{ boat.boatType }}</p>
+                  <p class="md-subhead"><strong>Length: </strong>{{ boat.length }} meters</p>
+                  <p class="md-subhead"><strong>Motors: </strong>{{ boat.motors }}</p>
+                  <p class="md-subhead"><strong>Power: </strong>{{ boat.power }} horsepower</p>
+                  <p class="md-subhead"><strong>Maximum speed: </strong>{{ boat.maxSpeed }} km/h</p>
+                  <p class="md-subhead"><strong>Equipment: </strong>{{ boat.gps ? 'GPS, ' : '' }}
+                    {{boat.radar ? 'radar, ' : ''}} {{boat.vhfRadio ? 'VHF radio, ': ''}} {{boat.fishFinder ? 'fish finder': ''}}</p>
+                </md-card-content>
+              </md-card-expand-content>
             </md-card-expand>
+<!--            <md-card-expand>-->
+<!--              <md-card-actions md-alignment="right">-->
+<!--                <md-card-actions md-alignment="right">-->
+<!--                  <md-button v-show="authority==='BOAT_OWNER'||authority==='ADMIN'" class="md-icon-button"-->
+<!--                             @click="confirmDialog(boat)">-->
+<!--                    <span class="fa fa-trash-alt"></span>-->
+<!--                  </md-button>-->
+<!--                  <md-button v-show="authority==='BOAT_OWNER'" class="md-icon-button"-->
+<!--                             @click="updateBoatModal(boat)">-->
+<!--                    <span class="fa fa-edit"></span>-->
+<!--                  </md-button>-->
+<!--                </md-card-actions>-->
+<!--              </md-card-actions>-->
+<!--            </md-card-expand>-->
           </md-ripple>
         </md-card>
       </div>
@@ -159,16 +222,19 @@ export default {
       paginationKey: 0,
       nameSearch: '',
       locationSearch: '',
+      typeSearch: '',
       lengthSearch: '',
       motorSearch: '',
       powerSearch: '',
+      speedSearch: '',
       ascending: true,
       sortBy: '',
       ratingSearch: '',
       equipment: [],
       filteredEquipment: ['GPS', 'Radar', 'VHF radio', 'Fishfinder'],
       authority: '',
-      user: null
+      user: null,
+      types: []
     }
   },
   async mounted() {
@@ -176,6 +242,11 @@ export default {
     this.authority = this.user?.role.authority;
     (this.authority === 'BOAT_OWNER') ? await this.getOwnerBoats() : await this.getBoats()
     this.total = this.boats.length
+    this.boats.forEach(boat => {
+      if (!this.types.includes(boat.boatType)) {
+        this.types.push(boat.boatType)
+      }
+    })
     this.$nextTick(() => window.scrollTo(0,document.body.scrollHeight))
   },
   methods: {
@@ -298,11 +369,23 @@ export default {
         })
       }
 
+      if (this.typeSearch !== '') {
+        tempBoats = tempBoats.filter((b) => {
+          return b.boatType.toLowerCase().includes(this.typeSearch.toLowerCase())
+        })
+      }
+
       if (this.locationSearch !== '') {
         tempBoats = tempBoats.filter((c) => {
           return c.address.toLowerCase().includes(this.locationSearch.toLowerCase())
               || c.city.toLowerCase().includes(this.locationSearch.toLowerCase())
               || c.country.toLowerCase().includes(this.locationSearch.toLowerCase())
+        })
+      }
+
+      if (this.ratingSearch !== '') {
+        tempBoats = tempBoats.filter((r) => {
+          return Math.round(r.averageRating) === Math.round(this.ratingSearch)
         })
       }
 
@@ -321,6 +404,12 @@ export default {
       if (this.powerSearch !== '') {
         tempBoats = tempBoats.filter((b) => {
           return Math.round(b.power) <= Math.round(this.powerSearch)
+        })
+      }
+
+      if (this.speedSearch !== '') {
+        tempBoats = tempBoats.filter((b) => {
+          return Math.round(b.maxSpeed) <= Math.round(this.speedSearch)
         })
       }
 
@@ -355,6 +444,9 @@ export default {
         } else if (this.sortBy === 'Speed') {
           if (this.ascending) return a.maxSpeed - b.maxSpeed
           return b.maxSpeed - a.maxSpeed
+        } else if (this.sortBy === 'Rating') {
+          if (this.ascending) return a.averageRating - b.averageRating
+          return b.averageRating - a.averageRating
         }
       })
 
