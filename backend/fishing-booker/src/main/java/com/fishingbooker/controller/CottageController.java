@@ -42,5 +42,5 @@ public class CottageController {
 
     @DeleteMapping( "/delete/{cottageId}")
     @PreAuthorize("hasAnyAuthority('COTTAGE_OWNER', 'ADMIN')")
-    public boolean deleteCottage(@PathVariable Long cottageId){ return this.cottageService.deleteCottage(cottageId); }
+    public boolean deleteCottage(@PathVariable Long cottageId) { return this.cottageService.deleteCottage(cottageId); }
 }

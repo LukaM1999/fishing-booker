@@ -21,7 +21,7 @@ public interface CottageRepository extends JpaRepository<Cottage, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints(@QueryHint(name = "javax.persistence.lock.timeout", value = "0"))
-    @Query("select c from Cottage c where c.id = ?1")
+    @Query("select c from Cottage c where c.id = :id")
     Cottage findByIdLocked(Long id);
 
 

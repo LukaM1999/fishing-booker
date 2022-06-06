@@ -72,11 +72,15 @@ values (nextval('rentable_id_seq'), 'Prvenstvo Srbije', 'Serbia', 'Petrovaradin'
 insert into cottage(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee, rooms, bedsPerRoom, owner_username, images)
 values (nextval('rentable_id_seq'), 'Silver Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 30, 'wifi=5;chocolate=3', 0, 3, 2, 'Piwneuh', 'c4.1.jpg;c4.2.jpg;c4.3.jpg');
 
+insert into cottage(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee, rooms, bedsPerRoom, owner_username, images)
+values (nextval('rentable_id_seq'), 'Gold Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 30, 'wifi=5;chocolate=3', 0, 3, 2, 'Piwneuh', 'c5.1.jpg;c5.2.jpg;c5.3.jpg');
+
 insert into saleSubscription(id, entityName, ownerUsername, customerUsername) values (nextval('sale_subscription_id_seq'), 'Prvenstvo Srbije', 'Piwneuh', 'imbiamba');
 
 insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-04-07', '2022-04-27');
 insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Prvenstvo Srbije', 'Piwneuh', '2022-05-15', '2022-06-28');
 insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-08-07', '2022-08-27');
+insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Gold Mirror', 'Piwneuh', '2022-08-07', '2022-08-30');
 
 
 insert into reservation(id, type, name, ownerUsername, customerUsername, startTime, endTime, additionalServices, guests, isCancelled, isDeal, price, isReviewed, complaintExists, salePercent)

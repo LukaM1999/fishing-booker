@@ -74,18 +74,21 @@ public class CottageServiceImpl implements CottageService{
         Cottage cottage = null;
         try {
             cottage = cottageRepository.findByIdLocked(cottageId);
-        } catch (Exception e) {
-            throw e;
-        }
-        if(cottage == null) return false;
-        List<Reservation> reservations = reservationRepository.findAll();
-        for(Reservation reservation : reservations){
-            if(reservation.getName().equals(cottage.getName()) && reservation.getEndTime().isAfter(LocalDateTime.now())){
-                return false;
+            System.out.println(cottage.getName());
+            //Thread.sleep(3000);
+
+            if(cottage == null) return false;
+            List<Reservation> reservations = reservationRepository.findAll();
+            for(Reservation reservation : reservations){
+                if(reservation.getName().equals(cottage.getName()) && reservation.getEndTime().isAfter(LocalDateTime.now())){
+                    return false;
+                }
             }
+            cottageRepository.deleteById(cottageId);
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        cottageRepository.deleteById(cottageId);
-        return true;
     }
 
 }
