@@ -33,7 +33,6 @@ public class CustomerReservationDTO {
     }
 
     public CustomerReservationDTO(ReservationType type, LocalDateTime start, LocalDateTime end, int capacity) {
-        this.rentableId = rentableId;
         this.type = type;
         this.start = start;
         this.end = end;

@@ -82,12 +82,16 @@ values (nextval('rentable_id_seq'), 'Gold Mirror', 'Serbia', 'Srebrno Jezero', '
 insert into boat(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee, boatType, length, motors, power, maxSpeed, gps, radar, vhfRadio, fishFinder, fishingEquipment, owner_username)
 values (nextval('rentable_id_seq'), 'Monohull Bavaria Cruiser', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever!', 16, 'Be polite.', 30, 'boots=10;', 5, 'Yacht', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment', 'Popaye');
 
+insert into adventure(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee, instructorBio, fishingEquipment, owner_username, images)
+values (nextval('rentable_id_seq'), 'Silver Mirror Tour', 'Serbia', 'Subotica', 'Suboticka 10', 'Best fishing ever!', 16, 'Be polite.', 30, 'boots=10;', 5, 'Very good', 'Hooks', 'Fishdude', 'a1.1.jpg;a1.2.jpg;a1.3.jpg;');
+
 insert into saleSubscription(id, entityName, ownerUsername, customerUsername) values (nextval('sale_subscription_id_seq'), 'Prvenstvo Srbije', 'Piwneuh', 'imbiamba');
 
 insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-04-07', '2022-04-27');
 insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Prvenstvo Srbije', 'Piwneuh', '2022-05-15', '2022-06-28');
 insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-08-07', '2022-08-27');
 insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'COTTAGE', 'Gold Mirror', 'Piwneuh', '2022-08-07', '2022-08-30');
+insert into freeTerm(id, type, entityName, ownerUsername, startTime, endTime) values (nextval('free_term_id_seq'), 'ADVENTURE', 'Silver Mirror Tour', 'Fishdude', '2022-06-06', '2022-06-30');
 
 
 insert into reservation(id, type, name, ownerUsername, customerUsername, startTime, endTime, additionalServices, guests, isCancelled, isDeal, price, isReviewed, complaintExists, salePercent)
