@@ -63,6 +63,10 @@ insert into role(id, roleName) values (nextval('role_id_seq'), 'BOAT_OWNER');   
 insert into registeredUser(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Popaye', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 15, true);
 insert into boatOwner(username, letterOfIntent) values ('Popaye','Nesto');
 
+insert into role(id, roleName) values (nextval('role_id_seq'), 'INSTRUCTOR');                                                          --jabuka123
+insert into registeredUser(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Fishdude', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 1, false);
+insert into instructor(username, letterOfIntent) values ('Fishdude','Nesto');
+
 insert into penalty(id, customerUsername, issuedAt) values (nextval('penalty_id_seq'), 'imbiamba', '2022-04-06');
 insert into penalty(id, customerUsername, issuedAt) values (nextval('penalty_id_seq'), 'imbiamba', current_date);
 

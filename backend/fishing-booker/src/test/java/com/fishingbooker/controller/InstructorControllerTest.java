@@ -1,6 +1,5 @@
 package com.fishingbooker.controller;
 
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fishingbooker.dto.RegistrationDTO;
@@ -63,7 +62,8 @@ import static org.springframework.test.web.servlet.setup.SharedHttpSessionConfig
 @SpringBootTest
 @RunWith(SpringRunner.class)
 @Transactional
-public class RegisteredUserControllerTest {
+public class InstructorControllerTest {
+
     private static final String URL_PREFIX = "/user";
 
     private final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -92,13 +92,13 @@ public class RegisteredUserControllerTest {
             SecurityContext ctx = SecurityContextHolder.createEmptyContext();
             SecurityContextHolder.setContext(ctx);
             this.token = "Bearer " + JWT.create()
-                    .withSubject("imbiamba")
+                    .withSubject("Fishdude")
                     .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
                     .sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
             RegisteredUser user = new RegisteredUser();
-            user.setUsername("imbiamba");
+            user.setUsername("Fishdude");
             user.setPassword("$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i");
-            user.setRole(new Role("CUSTOMER"));
+            user.setRole(new Role("INSTRUCTOR"));
             TokenBasedAuth authentication = new TokenBasedAuth(user);
             authentication.setToken(token);
             ctx.setAuthentication(authentication);
@@ -116,7 +116,7 @@ public class RegisteredUserControllerTest {
     @Test
     public void getUserTestAccessDenied() throws Exception {
         Exception exception = Assertions.assertThrows(NestedServletException.class, () -> {
-            mockMvc.perform(get(URL_PREFIX + "/imbiamba").header("Authorization", token));
+            mockMvc.perform(get("/user/all").header("Authorization", token));
         });
         assertTrue(exception.getCause() instanceof AccessDeniedException);
     }
@@ -124,90 +124,36 @@ public class RegisteredUserControllerTest {
     @Test
     public void editProfileTest() throws Exception {
         RegisteredUser user = new RegisteredUser();
-        user.setUsername("imbiamba");
-        user.setName("Gus");
-        user.setSurname("Johnson");
+        user.setUsername("Fishdude");
+        user.setName("John");
+        user.setSurname("Doe");
         String json = TestUtil.json(user);
         mockMvc.perform(put(URL_PREFIX + "/editProfile").header("Authorization", token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.username").value("imbiamba"))
-                .andExpect(jsonPath("$.name").value("Gus"))
-                .andExpect(jsonPath("$.surname").value("Johnson"));
+                .andExpect(jsonPath("$.username").value("Fishdude"))
+                .andExpect(jsonPath("$.name").value("John"))
+                .andExpect(jsonPath("$.surname").value("Doe"));
     }
 
     @Test
     public void sendDeletionRequestTest() throws Exception {
         ProfileDeletionRequest request = new ProfileDeletionRequest();
-        request.setUsername("imbiamba");
+        request.setUsername("Fishdude");
         request.setDeletionReason("I don't want to be here anymore");
         request.setEmail("email.test.fishing@gmail.com");
         String json = TestUtil.json(request);
         mockMvc.perform(post(URL_PREFIX + "/sendDeletionRequest").header("Authorization", token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(json))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.username").value("imbiamba"))
+                .andExpect(jsonPath("$.username").value("Fishdude"))
                 .andExpect(jsonPath("$.deletionReason").value("I don't want to be here anymore"))
                 .andExpect(jsonPath("$.email").value("email.test.fishing@gmail.com"));
     }
 
-    //@Test
-    public void registerPessimisticLock() throws Throwable {
-        RegistrationDTO request = new RegistrationDTO();
-        request.setUsername("bad_imbi");
-        request.setPassword("imbiamba");
-        request.setEmail("email.test.fishing@gmail.com");
-        request.setName("Gus");
-        request.setSurname("Johnson");
-        request.setRole("CUSTOMER");
 
-        String json = TestUtil.json(request);
-
-        ExecutorService executor = Executors.newFixedThreadPool(2);
-        Future<?> future1 = executor.submit(new Runnable() {
-
-            @Override
-            public void run() {
-                System.out.println("Startovan Thread 1");// izmenjen ucitan objekat
-                //try { Thread.sleep(100); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
-                try {
-                    mockMvc.perform(post("/auth/signup")
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .content(json))
-                            .andExpect(status().isCreated());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        executor.submit(new Runnable() {
-
-            @Override
-            public void run() {
-                System.out.println("Startovan Thread 2");
-                //try { Thread.sleep(100); } catch (InterruptedException e) {}// thread uspavan na 3 sekunde da bi drugi thread mogao da izvrsi istu operaciju
-                try {
-                    mockMvc.perform(post("/auth/signup")
-                                    .contentType(MediaType.APPLICATION_JSON)
-                                    .content(json))
-                            .andExpect(status().isInternalServerError());
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        try {
-            future1.get(); // podize ExecutionException za bilo koji izuzetak iz prvog child threada
-        } catch (ExecutionException e) {
-            System.out.println("Exception from thread " + e.getCause().getClass()); // u pitanju je bas ObjectOptimisticLockingFailureException
-            throw e.getCause();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        executor.shutdown();
-    }
 }

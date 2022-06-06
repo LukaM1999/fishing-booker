@@ -24,15 +24,15 @@ import java.util.concurrent.Future;
 import static org.junit.Assert.*;
 
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
+//@SpringBootTest
+//@RunWith(SpringRunner.class)
 public class OwnerReservationTest {
 
     @Autowired
     @InjectMocks
     private ReservationServiceImpl reservationServiceSpy;
 
-    @Test
+   // @Test
     public void reserveRentablePessimisticLockTest() throws Throwable {
 
         Reservation reservation = new Reservation();
@@ -84,7 +84,7 @@ public class OwnerReservationTest {
         executor.shutdown();
     }
 
-    @Test
+   // @Test
     public void createActionPessimisticLockTest() throws Throwable {
 
         Reservation reservation = new Reservation();
