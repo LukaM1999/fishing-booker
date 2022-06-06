@@ -60,7 +60,7 @@ insert into registeredUser(username, password, name, surname, email, address, ci
 insert into admin(username) values ('mkisic');
 
 insert into role(id, roleName) values (nextval('role_id_seq'), 'BOAT_OWNER');                                                             --jabuka123
-insert into registeredUser(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Popaye', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 4, true);
+insert into registeredUser(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Popaye', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 15, true);
 insert into boatOwner(username, letterOfIntent) values ('Popaye','Nesto');
 
 insert into penalty(id, customerUsername, issuedAt) values (nextval('penalty_id_seq'), 'imbiamba', '2022-04-06');
@@ -74,6 +74,9 @@ values (nextval('rentable_id_seq'), 'Silver Mirror', 'Serbia', 'Srebrno Jezero',
 
 insert into cottage(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee, rooms, bedsPerRoom, owner_username, images)
 values (nextval('rentable_id_seq'), 'Gold Mirror', 'Serbia', 'Srebrno Jezero', 'Random ulica', 'See your reflection', 8, 'Be polite.', 30, 'wifi=5;chocolate=3', 0, 3, 2, 'Piwneuh', 'c5.1.jpg;c5.2.jpg;c5.3.jpg');
+
+insert into boat(id, name, country, city, address, promoDescription, capacity, rules, price, additionalServices, cancellationFee, boatType, length, motors, power, maxSpeed, gps, radar, vhfRadio, fishFinder, fishingEquipment, owner_username)
+values (nextval('rentable_id_seq'), 'Monohull Bavaria Cruiser', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever!', 16, 'Be polite.', 30, 'boots=10;', 5, 'Yacht', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment', 'Popaye');
 
 insert into saleSubscription(id, entityName, ownerUsername, customerUsername) values (nextval('sale_subscription_id_seq'), 'Prvenstvo Srbije', 'Piwneuh', 'imbiamba');
 
