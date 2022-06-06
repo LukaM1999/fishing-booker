@@ -99,7 +99,7 @@ public class CottageControllerTest {
     }
 
     @Test
-    public void findCottage() throws Exception {
+    public void findCottageTest() throws Exception {
         mockMvc.perform(get(URL_PREFIX + "/find/1").header("Authorization", token))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -109,7 +109,7 @@ public class CottageControllerTest {
     }
 
     @Test
-    public void getAllCottages() throws Exception {
+    public void getAllCottagesTest() throws Exception {
         mockMvc.perform(get(URL_PREFIX + "/all").header("Authorization", token))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
@@ -119,7 +119,7 @@ public class CottageControllerTest {
     }
 
     @Test
-    public void getOwnersCottages() throws Exception {
+    public void getOwnersCottagesTest() throws Exception {
 
         mockMvc.perform(get(URL_PREFIX + "/owner?username=Piwneuh").header("Authorization", token))
                 .andExpect(status().isOk())
@@ -130,7 +130,7 @@ public class CottageControllerTest {
     }
 
     @Test
-    public void deleteCottage() throws Exception {
+    public void deleteCottageTest() throws Exception {
 
         mockMvc.perform(delete(URL_PREFIX + "/delete/1").header("Authorization", token))
                 .andExpect(status().isOk())
