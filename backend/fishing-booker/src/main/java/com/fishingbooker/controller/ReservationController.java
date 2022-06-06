@@ -56,7 +56,7 @@ public class ReservationController {
         freeTerm.setEntityName(reservation.getName());
 
         reservationService.createFreeTerm(freeTerm);
-        return reservationService.createAction(rentableId, reservation);
+        return reservationService.reserveRentable(rentableId, reservation);
     }
 
     @PostMapping("/getActions")

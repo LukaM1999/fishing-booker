@@ -8,8 +8,10 @@ import com.fishingbooker.service.CottageService;
 import com.fishingbooker.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.beans.Transient;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -67,9 +69,14 @@ public class CottageServiceImpl implements CottageService{
     }
 
     @Override
-    public boolean deleteCottage(Long cottageId) {
-        Optional<Cottage> optional = cottageRepository.findById(cottageId);
-        Cottage cottage = optional.orElse(null);
+    @Transactional
+    public boolean deleteCottage(Long cottageId){
+        Cottage cottage = null;
+        try {
+            cottage = cottageRepository.findByIdLocked(cottageId);
+        } catch (Exception e) {
+            throw e;
+        }
         if(cottage == null) return false;
         List<Reservation> reservations = reservationRepository.findAll();
         for(Reservation reservation : reservations){

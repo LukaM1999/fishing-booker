@@ -128,13 +128,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation reserveRentable(Long rentableId, Reservation reservation) {
         try {
-            if(penaltyService.countPenaltiesByCustomerUsername(reservation.getCustomerUsername()) >= 3)
+            if(!reservation.isDeal() && penaltyService.countPenaltiesByCustomerUsername(reservation.getCustomerUsername()) >= 3)
                 return null;
             CustomerReservationDTO reservationDTO = new CustomerReservationDTO(reservation.getType(), reservation.getStartTime(), reservation.getEndTime(), reservation.getGuests());
             Rentable rentable = null;
             switch (reservation.getType()) {
                 case COTTAGE: {
                     rentable = rentableRepository.getCottageLock(rentableId);
+                    //Thread.sleep(5000);
                     break;
                 }
                 case BOAT: {
@@ -147,9 +148,11 @@ public class ReservationServiceImpl implements ReservationService {
                 }
             }
             if(rentable == null || !new HashSet<>(getFreeRentables(reservationDTO)).contains(rentable)) return null;
-            reservation.setPrice(reservation.getPrice() - reservation.getPrice() * checkForCustomerSale(reservation)/100);
+            if(!reservation.isDeal()) {
+                reservation.setPrice(reservation.getPrice() - reservation.getPrice() * checkForCustomerSale(reservation) / 100);
+                updatePoints(reservation);
+            }
             reservationRepository.save(reservation);
-            updatePoints(reservation);
             return reservation;
         } catch (Exception e) {
             throw new RuntimeException(e);

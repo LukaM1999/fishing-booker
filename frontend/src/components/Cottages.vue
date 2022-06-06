@@ -193,6 +193,10 @@ export default {
       });
     },
     async deleteCottage() {
+      // await axios.all([
+      //   axios.delete(backend + `/cottage/delete/${this.delete}`),
+      //   axios.delete(backend + `/cottage/delete/${this.delete}`)
+      // ])
       const response = await axios.delete(backend + `/cottage/delete/${this.delete}`)
       if (response.data) {
         this.cottages = this.cottages.filter(c => c.id !== this.delete)

@@ -3,7 +3,7 @@
     <div class="col-8">
       <div class="row" v-if="role === 'CUSTOMER'">
         <div class="col">
-          <h1 class="text-center">Reservation history</h1>
+          <h1 class="text-center title">Reservation history</h1>
         </div>
       </div>
       <b-tabs v-if="role === 'CUSTOMER'" v-model="activeTab" @input="loadTab">
@@ -77,9 +77,9 @@
         <div class="col">
           <div class="row">
             <div class="col">
-              <h1 v-if="role === 'COTTAGE_OWNER'" class="text-center">Cottage reservation history</h1>
-              <h1 v-if="role === 'BOAT_OWNER'" class="text-center">Boat reservation history</h1>
-              <h1 v-if="role === 'INSTRUCTOR'" class="text-center">Adventure reservation history</h1>
+              <h1 v-if="role === 'COTTAGE_OWNER'" class="text-center title">Cottage reservation history</h1>
+              <h1 v-if="role === 'BOAT_OWNER'" class="text-center title">Boat reservation history</h1>
+              <h1 v-if="role === 'INSTRUCTOR'" class="text-center title">Adventure reservation history</h1>
             </div>
           </div>
           <div class="row">
@@ -98,7 +98,8 @@
                       type="is-light"
                       :triggers="['click']"
                       :auto-close="['outside', 'escape']"
-                      position="is-bottom">
+                      position="is-bottom"
+                      :disabled="!props.row.customerUsername">
                     <template v-slot:content>
                       <p class="subtitle is-6">Username: <strong>{{ customerProfile.username }}</strong></p>
                       <p class="subtitle is-6">Full name: <strong>{{ customerProfile.name }} {{ customerProfile.surname }}</strong></p>
@@ -110,7 +111,8 @@
                         </div>
                       </div>
                     </template>
-                    <b-button :label="props.row.customerUsername" @click="getCustomerProfile(props.row)" type="is-light" />
+                    <b-button :label="props.row.customerUsername? props.row.customerUsername: 'Sale'"
+                              @click="getCustomerProfile(props.row)" type="is-light" :disabled="!props.row.customerUsername"/>
                   </b-tooltip>
                 </b-table-column>
 

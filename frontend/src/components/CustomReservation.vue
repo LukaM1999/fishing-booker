@@ -472,6 +472,11 @@ export default {
         complaintExists: false
       }
 
+      // await axios.all([
+      //     axios.post(backend + `/reservation/reserveRentable/${this.selectedRentable.id}`, reservation),
+      //     axios.post(backend + `/reservation/reserveRentable/${this.selectedRentable.id}`, reservation),
+      // ])
+
       const response = await axios.post(backend + `/reservation/reserveRentable/${this.selectedRentable.id}`, reservation)
           .catch(error => {
             this.$toasted.error('Reservation was unsuccessful')
