@@ -88,6 +88,7 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
                 return null;
             }
 
+            registrationDTO.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
 
             RegisteredUser user;
             switch (registrationDTO.getRole()) {

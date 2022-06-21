@@ -98,7 +98,7 @@
                   <strong> End Date: {{ a.endTime | formatDate }}</strong>
                 </p>
                 <p class="subtitle">
-                  <strong><strike>Old price {{(a.price * a.salePercent).toString().substring(0,2)}}€</strike></strong>
+                  <strong><strike>Old price {{(a.price + a.price * a.salePercent/100).toString().substring(0,2)}}€</strike></strong>
                 </p>
                 <p class="subtitle">
                   <strong>New price {{a.price}}€ </strong>

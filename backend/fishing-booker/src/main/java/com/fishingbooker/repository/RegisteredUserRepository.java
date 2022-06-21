@@ -14,8 +14,8 @@ import java.util.Optional;
 
 public interface RegisteredUserRepository extends JpaRepository<RegisteredUser, Long> {
 
-    @Cacheable("user")
-    @QueryHints(value = {@QueryHint(name = "org.hibernate.cacheable", value = "true")})
+    //@Cacheable("user")
+    //@QueryHints(value = {@QueryHint(name = //"org.hibernate.cacheable", value = "true")})
     RegisteredUser findByUsername(String username);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)

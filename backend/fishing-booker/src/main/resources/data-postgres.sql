@@ -1,5 +1,5 @@
 insert into role(id, role_name) values (nextval('role_id_seq'), 'COTTAGE_OWNER');                                                          --jabuka123
-insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Piwneuh', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 1, true);
+insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Piwneuh', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'online.fishing.booker@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 1, true);
 insert into cottage_owner(username, letter_of_intent) values ('Piwneuh','Nesto');
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'CUSTOMER');                                                               --jabuka123
@@ -7,18 +7,18 @@ insert into registered_user(username, password, name, surname, email, address, c
 insert into customer(username, verification_token) values ('imbiamba',null);
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'ADMIN');                                                                 --jabuka123
-insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('mkisic', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Mihajlo', 'Kisic', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 3, true);
+insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('mkisic', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Mihajlo', 'Kisic', 'online.fishing.booker@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 3, true);
 insert into admin(username) values ('mkisic');
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'BOAT_OWNER');                                                             --jabuka123
-insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Popaye', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'pecurka@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 4, true);
+insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Popaye', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'online.fishing.booker@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 4, true);
 insert into boat_owner(username, letter_of_intent) values ('Popaye','Nesto');
 
 insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment, owner_username, images)
 values (nextval('rentable_id_seq'), 'Monohull Bavaria Cruiser', 'Serbia', 'Subotica', 'Salasi 10', 'Best boat ever!', 16, 'Be polite.', 50, 'wifi=15;boots=10', 5, 'Boston Whaler', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment', 'Popaye', 'b1.1.jpg;b1.2.jpg;b1.3.jpg;');
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'INSTRUCTOR');                                                              --jabuka123
-insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Fishdude', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Fish', 'Dude', 'fishdude@gmail.com', 'Bulevar oslobodjenja 22', 'Novi Sad', 'Serbia', '453678', 5, true);
+insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Fishdude', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Fish', 'Dude', 'online.fishing.booker@gmail.com', 'Bulevar oslobodjenja 22', 'Novi Sad', 'Serbia', '453678', 5, true);
 insert into instructor(username, letter_of_intent) values ('Fishdude','Best instructor');
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'CUSTOMER');                                                               --jabuka123
