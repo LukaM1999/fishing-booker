@@ -1,6 +1,10 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "engines": {
+    "node": "16.9.1",
+    "npm": "8.19.2"
+  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode development",
