@@ -1,5 +1,6 @@
 package com.fishingbooker.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fishingbooker.dto.JwtDTO;
@@ -27,6 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -81,13 +83,17 @@ public class AuthController {
     }
 
     @GetMapping("/verify")
-    public ResponseEntity<Object> addUser(@RequestParam String token) throws IllegalAccessException, URISyntaxException {
+    public ResponseEntity<Object> addUser(@RequestParam String token, HttpServletRequest request, HttpServletResponse response) throws IllegalAccessException, URISyntaxException {
         Customer customer = customerService.findByToken(token);
         if (customer == null) throw new NullPointerException("Username with this token doesn't exist!");
         if (customer.isEnabled()) throw new IllegalAccessException("Account is already verified!");
         customerService.verifyCustomer(customer.getUsername());
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(new URI("http://localhost:7000/login"));
+        if(Objects.requireNonNull(request.getRequestURL()).toString().contains("localhost")) {
+            httpHeaders.setLocation(new URI("http://localhost:7000/login"));
+        } else {
+            httpHeaders.setLocation(new URI("https://fishing-booker.herokuapp.com/login"));
+        }
         return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
     }
 
