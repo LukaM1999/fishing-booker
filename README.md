@@ -6,7 +6,9 @@
 -   **Mihajlo Kisić** RA183/2018
 -   **Filip Pinjuh** RA174/2018
 
-## Starting the application
+### Check it out [here](https://fishing-booker.herokuapp.com "Visit Fishing Booker")!
+
+## Starting the application locally
 
 **Backend**
 
