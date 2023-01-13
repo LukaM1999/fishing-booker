@@ -185,7 +185,7 @@ export default {
             template_params: {
               'to_name': response.data.name,
               'to_email': response.data.email,
-              'verification_link': `<a href="http://localhost:8090/auth/verify?token=${response.data.verificationToken}">here</a>`
+              'verification_link': `<a href="${backend}/auth/verify?token=${response.data.verificationToken}">here</a>`
             }
           };
           const emailResponse = await axios.post('https://api.emailjs.com/api/v1.0/email/send', email);
