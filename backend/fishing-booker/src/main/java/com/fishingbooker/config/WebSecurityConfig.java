@@ -19,6 +19,11 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import com.fishingbooker.security.auth.RestAuthEntryPoint;
 import com.fishingbooker.security.auth.TokenAuthFilter;
 import com.fishingbooker.util.TokenUtils;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.ArrayList;
 
 @Configuration
 // Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
@@ -66,10 +71,27 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private TokenUtils tokenUtils;
 
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(new ArrayList<>(){{
+            add("http://localhost:7000");
+            add("https://fishing-booker.herokuapp.com");
+        }});
+        configuration.setAllowedMethods(new ArrayList<>(){{add("**");}});
+        configuration.setAllowedHeaders(new ArrayList<>(){{
+            add("**");
+        }});
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     // Definisemo prava pristupa za zahteve ka odredjenim URL-ovima/rutama
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .antMatcher("/**").cors().configurationSource(corsConfigurationSource()).and()
                 // komunikacija izmedju klijenta i servera je stateless posto je u pitanju REST aplikacija
                 // ovo znaci da server ne pamti nikakvo stanje, tokeni se ne cuvaju na serveru
                 // ovo nije slucaj kao sa sesijama koje se cuvaju na serverskoj strani - STATEFULL aplikacija
