@@ -78,9 +78,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             add("http://localhost:7000");
             add("https://fishing-booker.herokuapp.com");
         }});
-        configuration.setAllowedMethods(new ArrayList<>(){{add("**");}});
+        configuration.setAllowedMethods(new ArrayList<>(){{add("*");}});
         configuration.setAllowedHeaders(new ArrayList<>(){{
-            add("**");
+            add("*");
         }});
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -116,9 +116,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // za svaki drugi zahtev korisnik mora biti autentifikovan
                 .anyRequest().authenticated().and()
-
-                // za development svrhe ukljuci konfiguraciju za CORS iz WebConfig klase
-                .cors().and()
 
                 // umetni custom filter TokenAuthenticationFilter kako bi se vrsila provera JWT tokena umesto cistih korisnickog imena i lozinke (koje radi BasicAuthenticationFilter)
                 .addFilterBefore(new TokenAuthFilter(tokenUtils, registeredUserService), BasicAuthenticationFilter.class);
