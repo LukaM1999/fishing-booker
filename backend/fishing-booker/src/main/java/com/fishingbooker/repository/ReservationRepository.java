@@ -75,4 +75,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
             "and r.endTime <= current_timestamp " +
             "and r.startTime >= :date")
     Integer getNumOfReservationsByName(@Param("name")String name,@Param("date") LocalDateTime date);
+
+    Reservation getReservationByOrderId(String orderId);
 }

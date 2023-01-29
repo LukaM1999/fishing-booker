@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fishingbooker.util.OrderIdGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -74,6 +75,13 @@ public class Reservation implements Serializable {
     @Column
     private boolean complaintExists;
 
+    @Column
+    private String orderId;
+
+    @Column
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
+
     public Reservation() { }
 
     public Reservation(Long id, ReservationType type, String name, String ownerUsername, String customerUsername,
@@ -93,6 +101,8 @@ public class Reservation implements Serializable {
         this.isReviewed = false;
         this.complaintExists = false;
         this.salePercent = 0;
+        this.orderId = OrderIdGenerator.generateOrderId();
+        this.orderStatus = OrderStatus.PENDING;
     }
 
     public Reservation(Long id, ReservationType type, String name, String ownerUsername, LocalDateTime startTime,
@@ -112,6 +122,8 @@ public class Reservation implements Serializable {
         this.isReviewed = false;
         this.complaintExists = false;
         this.salePercent = salePercent;
+        this.orderId = OrderIdGenerator.generateOrderId();
+        this.orderStatus = OrderStatus.PENDING;
     }
 
     public Long getId() {
@@ -236,5 +248,21 @@ public class Reservation implements Serializable {
 
     public void setVersion(Long version) {
         this.version = version;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 }

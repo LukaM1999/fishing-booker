@@ -46,4 +46,6 @@ public interface ReservationService {
     List<FinanceDTO> getFinances(String username, LocalDateTime startTime, LocalDateTime endTime);
 
     Cottage getCottageById(Long cottageId);
+
+    Reservation updateOrderStatus(String orderId, OrderStatus status);
 }

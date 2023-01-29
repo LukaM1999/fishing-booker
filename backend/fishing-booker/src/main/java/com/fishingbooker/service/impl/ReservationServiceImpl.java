@@ -10,6 +10,8 @@ import com.fishingbooker.repository.*;
 import com.fishingbooker.service.PenaltyService;
 import com.fishingbooker.service.PointsService;
 import com.fishingbooker.service.ReservationService;
+import com.fishingbooker.util.OrderIdGenerator;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -127,6 +129,8 @@ public class ReservationServiceImpl implements ReservationService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
     @Override
     public Reservation reserveRentable(Long rentableId, Reservation reservation) {
+        reservation.setOrderId(OrderIdGenerator.generateOrderId());
+        reservation.setOrderStatus(OrderStatus.PENDING);
         try {
             if(!reservation.isDeal() && penaltyService.countPenaltiesByCustomerUsername(reservation.getCustomerUsername()) >= 3)
                 return null;
@@ -259,6 +263,15 @@ public class ReservationServiceImpl implements ReservationService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Reservation updateOrderStatus(String orderId, OrderStatus status) {
+        Reservation reservation = reservationRepository.getReservationByOrderId(orderId);
+        if(reservation == null) return null;
+        reservation.setOrderStatus(status);
+        reservationRepository.save(reservation);
+        return reservation;
     }
 
     @Override

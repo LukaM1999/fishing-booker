@@ -49,6 +49,9 @@ import BoatOwnerHomepage from "@/components/boat_owner/BoatOwnerHomepage";
 import BoatOwnerProfile from "@/components/boat_owner/BoatOwnerProfile";
 import BoatAction from "@/components/boat_owner/BoatAction";
 import BoatProfile from "@/components/BoatProfile";
+import OrderSuccess from "@/components/OrderSuccess.vue";
+import OrderFail from "@/components/OrderFail.vue";
+import OrderError from "@/components/OrderError.vue";
 
 Vue.config.productionTip = false
 Vue.config.devtools
@@ -409,6 +412,21 @@ const routes = [
                 component: Statistics
             },
         ]
+    },
+    {
+        path: '/order-success/:orderId',
+        name: 'orderSuccess',
+        component: OrderSuccess
+    },
+    {
+        path: '/order-fail/:orderId',
+        name: 'orderFail',
+        component: OrderFail
+    },
+    {
+        path: '/order-error/:orderId',
+        name: 'orderError',
+        component: OrderError
     }
 ]
 

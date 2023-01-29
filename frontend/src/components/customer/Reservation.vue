@@ -533,11 +533,14 @@ export default {
           <p><u><strong>TOTAL PRICE</strong></u>: ${reservation.price} EUR</p>`
         }
       };
-      await axios.post('https://api.emailjs.com/api/v1.0/email/send', email).catch(error => {
-        this.$toasted.error('Reservation email could not be sent')
-        throw error
-      })
-      await this.$router.push('/customer/history')
+      // await axios.post('https://api.emailjs.com/api/v1.0/email/send', email).catch(error => {
+      //   this.$toasted.error('Reservation email could not be sent')
+      //   throw error
+      // })
+
+      window.open(`${process.env.VUE_APP_PSP}/paypal?merchantUuid=12345678-1234-1234-1234-123456789012&merchantOrderId=${response.data?.orderId}&amount=${reservation.price}`, '_blank').focus()
+
+      //await this.$router.push('/customer/history')
     },
     setSelectedRentable(rentable) {
       if (this.selectedRentable === null) {
