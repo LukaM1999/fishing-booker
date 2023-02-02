@@ -10,13 +10,9 @@ import com.fishingbooker.model.*;
 import com.fishingbooker.repository.*;
 import com.fishingbooker.service.PointsService;
 import org.apache.commons.lang3.ArrayUtils;
-import org.hibernate.PessimisticLockException;
-import org.hibernate.exception.GenericJDBCException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.dao.PessimisticLockingFailureException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,31 +26,34 @@ import org.springframework.stereotype.Service;
 
 
 import com.fishingbooker.service.RegisteredUserService;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class RegisteredUserServiceImpl implements RegisteredUserService, UserDetailsService {
+public class RegisteredUserServiceImpl implements RegisteredUserService {
 
-    @Autowired
-    private RegisteredUserRepository userRepository;
-    @Autowired
-    private InstructorRepository instructorRepository;
-    @Autowired
-    private CottageOwnerRepository cottageOwnerRepository;
-    @Autowired
-    private BoatOwnerRepository boatOwnerRepository;
-    @Autowired
-    private ProfileDeletionRequestRepository deletionRequestRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+
+    private final RegisteredUserRepository userRepository;
+    private final InstructorRepository instructorRepository;
+    private final CottageOwnerRepository cottageOwnerRepository;
+    private final BoatOwnerRepository boatOwnerRepository;
+    private final ProfileDeletionRequestRepository deletionRequestRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final PointsService pointsService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    @Autowired
-    private PointsService pointsService;
+    public RegisteredUserServiceImpl(RegisteredUserRepository userRepository, InstructorRepository instructorRepository,
+                                     CottageOwnerRepository cottageOwnerRepository, BoatOwnerRepository boatOwnerRepository,
+                                     ProfileDeletionRequestRepository deletionRequestRepository, PasswordEncoder passwordEncoder,
+                                     PointsService pointsService) {
+        this.userRepository = userRepository;
+        this.instructorRepository = instructorRepository;
+        this.cottageOwnerRepository = cottageOwnerRepository;
+        this.boatOwnerRepository = boatOwnerRepository;
+        this.deletionRequestRepository = deletionRequestRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.pointsService = pointsService;
+    }
 
     public RegisteredUser findById(Long id) throws AccessDeniedException {
         return userRepository.findById(id).orElseGet(null);
@@ -141,21 +140,6 @@ public class RegisteredUserServiceImpl implements RegisteredUserService, UserDet
             System.out.println("Pessimistic lock exception: " + e.getMessage());
             return null;
         }
-    }
-
-    @Override
-    public boolean isPasswordValid(LoginDTO loginDto) {
-//        RegisteredUser user = userRepository.findByUsername(loginDto.getUsername());
-//        if (user == null) return false;
-//        String confirmedPassword = passwordEncoder.encode(loginDto.getPassword());
-//        return user.getPassword().equals(passwordEncoder.encode(loginDto.getPassword()));
-        try {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    loginDto.getUsername(), loginDto.getPassword()));
-        } catch (AuthenticationException e) {
-            return false;
-        }
-        return true;
     }
 
     @Override

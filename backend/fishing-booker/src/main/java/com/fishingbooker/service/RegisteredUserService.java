@@ -6,12 +6,13 @@ import com.fishingbooker.dto.RegistrationDTO;
 import com.fishingbooker.model.ProfileDeletionRequest;
 import com.fishingbooker.model.RegisteredUser;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface RegisteredUserService {
+public interface RegisteredUserService extends UserDetailsService {
     RegisteredUser findById(Long id);
     @Transactional
     List<RegisteredUser> findAll();
@@ -22,7 +23,6 @@ public interface RegisteredUserService {
 
     RegisteredUser findByUsername(String username);
     RegisteredUser save(RegisteredUser userRequest);
-    boolean isPasswordValid(LoginDTO loginDto);
     RegisteredUser editProfile(RegisteredUser newProfile);
     ProfileDeletionRequest saveRequest(ProfileDeletionRequest deletionRequest);
 

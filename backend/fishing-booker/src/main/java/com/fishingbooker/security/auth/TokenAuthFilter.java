@@ -7,6 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fishingbooker.service.RegisteredUserService;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,7 +32,7 @@ public class TokenAuthFilter extends OncePerRequestFilter {
 
     protected final Log LOGGER = LogFactory.getLog(getClass());
 
-    public TokenAuthFilter(TokenUtils tokenHelper, RegisteredUserServiceImpl userDetailsService) {
+    public TokenAuthFilter(TokenUtils tokenHelper, RegisteredUserService userDetailsService) {
         this.tokenUtils = tokenHelper;
         this.userDetailsService = userDetailsService;
     }

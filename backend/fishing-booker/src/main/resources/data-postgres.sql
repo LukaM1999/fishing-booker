@@ -2,8 +2,9 @@ insert into role(id, role_name) values (nextval('role_id_seq'), 'COTTAGE_OWNER')
 insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Piwneuh', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Filip', 'Pinjuh', 'online.fishing.booker@gmail.com', 'Strazilovska 27', 'Novi Sad', 'Serbia', '333555', 1, true);
 insert into cottage_owner(username, letter_of_intent) values ('Piwneuh','Nesto');
 
-insert into role(id, role_name) values (nextval('role_id_seq'), 'CUSTOMER');                                                               --jabuka123
-insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('imbiamba', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Luka', 'Miletic', 'online.fishing.booker@gmail.com', 'Kraljevica Marka 21', 'Novi Sad', 'Serbia', '4443332', 2, true);
+insert into role(id, role_name) values (nextval('role_id_seq'), 'CUSTOMER');
+insert into credit_card(id, pan, security_code, card_holder_name, valid_thru) values (1, 'f535c2c61757f77ef3d949888f9e517cca66ee151ed6cac62b8959cf6e8fab6a', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Imenko Prezimic', '2025-12-01');
+insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled, credit_card_id) values ('imbiamba', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Luka', 'Miletic', 'online.fishing.booker@gmail.com', 'Kraljevica Marka 21', 'Novi Sad', 'Serbia', '4443332', 2, true, 1);
 insert into customer(username, verification_token) values ('imbiamba',null);
 
 insert into role(id, role_name) values (nextval('role_id_seq'), 'ADMIN');                                                                 --jabuka123
@@ -21,8 +22,9 @@ insert into role(id, role_name) values (nextval('role_id_seq'), 'INSTRUCTOR');  
 insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('Fishdude', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Fish', 'Dude', 'online.fishing.booker@gmail.com', 'Bulevar oslobodjenja 22', 'Novi Sad', 'Serbia', '453678', 5, true);
 insert into instructor(username, letter_of_intent) values ('Fishdude','Best instructor');
 
-insert into role(id, role_name) values (nextval('role_id_seq'), 'CUSTOMER');                                                               --jabuka123
-insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled) values ('imbiamba1', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Luka', 'Miletic', 'online.fishing.booker@gmail.com', 'Kraljevica Marka 21', 'Novi Sad', 'Serbia', '4443332', 2, true);
+insert into role(id, role_name) values (nextval('role_id_seq'), 'CUSTOMER');
+insert into credit_card(id, pan, security_code, card_holder_name, valid_thru) values (2, 'c6674b2111ad8a5ab2e0925611d3fd78d0719373fddd673af3af9d42a0737fdf', '8d23cf6c86e834a7aa6eded54c26ce2bb2e74903538c61bdd5d2197997ab2f72', 'Pera Peric', '2025-10-01');
+insert into registered_user(username, password, name, surname, email, address, city, country, phone, role_id, enabled, credit_card_id) values ('imbiamba1', '$2a$10$UVn74F/yEiUzKWBSGVyzHe2UfpVJ95zY50Q8bz1RFyrAYVfwFAj4i', 'Luka', 'Miletic', 'online.fishing.booker@gmail.com', 'Kraljevica Marka 21', 'Novi Sad', 'Serbia', '4443332', 2, true, 2);
 insert into customer(username, verification_token) values ('imbiamba1',null);
 
 insert into adventure(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, instructor_bio, fishing_equipment, owner_username, images)
@@ -59,7 +61,7 @@ values (nextval('rentable_id_seq'), 'Indian Howler', 'Serbia', 'Subotica', 'Subo
 insert into boat(id, name, country, city, address, promo_description, capacity, rules, price, additional_services, cancellation_fee, boat_type, length, motors, power, max_speed, gps, radar, vhf_radio, fish_finder, fishing_equipment)
 values (nextval('rentable_id_seq'), 'Atlantic Hero', 'Serbia', 'Subotica', 'Suboticka 10', 'Best boat ever', 16, 'Be polite.', 70, 'boots=10;', 5, 'Boston Whaler', 11.89, 4, 1600, 250, true, true, false, true, 'Much equipment');
 
-insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextval('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-04-07', '2022-04-27');
+insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextval('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-04-07', '2026-04-27');
 insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextval('free_term_id_seq'), 'BOAT', '380 Realm Boston Whaler', 'Popaye', '2022-04-07', '2022-04-09');
 insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextval('free_term_id_seq'), 'ADVENTURE', 'Silver Mirror Tour', 'Fishdude', '2022-05-15', '2022-05-27');
 insert into free_term(id, type, entity_name, owner_username, start_time, end_time) values (nextval('free_term_id_seq'), 'COTTAGE', 'Silver Mirror', 'Piwneuh', '2022-05-29', '2022-06-29');

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Propagation;
@@ -28,6 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -67,7 +69,7 @@ public class AuthController {
 
         // Kreiraj token za tog korisnika
         RegisteredUser user = (RegisteredUser) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
+        String jwt = tokenUtils.generateToken(user.getUsername(), Map.of());
         int expiresIn = tokenUtils.getExpiredIn();
 
         user.setPassword(null);
@@ -99,6 +101,12 @@ public class AuthController {
 
     @PostMapping("/confirmPassword")
     public boolean confirmPassword(@RequestBody LoginDTO loginDto) {
-        return userService.isPasswordValid(loginDto);
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    loginDto.getUsername(), loginDto.getPassword()));
+        } catch (AuthenticationException e) {
+            return false;
+        }
+        return true;
     }
 }

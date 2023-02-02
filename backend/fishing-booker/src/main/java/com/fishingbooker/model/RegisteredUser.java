@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,6 +59,12 @@ public class RegisteredUser implements UserDetails {
 
     @Column(columnDefinition = "Integer default 0")
     private int timesRated;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "credit_card_id", referencedColumnName = "id")
+    @Getter
+    @Setter
+    private CreditCard creditCard;
 
     public Role getRole() {
         return role;

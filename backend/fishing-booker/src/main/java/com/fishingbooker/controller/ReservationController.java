@@ -1,5 +1,6 @@
 package com.fishingbooker.controller;
 
+import antlr.Token;
 import com.fishingbooker.dto.ActionDTO;
 import com.fishingbooker.dto.CustomerReservationDTO;
 import com.fishingbooker.dto.EventDTO;
@@ -12,13 +13,25 @@ import com.fishingbooker.dto.statistics.TimeDTO;
 import com.fishingbooker.model.*;
 import com.fishingbooker.repository.RentableRepository;
 import com.fishingbooker.repository.ReservationRepository;
+import com.fishingbooker.security.Encryptor;
+import com.fishingbooker.service.RegisteredUserService;
 import com.fishingbooker.service.ReservationService;
 import com.fishingbooker.service.impl.ReservationServiceImpl;
+import com.fishingbooker.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/reservation")
@@ -41,8 +54,33 @@ public class ReservationController {
 
     @PostMapping("/reserveRentable/{rentableId}")
     @PreAuthorize("!hasAuthority('ADMIN')")
-    public Reservation reserveRentable(@PathVariable Long rentableId, @RequestBody Reservation reservation){
-        return reservationService.reserveRentable(rentableId, reservation);
+    public String reserveRentable(@PathVariable Long rentableId, @RequestBody Reservation reservation){
+        Reservation newReservation = reservationService.reserveRentable(rentableId, reservation);
+
+        RegisteredUser user = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof UserDetails) {
+            user = (RegisteredUser) principal;
+        }
+        if(user == null){
+            throw new RuntimeException("User not found");
+        }
+        CreditCard creditCard = user.getCreditCard();
+
+        Map<String, Object> tokenClaims = new HashMap<>(){
+            {
+                put("merchantUuid", "12345678-1234-1234-1234-123456789013");
+                put("merchantOrderId", newReservation.getOrderId());
+                put("amount", newReservation.getPrice());
+                put("pan", Encryptor.encrypt(creditCard.getPan()));
+                put("securityCode", Encryptor.encrypt(creditCard.getSecurityCode()));
+                put("cardHolderName", creditCard.getCardHolderName());
+                put("validThru", creditCard.getValidThru());
+                put("productId", rentableId);
+                put("paymentPurpose", "Fishing Booker reservation");
+            }
+        };
+        return new TokenUtils().generateToken(reservation.getCustomerUsername(), tokenClaims);
     }
 
     @PostMapping("/createAction/{rentableId}")

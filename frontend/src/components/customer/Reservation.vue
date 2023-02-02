@@ -516,29 +516,29 @@ export default {
             throw error
           })
       this.$toasted.success('Reservation confirmed successfully!')
-      const email = {
-        service_id: 'service_approve',
-        template_id: 'template_approved',
-        user_id: 'user_62WYz6KIasgbXlUB5EEGw',
-        template_params: {
-          'to_name': reservation.customerUsername,
-          'to_email': JSON.parse(localStorage.getItem('user') || '{}')?.email,
-          'subject': 'Reservation confirmed',
-          'message': `<p>Your reservation for <strong>${reservation.name}</strong> has been confirmed.</p>
-          <p><u>Start time</u>: ${reservation.startTime}</p>
-          <p><u>End time</u>: ${reservation.endTime}</p>
-          <p><u>Number of guests</u>: ${reservation.guests}</p>
-          <p><u>Additional services</u>: ${reservation.additionalServices}</p>
-          <br>
-          <p><u><strong>TOTAL PRICE</strong></u>: ${reservation.price} EUR</p>`
-        }
-      };
+      // const email = {
+      //   service_id: 'service_approve',
+      //   template_id: 'template_approved',
+      //   user_id: 'user_62WYz6KIasgbXlUB5EEGw',
+      //   template_params: {
+      //     'to_name': reservation.customerUsername,
+      //     'to_email': JSON.parse(localStorage.getItem('user') || '{}')?.email,
+      //     'subject': 'Reservation confirmed',
+      //     'message': `<p>Your reservation for <strong>${reservation.name}</strong> has been confirmed.</p>
+      //     <p><u>Start time</u>: ${reservation.startTime}</p>
+      //     <p><u>End time</u>: ${reservation.endTime}</p>
+      //     <p><u>Number of guests</u>: ${reservation.guests}</p>
+      //     <p><u>Additional services</u>: ${reservation.additionalServices}</p>
+      //     <br>
+      //     <p><u><strong>TOTAL PRICE</strong></u>: ${reservation.price} EUR</p>`
+      //   }
+      // };
       // await axios.post('https://api.emailjs.com/api/v1.0/email/send', email).catch(error => {
       //   this.$toasted.error('Reservation email could not be sent')
       //   throw error
       // })
 
-      window.open(`${process.env.VUE_APP_PSP}/paypal?merchantUuid=12345678-1234-1234-1234-123456789012&merchantOrderId=${response.data?.orderId}&amount=${reservation.price}`, '_blank').focus()
+      window.open(`${process.env.VUE_APP_PSP}/paypal?token=${response.data}`, '_blank').focus()
 
       //await this.$router.push('/customer/history')
     },

@@ -1,18 +1,15 @@
 package com.fishingbooker.util;
 
 import java.util.Date;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.fishingbooker.model.RegisteredUser;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 
 // Utility klasa za rad sa JSON Web Tokenima
 @Component
@@ -20,19 +17,19 @@ public class TokenUtils {
 
     // Izdavac tokena
     @Value("fishing-booker")
-    private String APP_NAME;
+    private String APP_NAME = "fishing-booker";
 
     // Tajna koju samo backend aplikacija treba da zna kako bi mogla da generise i proveri JWT https://jwt.io/
-    @Value("Filips ISA")
-    public String SECRET;
+    @Value("2B4D6251655468576D5A7134743777217A25432646294A404E635266556A586E")
+    public String SECRET = "2B4D6251655468576D5A7134743777217A25432646294A404E635266556A586E";
 
     // Period vazenja tokena - 30 minuta
     @Value("1800000")
-    private int EXPIRES_IN;
+    private int EXPIRES_IN = 1800000;
 
     // Naziv headera kroz koji ce se prosledjivati JWT u komunikaciji server-klijent
     @Value("Authorization")
-    private String AUTH_HEADER;
+    private String AUTH_HEADER = "Authorization";
 
     // Moguce je generisati JWT za razlicite klijente (npr. web i mobilni klijenti nece imati isto trajanje JWT,
     // JWT za mobilne klijente ce trajati duze jer se mozda aplikacija redje koristi na taj nacin)
@@ -55,17 +52,17 @@ public class TokenUtils {
      * @param username Korisničko ime korisnika kojem se token izdaje
      * @return JWT token
      */
-    public String generateToken(String username) {
-        return Jwts.builder()
+    public String generateToken(String username, Map<String, Object> claims) {
+        JwtBuilder builder = Jwts.builder()
                 .setIssuer(APP_NAME)
                 .setSubject(username)
                 .setAudience(generateAudience())
                 .setIssuedAt(new Date())
-                .setExpiration(generateExpirationDate())
-                .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
-
-
-        // moguce je postavljanje proizvoljnih podataka u telo JWT tokena pozivom funkcije .claim("key", value), npr. .claim("role", user.getRole())
+                .setExpiration(generateExpirationDate());
+        for(Map.Entry<String, Object> entry : claims.entrySet()) {
+            builder.claim(entry.getKey(), entry.getValue());
+        }
+        return builder.signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
 
     /**

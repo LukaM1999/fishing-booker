@@ -1,5 +1,6 @@
 package com.fishingbooker.config;
 
+import com.fishingbooker.service.RegisteredUserService;
 import com.fishingbooker.service.impl.RegisteredUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,24 +27,25 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.ArrayList;
 
 @Configuration
-// Ukljucivanje podrske za anotacije "@Pre*" i "@Post*" koje ce aktivirati autorizacione provere za svaki pristup metodi
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
-    // BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public WebSecurityConfig(RegisteredUserService registeredUserService, RestAuthEntryPoint restAuthEntryPoint, TokenUtils tokenUtils, PasswordEncoder passwordEncoder) {
+        this.registeredUserService = registeredUserService;
+        this.restAuthEntryPoint = restAuthEntryPoint;
+        this.tokenUtils = tokenUtils;
+        this.passwordEncoder = passwordEncoder;
     }
 
+    // Implementacija PasswordEncoder-a koriscenjem BCrypt hashing funkcije.
+    // BCrypt po defalt-u radi 10 rundi hesiranja prosledjene vrednosti.
+    private final PasswordEncoder passwordEncoder;
+
     // Servis koji se koristi za citanje podataka o korisnicima aplikacije
-    @Autowired
-    private RegisteredUserServiceImpl registeredUserService;
+    private final RegisteredUserService registeredUserService;
 
     // Handler za vracanje 401 kada klijent sa neodogovarajucim korisnickim imenom i lozinkom pokusa da pristupi resursu
-    @Autowired
-    private RestAuthEntryPoint restAuthEntryPoint;
+    private final RestAuthEntryPoint restAuthEntryPoint;
 
     // Registrujemo authentication manager koji ce da uradi autentifikaciju korisnika za nas
     @Bean
@@ -64,12 +66,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // 2. kroz koji enkoder da provuce lozinku koju je dobio od klijenta u zahtevu
                 // da bi adekvatan hash koji dobije kao rezultat hash algoritma uporedio sa onim koji se nalazi u bazi (posto se u bazi ne cuva plain lozinka)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder);
     }
 
     // Injektujemo implementaciju iz TokenUtils klase kako bismo mogli da koristimo njene metode za rad sa JWT u TokenAuthenticationFilteru
-    @Autowired
-    private TokenUtils tokenUtils;
+    private final TokenUtils tokenUtils;
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
